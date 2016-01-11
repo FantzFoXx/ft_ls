@@ -15,14 +15,12 @@
 char	**get_params(int ac, char **av)
 {
 	int i;
-	char **params;
+	//char **params;
 
 	i = 1;
 	while (i < ac)
 	{
-		if ()
-
-
+		ft_trace(av[i]);
 		i++;
 	}
 	return (av);
