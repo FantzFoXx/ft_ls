@@ -46,14 +46,11 @@ static char	**get_params(char **params, char *cur_param, int *index)
 	i = 1;
 	while (cur_param[i] != 0)
 	{
-		ft_trace("pass");
-		ft_nbrtrace(*index);
-		//ft_putchar(cur_param[i]);
-		params[*index] = ft_strnew(3);
+		params[*index] = ft_strnew(2);
 		params[*index][0] = '-';
 		params[*index][1] = cur_param[i];
 		i++;
-		index++;
+		*index += 1;
 	}
 	return (params);
 }
@@ -79,6 +76,11 @@ char		**get_args(int ac, char **av)
 			break;
 		params = get_params(params, av[i], &index);
 		i++;
+	}
+	while (i < ac)
+	{
+	}
+		
 	}
 	//ft_trace(params[0]);
 	//ft_trace(params[1]);
