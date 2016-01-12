@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/01/12 10:13:32 by udelorme          #+#    #+#             */
+/*   Updated: 2016/01/12 17:12:56 by udelorme         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 int		main(int argc, char **argv)
@@ -5,6 +17,6 @@ int		main(int argc, char **argv)
 	if (argc < 2)
 		ft_ls(NULL);
 	else
-		ft_ls(get_params(argc, argv));
+		ft_ls(get_args(argc, argv));
 	return(0);
 }

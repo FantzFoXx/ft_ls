@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:18:25 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/11 14:17:03 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/12 17:12:50 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@
 #include <dirent.h>
 
 int		ft_ls(char **params);
-char	**get_params(int ac, char **av);
+char	**get_args(int ac, char **av);
 
 #endif

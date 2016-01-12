@@ -6,22 +6,81 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:26:49 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/11 14:17:02 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/12 17:12:58 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+#include <stdlib.h>
 
-char	**get_params(int ac, char **av)
+static char **realloc_tab(char **tab, size_t size)
 {
-	int i;
-	//char **params;
+	char	**new;
+	int		i;
 
-	i = 1;
-	while (i < ac)
+	i = 0;
+	while (tab[i] != 0)
+		i++;
+	new = (char **)malloc(sizeof(char *) * i + size);
+	if (!new)
+		return (NULL);
+	new[size] = 0;
+	i = 0;
+	while (tab[i] != 0)
 	{
-		ft_trace(av[i]);
+		new[i] = tab[i];
 		i++;
 	}
-	return (av);
+	free(tab);
+	return (new);
+}
+
+static char	**get_params(char **params, char *cur_param, int *index)
+{
+	size_t size_param;
+	int i;
+
+	size_param = ((ft_strlen(cur_param) - 1));
+	params = realloc_tab(params, size_param);
+	params[size_param] = 0;
+	i = 1;
+	while (cur_param[i] != 0)
+	{
+		ft_trace("pass");
+		ft_nbrtrace(*index);
+		//ft_putchar(cur_param[i]);
+		params[*index] = ft_strnew(3);
+		params[*index][0] = '-';
+		params[*index][1] = cur_param[i];
+		i++;
+		index++;
+	}
+	return (params);
+}
+/*
+   static char	**get_entity(char **params, char *cur_param, int index)
+   {
+
+   }
+   */
+char		**get_args(int ac, char **av)
+{
+	int		i;
+	int		index;
+	char	**params;
+
+	params = (char **)malloc(sizeof(char *) * 1);
+	params[0] = NULL;
+	i = 1;
+	index = 0;
+	while (i < ac)
+	{
+		if (av[i][0] != '-')
+			break;
+		params = get_params(params, av[i], &index);
+		i++;
+	}
+	//ft_trace(params[0]);
+	//ft_trace(params[1]);
+	return (params);
 }
