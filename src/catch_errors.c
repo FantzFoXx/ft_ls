@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   catch_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/11 11:18:25 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/14 13:05:09 by udelorme         ###   ########.fr       */
+/*   Created: 2016/01/14 12:57:21 by udelorme          #+#    #+#             */
+/*   Updated: 2016/01/14 13:07:49 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#include "ft_ls.h"
 
-# define TYPE_DEVICE 2 
-# define TYPE_DIR    4 
-# define TYPE_FILE   8 
-# define TYPE_LINK_S 10
-
-
-#include "libft.h"
-#include "catch_errors.h"
-#include "toolkit.h"
-#include <dirent.h>
-
-int		ft_ls(char *params, char **entity);
-char	**get_args(int ac, char **av);
-
-#endif
+int		catch_error(int err_code, char *err_msg)
+{
+	char *def_str;
+	(void)err_code; //corriger
+	def_str = ft_strjoin("ft_ls: ", err_msg);
+	perror(def_str);
+	
+	return (0);
+}

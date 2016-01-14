@@ -6,49 +6,83 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/13 11:27:17 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/14 15:20:01 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+#include <stdlib.h>
 #include <stdio.h>
 
-int		ft_ls(char **params)
+static DIR	**open_dirs(char **path)
 {
-	(void)params;
-	DIR *curr_dir;
-	struct dirent *items;
+	size_t nb_path;
+	DIR **cur_dir;
+	size_t i;
 
-	curr_dir = opendir(".");
-	if (!curr_dir)
-		ft_trace("opendir: failed.");
-	else
+	nb_path = 0;
+	i = 0;
+	nb_path = size_tab(path);
+	cur_dir = (DIR **)malloc(sizeof(DIR *) * nb_path);
+	while (i < nb_path)
 	{
-		items = readdir(curr_dir);
-		if (!items)
-			ft_trace("readdir: failed.");
-		else
-		{
-			printf("%hhu\n", items->d_type);
-			items = readdir(curr_dir);
-			printf("%hhu\n", items->d_type);
-			items = readdir(curr_dir);
-			printf("%hhu\n", items->d_type);
-			items = readdir(curr_dir);
-			printf("%hhu\n", items->d_type);
-			items = readdir(curr_dir);
-			printf("%hhu\n", items->d_type);
-			items = readdir(curr_dir);
-			printf("%hhu\n", items->d_type);
-			items = readdir(curr_dir);
-			printf("%hhu\n", items->d_type);
-			items = readdir(curr_dir);
-			printf("%hhu\n", items->d_type);
-			items = readdir(curr_dir);
-			printf("%hhu\n", items->d_type);
-			items = readdir(curr_dir);
-			closedir(curr_dir);
-		}
+		cur_dir[i] = opendir(path[i]);
+		if (!cur_dir[i])
+			catch_error(1, path[i]);
+		i++;
 	}
+	return (cur_dir);
+}
+
+int			ft_ls(char *params, char **path)
+{
+	//struct	dirent *items;
+	DIR		**cur_dir;
+
+	cur_dir = NULL;
+	if (!path)
+	{
+		cur_dir = (DIR **)malloc(sizeof(DIR *));
+		*cur_dir = opendir(".");
+	}
+	else
+		cur_dir = open_dirs(path);
+
+	if (params)
+		ft_trace("params OK");
+
+	/*
+	   curr_dir = opendir(".");
+	   if (!curr_dir)
+	   ft_trace("opendir: failed.");
+	   else
+	   {
+	   items = readdir(curr_dir);
+	   if (!items)
+	   ft_trace("readdir: failed.");
+	   else
+	   {
+	   printf("%hhu\n", items->d_type);
+	   items = readdir(curr_dir);
+	   printf("%hhu\n", items->d_type);
+	   items = readdir(curr_dir);
+	   printf("%hhu\n", items->d_type);
+	   items = readdir(curr_dir);
+	   printf("%hhu\n", items->d_type);
+	   items = readdir(curr_dir);
+	   printf("%hhu\n", items->d_type);
+	   items = readdir(curr_dir);
+	   printf("%hhu\n", items->d_type);
+	   items = readdir(curr_dir);
+	   printf("%hhu\n", items->d_type);
+	   items = readdir(curr_dir);
+	   printf("%hhu\n", items->d_type);
+	   items = readdir(curr_dir);
+	   printf("%hhu\n", items->d_type);
+	   items = readdir(curr_dir);
+	   closedir(curr_dir);
+	   }
+	   }
+	   */
 	return (1);
 }

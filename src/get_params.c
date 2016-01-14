@@ -6,13 +6,12 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:26:49 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/13 16:51:25 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/14 15:20:02 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 static char **realloc_tab(char ***tab, size_t size)
 {
@@ -44,6 +43,8 @@ static int	in_args(char **exist_params, char *new_params, char cmp)
 
 	j = 0;
 	i = -1;
+	if (cmp == '-')
+		return (0);
 	while (new_params[++i] != 0)
 		if (new_params[i] == cmp)
 			return (1);
@@ -57,7 +58,6 @@ static int	in_args(char **exist_params, char *new_params, char cmp)
 				return (1);
 			j++;	
 		}
-
 		i++;
 	}
 	return (0);
@@ -67,32 +67,23 @@ static char	**get_params(char ***params, char *cur_param, int *index)
 {
 	size_t size_param;
 	char *str;
-	char *str_new;
 	int i;
 	int j;
 
+	i = -1;
+	j = -1;
 	str = ft_strnew(ft_strlen(cur_param));
-	i = 0;
-	j = 0;
-	while (cur_param[j] != 0)
-	{
+	while (cur_param[++j] != 0)
 		if (!in_args(*params, str, cur_param[j]))
-		{
-			str[i] = cur_param[j];
-			i++;
-		}
-		j++;
-	}
+			str[++i] = cur_param[j];
 	size_param = ft_strlen(str) - 1;
 	(*params) = realloc_tab(params, size_param);
-	str_new = NULL;
 	i = 1;
 	while (str[i])
 	{
-		str_new = ft_strnew(2);
-		str_new[0] = '-';
-		str_new[1] = str[i];
-		(*params)[*index] = &str_new[0];
+		(*params)[*index] = ft_strnew(2);
+		(*params)[*index][0] = '-';
+		(*params)[*index][0] = str[i];
 		i++;
 		(*index)++;
 	}

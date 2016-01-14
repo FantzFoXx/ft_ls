@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   toolkit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/11 11:18:25 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/14 13:05:09 by udelorme         ###   ########.fr       */
+/*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
+/*   Updated: 2016/01/14 11:49:07 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
-
-# define TYPE_DEVICE 2 
-# define TYPE_DIR    4 
-# define TYPE_FILE   8 
-# define TYPE_LINK_S 10
-
-
-#include "libft.h"
-#include "catch_errors.h"
 #include "toolkit.h"
-#include <dirent.h>
+#include "ft_ls.h"
 
-int		ft_ls(char *params, char **entity);
-char	**get_args(int ac, char **av);
-
-#endif
+size_t	size_tab(char **tab)
+{
+	size_t size_tab;
+	size_tab = 0;
+	if (tab)
+		while (tab[size_tab] != 0)
+			size_tab++;
+	return (size_tab);
+}

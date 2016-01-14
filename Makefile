@@ -1,7 +1,21 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: udelorme <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2016/01/14 11:43:18 by udelorme          #+#    #+#              #
+#    Updated: 2016/01/14 13:07:18 by udelorme         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 CC = gcc
 FLAGS = -Wall -Werror -Wextra
 NAME = ft_ls
-SRC = main.c ft_ls.c get_params.c
+SRC = main.c ft_ls.c				\
+	  get_params.c toolkit.c		\
+	  catch_errors.c
 OBJ = $(SRC:.c=.o)
 
 SRCDIR = src/
