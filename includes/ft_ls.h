@@ -25,6 +25,5 @@
 #include <dirent.h>
 
 int		ft_ls(char *params, char **entity);
-char	**get_args(int ac, char **av);
-
+void	get_args(int ac, char **av, char *ret_params, char **ret_paths);
 #endif

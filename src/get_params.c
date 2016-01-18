@@ -63,16 +63,13 @@ static int	in_args(char **exist_params, char *new_params, char cmp)
 	return (0);
 }
 
-static char	**get_params(char ***params, char *cur_param, int *index)
+static char	*get_params(char **params, char *cur_param)
 {
-	size_t size_param;
 	char *str;
-	int i;
-	int j;
 
-	i = -1;
-	j = -1;
-	str = ft_strnew(ft_strlen(cur_param));
+	str = ft_strnew(ft_strlen(cur_param) - 1);
+	*params = ft_strjoin(*params, &cur_param[1]);
+	/*
 	while (cur_param[++j] != 0)
 		if (!in_args(*params, str, cur_param[j]))
 			str[++i] = cur_param[j];
@@ -86,7 +83,7 @@ static char	**get_params(char ***params, char *cur_param, int *index)
 		(*params)[*index][0] = str[i];
 		i++;
 		(*index)++;
-	}
+	}*/
 	return (*params);
 }
 
@@ -98,24 +95,22 @@ static char	**get_entity(char ***params, char *cur_param, int *index)
 	return (*params);
 }
 
-char		**get_args(int ac, char **av)
+void		get_args(int ac, char **av, char *ret_params, char **ret_paths)
 {
 	int		i;
-	int		t;
-	int		index;
-	char	**params;
+	(void)ret_paths;
 
-	params = (char **)malloc(sizeof(char *) * 1);
-	params[0] = NULL;
+	ret_params = ft_strnew(0);
 	i = 0;
-	index = 0;
-	while (++i < ac && av[i][0] == '-')
-		params = get_params(&params, av[i], &index);
+	// condition boucle a revoir
+	while (++i < ac && (ft_strcmp(av[i], "--") != 0 && av[i][0] == '-'))
+		ret_params = get_params(&ret_params, av[i]);
 	i--;
+	/*
 	while (++i < ac)
 		params = get_entity(&params, av[i], &index);
 	t = -1;
 	while (params[++t])
 		ft_trace(params[t]);
-	return (params);
+		*/
 }
