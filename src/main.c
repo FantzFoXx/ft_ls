@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 10:13:32 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/14 14:36:11 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/18 15:30:47 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 int		main(int argc, char **argv)
 {
-	char *params = ft_strnew(5);
-	params[0] = 'l';
-	params[1] = 'a';
+	char *params = NULL;
+	char **params_d = NULL;
 	if (argc < 2)
 		ft_ls(NULL, NULL);
 	else
-		ft_ls(params, &argv[1]);
+	{
+		get_args(argc, argv, &params, &params_d);
+		ft_ls(params, params_d);
+	}
 	return(0);
 }

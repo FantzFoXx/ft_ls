@@ -6,7 +6,7 @@
 #    By: udelorme <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/14 11:43:18 by udelorme          #+#    #+#              #
-#    Updated: 2016/01/14 13:07:18 by udelorme         ###   ########.fr        #
+#    Updated: 2016/01/18 11:34:29 by udelorme         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,8 @@ all: $(NAME)
 
 $(NAME):
 	(cd $(LIBDIR); $(MAKE) all)
-	(cd $(SRCDIR);$(CC) $(FLAGS) -c $(SRC) -I ../$(INCDIR) -I ../$(LIBDIR)includes/;mv $(OBJ) ../)
-	$(CC) $(FLAGS) -o $(NAME) $(OBJ) -L $(LIBDIR) -lft
-	mv $(OBJ) $(OBJDIR)
+	(cd $(SRCDIR);$(CC) $(FLAGS) -c $(SRC) -I ../$(INCDIR) -I ../$(LIBDIR)includes/;mv $(OBJ) ../obj)
+	(cd $(OBJDIR);$(CC) $(FLAGS) -o ../$(NAME) $(OBJ) -L ../$(LIBDIR) -lft)
 
 clean:
 	(cd $(OBJDIR); rm -rf $(OBJ))

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/14 15:20:01 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/18 15:32:56 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int			ft_ls(char *params, char **path)
 	}
 	else
 		cur_dir = open_dirs(path);
-
 	if (params)
 		ft_trace("params OK");
 
