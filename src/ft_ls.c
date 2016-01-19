@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/18 17:03:12 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/19 14:51:01 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <stdio.h>
-
+#include <unistd.h>
+#include <sys/stat.h>
+/*
 static DIR	**open_dirs(char **path)
 {
 	char **files;
@@ -52,11 +54,12 @@ static DIR	**open_dirs(char **path)
 	}
 	return (dirs);
 }
-
+*/
 int			ft_ls(char *params, char **path)
 {
 	//struct	dirent *items;
 	DIR		**cur_dir;
+	char *buf = ft_strnew(1001);
 
 	cur_dir = NULL;
 	if (!path)
@@ -65,7 +68,11 @@ int			ft_ls(char *params, char **path)
 		*cur_dir = opendir(".");
 	}
 	else
-		cur_dir = open_dirs(path);
+	{
+		//cur_dir = open_dirs(path);
+		stat
+		ft_trace(buf);
+	}
 	if (params)
 		ft_trace("params OK");
 
