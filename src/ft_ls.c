@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/19 14:51:01 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/20 16:45:37 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/stat.h>
-/*
+
 static DIR	**open_dirs(char **path)
 {
 	char **files;
@@ -54,12 +54,13 @@ static DIR	**open_dirs(char **path)
 	}
 	return (dirs);
 }
-*/
+
 int			ft_ls(char *params, char **path)
 {
 	//struct	dirent *items;
 	DIR		**cur_dir;
-	char *buf = ft_strnew(1001);
+	char buf[1024];
+	//struct stat *ret;
 
 	cur_dir = NULL;
 	if (!path)
@@ -69,45 +70,9 @@ int			ft_ls(char *params, char **path)
 	}
 	else
 	{
-		//cur_dir = open_dirs(path);
-		stat
-		ft_trace(buf);
+		cur_dir = open_dirs(path);
 	}
 	if (params)
 		ft_trace("params OK");
-
-	/*
-	   curr_dir = opendir(".");
-	   if (!curr_dir)
-	   ft_trace("opendir: failed.");
-	   else
-	   {
-	   items = readdir(curr_dir);
-	   if (!items)
-	   ft_trace("readdir: failed.");
-	   else
-	   {
-	   printf("%hhu\n", items->d_type);
-	   items = readdir(curr_dir);
-	   printf("%hhu\n", items->d_type);
-	   items = readdir(curr_dir);
-	   printf("%hhu\n", items->d_type);
-	   items = readdir(curr_dir);
-	   printf("%hhu\n", items->d_type);
-	   items = readdir(curr_dir);
-	   printf("%hhu\n", items->d_type);
-	   items = readdir(curr_dir);
-	   printf("%hhu\n", items->d_type);
-	   items = readdir(curr_dir);
-	   printf("%hhu\n", items->d_type);
-	   items = readdir(curr_dir);
-	   printf("%hhu\n", items->d_type);
-	   items = readdir(curr_dir);
-	   printf("%hhu\n", items->d_type);
-	   items = readdir(curr_dir);
-	   closedir(curr_dir);
-	   }
-	   }
-	   */
 	return (1);
 }
