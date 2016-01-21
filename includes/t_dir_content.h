@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   t_dir_content.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/11 11:18:25 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/21 19:08:20 by udelorme         ###   ########.fr       */
+/*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
+/*   Updated: 2016/01/21 19:08:19 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#ifndef T_DIR_CONTENT_H
+# define T_DIR_CONTENT_H
 
-# define TYPE_DEVICE 2 
-# define TYPE_DIR    4 
-# define TYPE_FILE   8 
-# define TYPE_LINK_S 10
+#include "dirent.h"
 
-#include "libft.h"
-#include "catch_errors.h"
-#include "toolkit.h"
-#include <dirent.h>
+typedef struct	s_dir_content
+{
+	DIR						*cur_dir;
+	struct dirent			**items;
+	char					*dir_name;
+	struct s_dir_content 	*next;
+}				t_dir_content;
 
-int		ft_ls(char *params, char **entity);
-void	get_args(int ac, char **av, char **ret_params, char ***ret_paths);
+
 #endif

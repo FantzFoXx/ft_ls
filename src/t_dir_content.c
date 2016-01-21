@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   t_dir_content.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/11 11:18:25 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/21 19:08:20 by udelorme         ###   ########.fr       */
+/*   Created: 2016/01/21 17:28:13 by udelorme          #+#    #+#             */
+/*   Updated: 2016/01/21 19:08:05 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#include "t_dir_content.h"
 
-# define TYPE_DEVICE 2 
-# define TYPE_DIR    4 
-# define TYPE_FILE   8 
-# define TYPE_LINK_S 10
+t_dir_content	*t_dir_new(void)
+{
+	t_dir_content *new;
+	items = (struct dirent **)malloc(sizeof(struct dirent*));
+	dir_name = NULL;
+	next = NULL;
+	return (new);
+}
 
-#include "libft.h"
-#include "catch_errors.h"
-#include "toolkit.h"
-#include <dirent.h>
+void			t_dir_push()
+{
 
-int		ft_ls(char *params, char **entity);
-void	get_args(int ac, char **av, char **ret_params, char ***ret_paths);
-#endif
+}
