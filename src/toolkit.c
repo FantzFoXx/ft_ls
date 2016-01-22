@@ -6,12 +6,13 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/21 18:49:29 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/22 11:29:59 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "toolkit.h"
 #include "ft_ls.h"
+#include "libft.h"
 
 size_t	size_tab(char **tab)
 {
@@ -52,7 +53,7 @@ void	realloc_dirent(struct dirent ***items, size_t size)
 	if (*items)
 		while ((*items)[size_tab] != 0)
 			size_tab++;
-	new = (char **)malloc(sizeof(char *) * (size_tab + size + 1));
+	new = (struct dirent **)malloc(sizeof(struct dirent *) * (size_tab + size + 1));
 	new[size_tab + size] = NULL;
 	i = -1;
 	while (++i < size_tab)

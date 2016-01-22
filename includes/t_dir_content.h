@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/21 19:08:19 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/22 11:51:42 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define T_DIR_CONTENT_H
 
 #include "dirent.h"
+#include "libft.h"
 
 typedef struct	s_dir_content
 {
