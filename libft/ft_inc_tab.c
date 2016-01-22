@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_inc_tab.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/12 10:13:32 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 17:07:43 by udelorme         ###   ########.fr       */
+/*   Created: 2016/01/22 16:45:10 by udelorme          #+#    #+#             */
+/*   Updated: 2016/01/22 16:46:59 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls.h"
+#include "libft.h"
 
-int		main(int argc, char **argv)
+char	**ft_inc_tab(char **tab, int size)
 {
-	char *params = NULL;
-	char **params_d = NULL;
-	if (argc < 2)
-		ft_ls(NULL, NULL);
-	else
-	{
-		get_args(argc, argv, &params, &params_d);
-		ft_ls(params, params_d);
-	}
-	return(0);
+	char	**new;
+
+	new = ft_create_tab(size);
+	ft_freetab(tab);
+	if (new)
+		return (new);
+	return (NULL);
 }

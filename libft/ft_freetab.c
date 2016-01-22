@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_freetab.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/12 10:13:32 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 17:07:43 by udelorme         ###   ########.fr       */
+/*   Created: 2016/01/22 16:42:34 by udelorme          #+#    #+#             */
+/*   Updated: 2016/01/22 16:48:01 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int		main(int argc, char **argv)
+void	ft_freetab(char **tab)
 {
-	char *params = NULL;
-	char **params_d = NULL;
-	if (argc < 2)
-		ft_ls(NULL, NULL);
-	else
-	{
-		get_args(argc, argv, &params, &params_d);
-		ft_ls(params, params_d);
-	}
-	return(0);
+	int i;
+
+	i = -1;
+	while (tab[++i] != 0)
+		free(tab[i]);
+	free(tab);
 }

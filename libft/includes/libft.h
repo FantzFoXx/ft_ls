@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 12:02:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/07 15:11:57 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/22 16:48:00 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int				ft_memcmp(const void *s1, const void *s2, size_t n);
 void			ft_putchar(char c);
 void			ft_putnbr(int n);
 void			ft_putstr(char const *s);
-void			ft_trace(const char *s);
-void			ft_nbrtrace(int i);
+void			ft_trace(const char *mess, const char *s);
+void			ft_nbrtrace(const char *mess, int i);
 char			*ft_strdup(const char *s1);
 char			*ft_strcpy(char *dst, const char *src);
 char			*ft_strncpy(char *dst, const char *src, size_t n);
@@ -86,5 +86,9 @@ void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstpush(t_list **alst, t_list *new);
 void			ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
+char			**ft_create_tab(int length);
+char			**ft_inc_tab(char **tab, int size);
+void			ft_freetab(char **tab);
+
 
 #endif

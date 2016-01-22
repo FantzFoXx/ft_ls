@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:28:13 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 15:18:40 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:19:09 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 t_dir_content	*t_dir_new(DIR *cur_dir)
 {
 	t_dir_content *new;
+
 	new = (t_dir_content *)malloc(sizeof(t_dir_content));
 	if (new)
 	{
 		new->items = (struct dirent **)malloc(sizeof(struct dirent*));
 		new->items[0] = NULL;
 		new->cur_dir = cur_dir;
-		new-> dir_name = NULL;
-		new-> next = NULL;
+		new->dir_name = NULL;
+		new->next = NULL;
 	}
 	return (new);
 }
@@ -48,4 +49,20 @@ t_dir_content	*get_last_item(t_dir_content *first)
 	while (first->next)
 		first = first->next;
 	return (first);
+}
+
+void			print_name_dir(t_dir_content *first)
+{
+	int i;
+
+	i = 0;
+	while (first)
+	{
+		while (first->items[i] != NULL)
+		{
+			ft_putendl(first->items[i]->d_name);
+			i++;
+		}
+		first = first->next;
+	}
 }

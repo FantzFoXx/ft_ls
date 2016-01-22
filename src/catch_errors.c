@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:57:21 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/21 16:29:33 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:07:36 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 int		catch_error(int err_code, char *err_msg)
 {
 	char *def_str;
+
 	(void)err_code; //corriger
 	def_str = ft_strjoin("ft_ls: ", err_msg);
 	perror(def_str);
-	
 	return (0);
 }
 

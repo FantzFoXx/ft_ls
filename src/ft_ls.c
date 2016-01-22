@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 15:18:34 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:19:01 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,40 +18,14 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <t_dir_content.h>
-/*
-static DIR				**open_dirs(char **path)
-{
-	size_t nb_path;
-	DIR **dirs;
-	DIR *cur_dir;
-	size_t i;
-	int cp_d;
 
-	nb_path = 0;
-	i = 0;
-	cp_d = 0;
-	cur_dir = NULL;
-	nb_path = size_tab(path);
-	dirs = (DIR **)malloc(sizeof(DIR *) * nb_path);
-	while (i < nb_path)
-	{
-		cur_dir = opendir(path[i]);
-		if (!cur_dir)
-			catch_error(1, path[i]);
-		else
-			dirs[cp_d++] = cur_dir;
-		i++;
-	}
-	return (dirs);
-}
-*/
 static t_dir_content	*open_dirs(char **path)
 {
-	size_t nb_path;
-	DIR *cur_dir;
-	size_t i;
-	int cp_d;
-	t_dir_content *dirs;
+	size_t			nb_path;
+	DIR				*cur_dir;
+	size_t			i;
+	int				cp_d;
+	t_dir_content	*dirs;
 
 	i = 0;
 	cp_d = 0;
@@ -64,14 +38,28 @@ static t_dir_content	*open_dirs(char **path)
 		if (!cur_dir)
 			catch_error(1, path[i]);
 		else
-		{
-			ft_trace("grouped");
 			t_dir_push(&dirs, t_dir_new(cur_dir));
-			//dirs[cp_d++] = cur_dir;
-		}
 		i++;
 	}
 	return (dirs);
+}
+
+static void				get_dir_items(t_dir_content *first)
+{
+	struct dirent	*items;
+	int				i;
+
+	items = NULL;
+	i = 0;
+	while (first)
+	{
+		while ((items = readdir(first->cur_dir)) && items != NULL)
+		{
+			realloc_dirent(&first->items, 1);
+			first->items[i++] = items;
+		}
+		first = first->next;
+	}
 }
 
 static void				check_params(char *params)
@@ -90,21 +78,14 @@ static void				check_params(char *params)
 	free(supported_params);
 }
 
-//static struct dirent	**list_dir()
-
 int						ft_ls(char *params, char **path)
 {
-	struct	dirent *items;
-	t_dir_content *dirs;
-	t_dir_content *cur;
+	t_dir_content	*dirs;
 	DIR				*cur_dir;
-	//struct stat *ret;
-	int		i;
+	int				i;
 
 	cur_dir = NULL;
-	cur = NULL;
 	dirs = NULL;
-	items = NULL;
 	i = 0;
 	if (params)
 		check_params(params);
@@ -112,20 +93,10 @@ int						ft_ls(char *params, char **path)
 	{
 		cur_dir = opendir(".");
 		t_dir_push(&dirs, t_dir_new(cur_dir));
-		cur = get_last_item(dirs);
-		while ((items = readdir(cur_dir)) && items != NULL)
-		{
-			realloc_dirent(ur->items, 1);
-			cur->items[i] = 
-			printf("%s\n", items->d_name);
-			i++;
-		}
 	}
 	else
-	{
-		ft_trace("alone");
 		dirs = open_dirs(path);
-	}
+	get_dir_items(dirs);
+	print_name_dir(dirs);
 	return (1);
-
 }

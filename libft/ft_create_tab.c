@@ -1,32 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_dir_content.h                                    :+:      :+:    :+:   */
+/*   ft_create_tab.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 17:19:11 by udelorme         ###   ########.fr       */
+/*   Created: 2016/01/22 16:35:21 by udelorme          #+#    #+#             */
+/*   Updated: 2016/01/22 16:43:37 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef T_DIR_CONTENT_H
-# define T_DIR_CONTENT_H
-
-#include "dirent.h"
 #include "libft.h"
+#include <stdlib.h>
 
-typedef struct	s_dir_content
+char	**ft_create_tab(int length)
 {
-	DIR						*cur_dir;
-	struct dirent			**items;
-	char					*dir_name;
-	struct s_dir_content 	*next;
-}				t_dir_content;
+	char	**tab;
+	int		i;
+	int		j;
 
-t_dir_content	*t_dir_new(DIR *cur_dir);
-t_dir_content	*get_last_item(t_dir_content *first);
-void			t_dir_push(t_dir_content **first, t_dir_content *new);
-void			print_name_dir(t_dir_content *first);
-
-#endif
+	tab = (char **)malloc(sizeof(char *) * length + 1);
+	if (!tab)
+		return (NULL);
+	tab[length] = 0;
+	i = 0;
+	while (i < length)
+	{
+		tab[i] = (char *)malloc(sizeof(char) * length + 1);
+		if (!tab[i])
+			return (NULL);
+		j = 0;
+		tab[i][length] = 0;
+		while (j < length)
+		{
+			tab[i][j] = '.';
+			j++;
+		}
+		i++;
+	}
+	return (tab);
+}

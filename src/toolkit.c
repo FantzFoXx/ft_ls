@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 15:18:36 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:19:05 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 size_t	size_tab(char **tab)
 {
 	size_t size_tab;
+
 	size_tab = 0;
 	if (tab)
 		while (tab[size_tab] != 0)
@@ -53,7 +54,8 @@ void	realloc_dirent(struct dirent ***items, size_t size)
 	if (*items)
 		while ((*items)[size_tab] != 0)
 			size_tab++;
-	new = (struct dirent **)malloc(sizeof(struct dirent *) * (size_tab + size + 1));
+	new = (struct dirent **)malloc(sizeof(struct dirent *) *
+			(size_tab + size + 1));
 	new[size_tab + size] = NULL;
 	i = -1;
 	while (++i < size_tab)
