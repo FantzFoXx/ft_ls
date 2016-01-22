@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 13:08:46 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/22 15:18:34 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static t_dir_content	*open_dirs(char **path)
 			catch_error(1, path[i]);
 		else
 		{
+			ft_trace("grouped");
 			t_dir_push(&dirs, t_dir_new(cur_dir));
 			//dirs[cp_d++] = cur_dir;
 		}
@@ -93,13 +94,15 @@ static void				check_params(char *params)
 
 int						ft_ls(char *params, char **path)
 {
-	struct	dirent **items;
+	struct	dirent *items;
 	t_dir_content *dirs;
+	t_dir_content *cur;
 	DIR				*cur_dir;
 	//struct stat *ret;
 	int		i;
 
 	cur_dir = NULL;
+	cur = NULL;
 	dirs = NULL;
 	items = NULL;
 	i = 0;
@@ -109,13 +112,18 @@ int						ft_ls(char *params, char **path)
 	{
 		cur_dir = opendir(".");
 		t_dir_push(&dirs, t_dir_new(cur_dir));
-		while ((*items = readdir(*cur_dir)) && *items != NULL)
+		cur = get_last_item(dirs);
+		while ((items = readdir(cur_dir)) && items != NULL)
 		{
-			printf("%s\n", (*items)->d_name);
+			realloc_dirent(ur->items, 1);
+			cur->items[i] = 
+			printf("%s\n", items->d_name);
+			i++;
 		}
 	}
 	else
 	{
+		ft_trace("alone");
 		dirs = open_dirs(path);
 	}
 	return (1);
