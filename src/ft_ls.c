@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 11:51:52 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/22 13:08:46 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <t_dir_content.h>
 /*
 static DIR				**open_dirs(char **path)
 {
@@ -44,27 +45,29 @@ static DIR				**open_dirs(char **path)
 	return (dirs);
 }
 */
-static DIR				**open_dirs(char **path)
+static t_dir_content	*open_dirs(char **path)
 {
 	size_t nb_path;
-	DIR **dirs;
 	DIR *cur_dir;
 	size_t i;
 	int cp_d;
+	t_dir_content *dirs;
 
-	nb_path = 0;
 	i = 0;
 	cp_d = 0;
 	cur_dir = NULL;
 	nb_path = size_tab(path);
-	dirs = (DIR **)malloc(sizeof(DIR *) * nb_path);
+	dirs = NULL;
 	while (i < nb_path)
 	{
 		cur_dir = opendir(path[i]);
 		if (!cur_dir)
 			catch_error(1, path[i]);
 		else
-			dirs[cp_d++] = cur_dir;
+		{
+			t_dir_push(&dirs, t_dir_new(cur_dir));
+			//dirs[cp_d++] = cur_dir;
+		}
 		i++;
 	}
 	return (dirs);
@@ -91,28 +94,29 @@ static void				check_params(char *params)
 int						ft_ls(char *params, char **path)
 {
 	struct	dirent **items;
-	DIR		**cur_dir;
+	t_dir_content *dirs;
+	DIR				*cur_dir;
 	//struct stat *ret;
 	int		i;
 
 	cur_dir = NULL;
+	dirs = NULL;
 	items = NULL;
 	i = 0;
 	if (params)
 		check_params(params);
 	if (!path)
 	{
-		cur_dir = (DIR **)malloc(sizeof(DIR *));
-		items = (struct dirent **)malloc(sizeof(struct dirent*));
-		*cur_dir = opendir(".");
+		cur_dir = opendir(".");
+		t_dir_push(&dirs, t_dir_new(cur_dir));
 		while ((*items = readdir(*cur_dir)) && *items != NULL)
 		{
-			printf("%hu : %d  %s\n", (*items)->d_reclen, (*items)->d_type, (*items)->d_name);
+			printf("%s\n", (*items)->d_name);
 		}
 	}
 	else
 	{
-		cur_dir = open_dirs(path);
+		dirs = open_dirs(path);
 	}
 	return (1);
 
