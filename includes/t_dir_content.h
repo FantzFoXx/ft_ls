@@ -24,7 +24,7 @@ typedef struct	s_dir_content
 	struct s_dir_content 	*next;
 }				t_dir_content;
 
-t_dir_content	*t_dir_new(DIR *cur_dir);
+t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name);
 t_dir_content	*get_last_item(t_dir_content *first);
 void			t_dir_push(t_dir_content **first, t_dir_content *new);
 void			print_name_dir(t_dir_content *first);

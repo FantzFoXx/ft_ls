@@ -13,7 +13,7 @@
 #include "t_dir_content.h"
 #include <stdlib.h>
 
-t_dir_content	*t_dir_new(DIR *cur_dir)
+t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name)
 {
 	t_dir_content *new;
 
@@ -23,7 +23,7 @@ t_dir_content	*t_dir_new(DIR *cur_dir)
 		new->items = (struct dirent **)malloc(sizeof(struct dirent*));
 		new->items[0] = NULL;
 		new->cur_dir = cur_dir;
-		new->dir_name = NULL;
+		new->dir_name = dir_name;
 		new->next = NULL;
 	}
 	return (new);
@@ -58,11 +58,14 @@ void			print_name_dir(t_dir_content *first)
 	i = 0;
 	while (first)
 	{
-		while (first->items[i] != NULL)
+		//ft_putstr(first->dir_name);
+		//ft_putendl(" : ");
+		while (first->items[i])
 		{
 			ft_putendl(first->items[i]->d_name);
 			i++;
 		}
+		i = 0;
 		first = first->next;
 	}
 }

@@ -30,6 +30,7 @@ static t_dir_content	*open_dirs(char **path)
 	i = 0;
 	cp_d = 0;
 	cur_dir = NULL;
+		ft_trace(NULL, "pass");
 	nb_path = size_tab(path);
 	dirs = NULL;
 	while (i < nb_path)
@@ -38,7 +39,7 @@ static t_dir_content	*open_dirs(char **path)
 		if (!cur_dir)
 			catch_error(1, path[i]);
 		else
-			t_dir_push(&dirs, t_dir_new(cur_dir));
+			t_dir_push(&dirs, t_dir_new(cur_dir, path[i]));
 		i++;
 	}
 	return (dirs);
@@ -53,6 +54,7 @@ static void				get_dir_items(t_dir_content *first)
 	i = 0;
 	while (first)
 	{
+		printf("%p\n", first);
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 		{
 			realloc_dirent(&first->items, 1);
@@ -91,11 +93,11 @@ int						ft_ls(char *params, char **path)
 		check_params(params);
 	if (!path)
 	{
-		cur_dir = opendir(".");
-		t_dir_push(&dirs, t_dir_new(cur_dir));
+		path = (char **)malloc(sizeof(char *) * 2);
+		path[1] = NULL;
+		path[0] = ft_strdup(".");
 	}
-	else
-		dirs = open_dirs(path);
+	dirs = open_dirs(path);
 	get_dir_items(dirs);
 	print_name_dir(dirs);
 	return (1);
