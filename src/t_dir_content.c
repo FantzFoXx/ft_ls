@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:28:13 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 17:19:09 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/25 10:24:28 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void			print_name_dir(t_dir_content *first)
 	i = 0;
 	while (first)
 	{
-		//ft_putstr(first->dir_name);
-		//ft_putendl(" : ");
+		ft_putstr(first->dir_name);
+		ft_putendl(" : ");
 		while (first->items[i])
 		{
 			ft_putendl(first->items[i]->d_name);
@@ -67,5 +67,8 @@ void			print_name_dir(t_dir_content *first)
 		}
 		i = 0;
 		first = first->next;
+		ft_putchar('\n');
 	}
 }
+
+void			switch_items(t_dir_content *cur)

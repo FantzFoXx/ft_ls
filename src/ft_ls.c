@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 17:19:01 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/25 10:24:30 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static t_dir_content	*open_dirs(char **path)
 	i = 0;
 	cp_d = 0;
 	cur_dir = NULL;
-		ft_trace(NULL, "pass");
 	nb_path = size_tab(path);
 	dirs = NULL;
 	while (i < nb_path)
@@ -54,13 +53,13 @@ static void				get_dir_items(t_dir_content *first)
 	i = 0;
 	while (first)
 	{
-		printf("%p\n", first);
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 		{
 			realloc_dirent(&first->items, 1);
 			first->items[i++] = items;
 		}
 		first = first->next;
+		i = 0;
 	}
 }
 
