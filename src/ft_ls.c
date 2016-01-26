@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/26 12:00:45 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/26 15:10:15 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,23 @@ static t_dir_content	*open_dirs(char **path)
 	size_t			nb_path;
 	DIR				*cur_dir;
 	size_t			i;
-	int				cp_d;
+	struct stat		file_props;
 	t_dir_content	*dirs;
 
 	i = 0;
-	cp_d = 0;
+	dirs = NULL;
 	cur_dir = NULL;
 	nb_path = ft_tab_size(path);
-	dirs = NULL;
 	while (i < nb_path)
 	{
 		cur_dir = opendir(path[i]);
 		if (!cur_dir)
-			catch_error(1, path[i]);
+		{
+			if (lstat(path[i], &file_props) == 0)
+				t_dir_add_file(&dirs, file_props, path[i]);
+			else
+				catch_error(1, path[i]);
+		}
 		else
 			t_dir_push(&dirs, t_dir_new(cur_dir, path[i]));
 		i++;
@@ -51,6 +55,8 @@ static void				get_dir_items(t_dir_content *first)
 
 	items = NULL;
 	i = 0;
+	while (first && !first->cur_dir)
+		first = first->next;
 	while (first)
 	{
 		while ((items = readdir(first->cur_dir)) && items != NULL)
