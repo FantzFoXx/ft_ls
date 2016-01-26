@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/26 15:10:17 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/26 15:37:08 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,32 +50,6 @@ t_dir_content	*get_last_item(t_dir_content *first)
 	while (first->next)
 		first = first->next;
 	return (first);
-}
-
-void			print_name_dir(t_dir_content *first)
-{
-	int i;
-
-	i = 0;
-	if (first && !first->cur_dir)
-		while (first && !first->cur_dir)
-		{
-			ft_putendl(first->dir_name);
-			first = first->next;
-		}
-	while (first)
-	{
-		ft_putstr(first->dir_name);
-		ft_putendl(" : ");
-		while (first->items[i])
-		{
-			ft_putendl(first->items[i]->d_name);
-			i++;
-		}
-		i = 0;
-		first = first->next;
-		ft_putchar('\n');
-	}
 }
 
 void			t_dir_add_file(t_dir_content **first,

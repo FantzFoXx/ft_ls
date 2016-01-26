@@ -6,11 +6,12 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/26 15:10:15 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/26 15:37:10 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+#include "print_ls.h"
 #include <stdlib.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -105,6 +106,6 @@ int						ft_ls(char *params, char **path)
 	dirs = open_dirs(path);
 	get_dir_items(dirs);
 	sort_t_dir(dirs);
-	print_name_dir(dirs);
+	print_items(dirs);
 	return (1);
 }
