@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 10:13:32 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/22 17:07:43 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/26 17:02:56 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,21 @@
 
 int		main(int argc, char **argv)
 {
-	char *params = NULL;
-	char **params_d = NULL;
+	char *params;
+	char **params_d;
+
+	params = NULL;
+	params_d = NULL;
 	if (argc < 2)
 		ft_ls(NULL, NULL);
 	else
 	{
 		get_args(argc, argv, &params, &params_d);
+		if (params)
+			check_params(params);
 		ft_ls(params, params_d);
+		ft_freetab(params_d);
+		free(params);
 	}
-	return(0);
+	return (0);
 }

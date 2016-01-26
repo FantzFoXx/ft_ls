@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:18:25 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/21 19:08:20 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/26 16:54:42 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@
 
 int		ft_ls(char *params, char **entity);
 void	get_args(int ac, char **av, char **ret_params, char ***ret_paths);
+void	check_params(char *params);
 #endif

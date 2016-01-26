@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/26 15:37:10 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/26 17:02:57 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,33 +70,16 @@ static void				get_dir_items(t_dir_content *first)
 	}
 }
 
-static void				check_params(char *params)
-{
-	char	*supported_params;
-	int		i;
-
-	i = 0;
-	supported_params = ft_strdup("la");
-	while (params[i] != 0)
-	{
-		if (!ft_strchr(supported_params, params[i]))
-			error_params(supported_params, params[i]);
-		i++;
-	}
-	free(supported_params);
-}
-
 int						ft_ls(char *params, char **path)
 {
 	t_dir_content	*dirs;
 	DIR				*cur_dir;
 	int				i;
 
+	(void)params;
 	cur_dir = NULL;
 	dirs = NULL;
 	i = 0;
-	if (params)
-		check_params(params);
 	if (!path)
 	{
 		path = (char **)malloc(sizeof(char *) * 2);

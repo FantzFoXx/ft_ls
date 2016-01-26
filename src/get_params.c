@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:26:49 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/26 11:57:52 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/26 17:00:32 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,22 @@ static char	**get_entity(char ***params, char *cur_param)
 	i++;
 	params[0][i] = ft_strdup(cur_param);
 	return (*params);
+}
+
+void		check_params(char *params)
+{
+	char	*supported_params;
+	int		i;
+
+	i = 0;
+	supported_params = ft_strdup("la");
+	while (params[i] != 0)
+	{
+		if (!ft_strchr(supported_params, params[i]))
+			error_params(supported_params, params[i]);
+		i++;
+	}
+	free(supported_params);
 }
 
 void		get_args(int ac, char **av, char **ret_params, char ***ret_paths)

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/26 15:10:19 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/26 17:02:55 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	sort_t_dir(t_dir_content *lst)
 		}
 }
 
-void			switch_items(t_dir_content *first, t_dir_content *last)
+void	switch_items(t_dir_content *first, t_dir_content *last)
 {
 	t_dir_content *tmp;
 
