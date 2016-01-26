@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/25 12:08:45 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/26 12:00:45 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_dir_content	*open_dirs(char **path)
 	i = 0;
 	cp_d = 0;
 	cur_dir = NULL;
-	nb_path = size_tab(path);
+	nb_path = ft_tab_size(path);
 	dirs = NULL;
 	while (i < nb_path)
 	{

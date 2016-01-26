@@ -6,7 +6,7 @@
 #    By: udelorme <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/14 11:43:18 by udelorme          #+#    #+#              #
-#    Updated: 2016/01/21 17:27:36 by udelorme         ###   ########.fr        #
+#    Updated: 2016/01/26 11:59:30 by udelorme         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ FLAGS = -Wall -Werror -Wextra
 NAME = ft_ls
 SRC = main.c ft_ls.c					\
 	  get_params.c toolkit.c			\
-	  catch_errors.c t_dir_content.c	
+	  catch_errors.c t_dir_content_1.c	\
+	  t_dir_content_2.c
 OBJ = $(SRC:.c=.o)
 
 SRCDIR = src/
