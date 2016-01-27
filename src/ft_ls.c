@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:17:51 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/27 18:35:46 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ static void				get_dir_items(t_dir_content *first)
 	items = NULL;
 	i = 0;
 	while (first && !first->cur_dir)
+	{
 		first = first->next;
+	
+			ft_trace("getdirwhile","pass");
+	}
 	while (first)
 	{
 		while ((items = readdir(first->cur_dir)) && items != NULL)
@@ -87,8 +91,14 @@ int						ft_ls(char *params, char **path)
 		path[0] = ft_strdup(".");
 	}
 	dirs = open_dirs(path);
+	ft_trace("opendirs","pass");
 	get_dir_items(dirs);
+	ft_trace("getdiritems","pass");
 	sort_t_dir(dirs);
-	print_all_items(dirs);
+	ft_trace("sortdir","pass");
+	if (params && ft_strchr(params, 'a'))
+		print_all_items(dirs);
+	else
+		print_items(dirs);
 	return (1);
 }

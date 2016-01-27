@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_dir_content_2.c                                  :+:      :+:    :+:   */
+/*   sort_items.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/27 18:30:58 by udelorme         ###   ########.fr       */
+/*   Created: 2016/01/27 17:31:23 by udelorme          #+#    #+#             */
+/*   Updated: 2016/01/27 18:35:45 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	sort_t_dir(t_dir_content *lst)
 void	sort_t_dir_elems(t_dir_content *lst)
 {
 	int i;
-
+	// a reprendre, segfault
 	i = 0;
 	while (lst->items[i + 1])
 	{
@@ -83,7 +83,7 @@ void	switch_dirs(t_dir_content *first, t_dir_content *last)
 	t_dir_content *tmp;
 
 	tmp = t_dir_new(first->cur_dir, first->dir_name);
-	free(tmp->items);
+	//free(tmp->items);
 	tmp->items = first->items;
 	first->cur_dir = last->cur_dir;
 	first->items = last->items;

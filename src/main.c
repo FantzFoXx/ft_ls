@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 10:13:32 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/27 15:38:50 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/27 17:57:53 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int		main(int argc, char **argv)
 		if (params)
 			check_params(params);
 		ft_ls(params, params_d);
-		ft_freetab(params_d);
-		free(params);
 	}
 	return (0);
 }
