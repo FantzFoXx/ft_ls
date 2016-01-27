@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/26 17:02:57 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/27 16:17:51 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int						ft_ls(char *params, char **path)
 	cur_dir = NULL;
 	dirs = NULL;
 	i = 0;
-	if (!path)
+	if (!path || !ft_tab_size(path))
 	{
 		path = (char **)malloc(sizeof(char *) * 2);
 		path[1] = NULL;
@@ -89,6 +89,6 @@ int						ft_ls(char *params, char **path)
 	dirs = open_dirs(path);
 	get_dir_items(dirs);
 	sort_t_dir(dirs);
-	print_items(dirs);
+	print_all_items(dirs);
 	return (1);
 }
