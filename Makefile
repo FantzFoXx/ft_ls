@@ -6,7 +6,7 @@
 #    By: udelorme <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/14 11:43:18 by udelorme          #+#    #+#              #
-#    Updated: 2016/01/26 15:22:50 by udelorme         ###   ########.fr        #
+#    Updated: 2016/01/28 10:54:59 by udelorme         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ NAME = ft_ls
 SRC = main.c ft_ls.c					\
 	  get_params.c toolkit.c			\
 	  catch_errors.c t_dir_content_1.c	\
-	  t_dir_content_2.c print_ls.c
+	  t_dir_content_2.c print_ls.c		\
+	  sort_items.c
 
 OBJ = $(SRC:.c=.o)
 

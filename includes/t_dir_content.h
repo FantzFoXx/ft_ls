@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/27 17:20:13 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/28 11:38:36 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void			switch_props(struct stat *s1, struct stat *s2);
 void			switch_dirs(t_dir_content *first, t_dir_content *last);
 void			t_dir_add_file(t_dir_content **first,
 		struct stat file, char *dir_name);
+
+void			t_dir_free_all(t_dir_content **cur);
 
 
 #endif

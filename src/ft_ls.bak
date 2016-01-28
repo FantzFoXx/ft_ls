@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/28 16:24:00 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/28 14:45:32 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,46 +20,55 @@
 #include <dirent.h>
 #include <t_dir_content.h>
 
-static DIR				open_dirs(char **paths, char *params)
+static t_dir_content	*open_dirs(char **path)
 {
-	size_t			size_tab;
-	t_dir_content	*dirs;
-
-	size_tab = ft_tab_size(paths);
-	while (path[i])
-		dirs = t_dir_push(dirs, opendir(path[i]));
-}
-
-/*
- * Recursive :
- * J'ouvre mon repertoire
- * je read tout
- * tant que j'ai des dossiers a lire : recursive
- * je rouvre le nouveau dossier
- * je read tout
- * ...
- * une fois que fini, descente recursive, retour fonction.
- * a la suite on reboucle
- */
-static t_dir_content	open_dir(char *path, char *params)
-{
+	size_t			nb_path;
 	DIR				*cur_dir;
+	size_t			i;
 	struct stat		file_props;
 	t_dir_content	*dirs;
 
+	i = 0;
 	dirs = NULL;
 	cur_dir = NULL;
-	cur_dir = opendir(path);
-	if (!cur_dir)
+	nb_path = ft_tab_size(path);
+	while (i < nb_path)
 	{
-		if (lstat(path, &file_props) == 0)
-			t_dir_add_file(&dirs, file_props, path);
+		cur_dir = opendir(path[i]);
+		if (!cur_dir)
+		{
+			if (lstat(path[i], &file_props) == 0)
+				t_dir_add_file(&dirs, file_props, path[i]);
+			else
+				catch_error(1, path[i]);
+		}
 		else
-			catch_error(1, path);
+			t_dir_push(&dirs, t_dir_new(cur_dir, path[i]));
+		i++;
 	}
-	else
-		t_dir_push(&dirs, t_dir_new(cur_dir, path));
 	return (dirs);
+}
+
+static void				get_dir_items(t_dir_content *first)
+{
+	struct dirent	*items;
+	int				i;
+
+	items = NULL;
+	i = 0;
+	while (first && !first->cur_dir)
+		first = first->next;
+	while (first)
+	{
+		while ((items = readdir(first->cur_dir)) && items != NULL)
+		{
+			realloc_dirent(&first->items, 1);
+			first->items[i++] = items;
+		}
+		first = first->next;
+		i = 0;
+	}
+	i = 0;
 }
 
 int						ft_ls(char *params, char **path)
@@ -68,11 +77,23 @@ int						ft_ls(char *params, char **path)
 	DIR				*cur_dir;
 	int				i;
 
-
-	open_dirs(path, params);
-	dirs = NULL;
+	(void)params;
 	cur_dir = NULL;
+	dirs = NULL;
 	i = 0;
-
+	if (!path || !ft_tab_size(path))
+	{
+		path = (char **)malloc(sizeof(char *) * 2);
+		path[1] = NULL;
+		path[0] = ft_strdup(".");
+	}
+	dirs = open_dirs(path);
+	get_dir_items(dirs);
+	sort_t_dir(dirs);
+	if (params && ft_strchr(params, 'a'))
+		print_all_items(dirs);
+	else
+		print_items(dirs);
+	t_dir_free_all(&dirs);
 	return (1);
 }

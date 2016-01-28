@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 17:31:23 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/27 18:35:45 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/01/28 13:33:26 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	sort_t_dir(t_dir_content *lst)
 void	sort_t_dir_elems(t_dir_content *lst)
 {
 	int i;
+
 	// a reprendre, segfault
 	i = 0;
 	while (lst->items[i + 1])
