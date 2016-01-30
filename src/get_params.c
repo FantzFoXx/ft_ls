@@ -62,7 +62,7 @@ void		check_params(char *params)
 	int		i;
 
 	i = 0;
-	supported_params = ft_strdup("la");
+	supported_params = ft_strdup("laR");
 	while (params[i] != 0)
 	{
 		if (!ft_strchr(supported_params, params[i]))
