@@ -42,17 +42,6 @@ static void				get_dir_items(t_dir_content *first)
 	i = 0;
 }
 
-/*
- * Recursive :
- * J'ouvre mon repertoire
- * je read tout
- * tant que j'ai des dossiers a lire : recursive
- * je rouvre le nouveau dossier
- * je read tout
- * ...
- * une fois que fini, descente recursive, retour fonction.
- * a la suite on reboucle
- */
 static t_dir_content	*open_dir(char *path, char *params)
 {
 	DIR				*cur_dir;
@@ -60,7 +49,6 @@ static t_dir_content	*open_dir(char *path, char *params)
 	t_dir_content	*dirs;
 	int 			i;
 
-	ft_trace("pass", "pass");
 	(void)params;
 	dirs = NULL;
 	cur_dir = NULL;
@@ -80,14 +68,10 @@ static t_dir_content	*open_dir(char *path, char *params)
 	}
 	if (ft_strchr(params, 'R') && dirs->items)
 	{
-		while (dirs->items[i] )
+		while (dirs->items[i])
 		{
-			if (dirs->items[i]->d_type == DT_DIR && (ft_strcmp(".", dirs->items[i]->d_name) != 0
-					&& ft_strcmp("..", dirs->items[i]->d_name) != 0))
-			{
-				ft_trace("dir->name", dirs->items[i]->d_name);
+			if (dirs->items[i]->d_type == DT_DIR && (ft_strcmp(dirs->items[i]->d_name, ".") != 0 && ft_strcmp(dirs->items[i]->d_name, "..") != 0))
 				t_dir_push(&dirs, open_dir(ft_strjoin(ft_strjoin(path, dirs->items[i]->d_name), "/"), params));
-			}
 			i++;
 		}
 	}
@@ -102,13 +86,11 @@ static t_dir_content	*open_dirs(char **paths, char *params)
 
 	i = 0;
 	size_tab = ft_tab_size(paths);
+	dirs = NULL;
 	while (paths[i])
 	{
-		ft_nbrtrace("opendirs: pass ", i);
-		sleep(1);
-		t_dir_push(&dirs, open_dir(paths[i], params));
-		ft_trace("end param dirs", "");
-		//sort_t_dir(dirs);
+		t_dir_push(&dirs, open_dir(ft_strjoin(paths[i], "/"), params));
+		sort_t_dir(dirs);
 		i++;
 	}
 	return (dirs);
@@ -124,8 +106,9 @@ int						ft_ls(char *params, char **path)
 	cur_dir = NULL;
 	i = 0;
 	dirs = open_dirs(path, params);
+		print_all_items(dirs);
 	ft_trace("opendirs", "ended");
-	print_all_items(dirs);
+	//print_all_items(dirs);
 
 	return (1);
 }
