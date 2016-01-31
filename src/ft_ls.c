@@ -33,8 +33,10 @@ static void				get_dir_items(t_dir_content *first)
 	{
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 		{
+			ft_putendl(items->d_name);
 			realloc_dirent(&first->items, 1);
 			first->items[i++] = items;
+			sort_t_dir_elems(first);
 		}
 		first = first->next;
 		i = 0;
@@ -45,36 +47,38 @@ static void				get_dir_items(t_dir_content *first)
 static t_dir_content	*open_dir(char *path, char *params)
 {
 	DIR				*cur_dir;
-	struct stat		file_props;
+	//struct stat		file_props;
 	t_dir_content	*dirs;
 	int 			i;
 
-	(void)params;
 	dirs = NULL;
-	cur_dir = NULL;
 	cur_dir = opendir(path);
-	i = 0;
+	i = -1;
 	if (!cur_dir)
 	{
+		/*
 		if (lstat(path, &file_props) == 0)
+		{
+			ft_trace("unique file", "pass");
 			t_dir_add_file(&dirs, file_props, path);
+		}
 		else
-			catch_error(1, path);
+		{
+		*/
+			return (catch_error(1, path));
 	}
 	else
 	{
 		t_dir_push(&dirs, t_dir_new(cur_dir, path));
-		get_dir_items(get_last_item(dirs));
+		get_dir_items(dirs);
+	closedir(cur_dir);
 	}
 	if (ft_strchr(params, 'R') && dirs->items)
-	{
-		while (dirs->items[i])
-		{
-			if (dirs->items[i]->d_type == DT_DIR && (ft_strcmp(dirs->items[i]->d_name, ".") != 0 && ft_strcmp(dirs->items[i]->d_name, "..") != 0))
+		while (dirs->items[++i])
+			if (dirs->items[i]->d_type == (DT_LNK) && (ft_strcmp(dirs->items[i]->d_name, ".")
+						!= 0 && ft_strcmp(dirs->items[i]->d_name, "..") != 0))
 				t_dir_push(&dirs, open_dir(ft_strjoin(ft_strjoin(path, dirs->items[i]->d_name), "/"), params));
-			i++;
-		}
-	}
+
 	return (dirs);
 }
 
@@ -83,15 +87,17 @@ static t_dir_content	*open_dirs(char **paths, char *params)
 	int				i;
 	size_t			size_tab;
 	t_dir_content	*dirs;
+	t_dir_content	*check;
 
-	i = 0;
+	i = -1;
 	size_tab = ft_tab_size(paths);
 	dirs = NULL;
-	while (paths[i])
+	while (paths[++i])
 	{
-		t_dir_push(&dirs, open_dir(ft_strjoin(paths[i], "/"), params));
-		sort_t_dir(dirs);
-		i++;
+		check = open_dir(ft_strjoin(paths[i], "/"), params);
+		if (check)
+			t_dir_push(&dirs, check);
+		//sort_t_dir(dirs);
 	}
 	return (dirs);
 }
@@ -106,8 +112,7 @@ int						ft_ls(char *params, char **path)
 	cur_dir = NULL;
 	i = 0;
 	dirs = open_dirs(path, params);
-		print_all_items(dirs);
-	ft_trace("opendirs", "ended");
+	print_all_items(dirs);
 	//print_all_items(dirs);
 
 	return (1);

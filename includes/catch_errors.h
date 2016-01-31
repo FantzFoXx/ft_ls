@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include "t_dir_content.h"
 
 #ifndef CATCH_ERRORS_H
 # define CATCH_ERRORS_H
 
-int		catch_error(int err_code, char *err_msg);
-void	error_params(char *supported, char param);
-
+void			error_params(char *supported, char param);
+t_dir_content	*catch_error(int err_code, char *err_msg);
 #endif

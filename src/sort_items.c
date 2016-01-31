@@ -54,7 +54,7 @@ void	sort_t_dir_elems(t_dir_content *lst)
 					lst->items[i + 1]->d_name) > 0)
 		{
 			switch_items(&lst->items[i], &lst->items[i + 1]);
-			switch_props(&lst->props[i], &lst->props[i + 1]);
+			//switch_props(&lst->props[i], &lst->props[i + 1]);
 			i = -1;
 		}
 		i++;

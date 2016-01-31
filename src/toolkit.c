@@ -56,3 +56,8 @@ void	realloc_props(struct stat **props, size_t size)
 	free(*props);
 	*props = new;
 }*/
+
+char	*escape_non_ascii(char *path)
+{
+	
+}
