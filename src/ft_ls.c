@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/01 11:59:06 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 16:50:13 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ static void				get_dir_items(t_dir_content *first)
 	{
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 		{
-			ft_putendl(items->d_name);
-			realloc_dirent(&first->items, 1);
-			first->items[i++] = items;
-			sort_t_dir_elems(first);
+			//realloc_dirent(&first->items, 1);
+			//first->items[i] = items;
+			t_item_push((first->items), t_item_new(items));
+			i++;
 		}
+		print_cur_dir(first);
 	}
 }
 
-static t_dir_content	*open_dir(char *path, char *params)
+static int			open_dir(char *path, char *params)
 {
 	DIR				*cur_dir;
-	//struct stat		file_props;
 	t_dir_content	*dirs;
 	int 			i;
 
@@ -68,7 +68,6 @@ static t_dir_content	*open_dir(char *path, char *params)
 	{
 		t_dir_push(&dirs, t_dir_new(cur_dir, path));
 		get_dir_items(dirs);
-		sort_t_dir_elems(dirs);
 	}
 	if (ft_strchr(params, 'R') && dirs->items)
 	{
@@ -77,13 +76,14 @@ static t_dir_content	*open_dir(char *path, char *params)
 			if (dirs->items[i]->d_type == DT_DIR && (ft_strcmp(dirs->items[i]->d_name, ".")
 						!= 0 && ft_strcmp(dirs->items[i]->d_name, "..") != 0))
 			{
-				t_dir_push(&dirs, open_dir(ft_strjoin(ft_strjoin(path, dirs->items[i]->d_name), "/"), params));
-				
+				open_dir(ft_strjoin(ft_strjoin(path, dirs->items[i]->d_name), "/"), params);
 			}
 		}
 	}
-
-	return (dirs);
+	
+	closedir(cur_dir);
+	t_dir_free_all(&dirs);
+	return (1);
 }
 
 static t_dir_content	*open_dirs(char **paths, char *params)
@@ -91,7 +91,6 @@ static t_dir_content	*open_dirs(char **paths, char *params)
 	int				i;
 	size_t			size_tab;
 	t_dir_content	*dirs;
-	t_dir_content	*check;
 
 	i = -1;
 	size_tab = ft_tab_size(paths);
@@ -103,9 +102,7 @@ static t_dir_content	*open_dirs(char **paths, char *params)
 	dirs = NULL;
 	while (paths[++i])
 	{
-		check = open_dir(ft_strjoin(paths[i], "/"), params);
-		if (check)
-			t_dir_push(&dirs, check);
+		open_dir(ft_strjoin(paths[i], "/"), params);
 	}
 	return (dirs);
 }
@@ -129,7 +126,7 @@ int						ft_ls(char *params, char **path)
 		path[0] = ".";
 	}*/
 	dirs = open_dirs(path, params);
-	print_items(dirs);
+	//print_items(dirs);
 	//print_all_items(dirs);
 
 	return (1);

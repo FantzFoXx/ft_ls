@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/01 11:59:09 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 16:47:21 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@ t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name)
 	new = (t_dir_content *)malloc(sizeof(t_dir_content));
 	if (new)
 	{
-		new->items = (struct dirent **)malloc(sizeof(struct dirent*));
-		new->items[0] = NULL;
+		new->items = NULL;
 		new->cur_dir = cur_dir;
-		new->props = (struct stat *)malloc(sizeof(struct stat));
-		//new->props[0] = NULL;
+		new->props = NULL;
 		new->dir_name = dir_name;
 		new->is_dir = 1;
 		new->next = NULL;
@@ -96,7 +94,5 @@ void			t_dir_free_all(t_dir_content **cur)
 	}
 	if ((*cur)->dir_name)
 		free((*cur)->dir_name);
-	if ((*cur)->cur_dir)
-		free((*cur)->cur_dir);
 	free((*cur)->items);
 }

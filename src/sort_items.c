@@ -6,13 +6,14 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 17:31:23 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/01 09:25:45 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 16:50:14 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "t_dir_content.h"
 #include <stdlib.h>
 #include "print_ls.h"
+#include <unistd.h>
 
 void	sort_t_dir(t_dir_content *lst)
 {
@@ -53,6 +54,7 @@ void	sort_t_dir_elems(t_dir_content *lst)
 		if (ft_strcmp(lst->items[i]->d_name,
 					lst->items[i + 1]->d_name) > 0)
 		{
+			usleep(100000);
 			switch_items(&lst->items[i], &lst->items[i + 1]);
 			//switch_props(&lst->props[i], &lst->props[i + 1]);
 			i = -1;

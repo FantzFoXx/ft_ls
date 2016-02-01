@@ -6,13 +6,13 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:57:21 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/26 17:00:46 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 14:05:12 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_dir_content	*catch_error(int err_code, char *err_msg)
+int				catch_error(int err_code, char *err_msg)
 {
 	char *def_str;
 
@@ -21,7 +21,7 @@ t_dir_content	*catch_error(int err_code, char *err_msg)
 			ft_strsub(err_msg, 0, ft_strlen(err_msg) - 1));
 	perror(def_str);
 	free(def_str);
-	return (NULL);
+	return (0);
 }
 
 void			error_params(char *supported, char param)

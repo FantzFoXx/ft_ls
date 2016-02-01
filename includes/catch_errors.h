@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 13:02:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/21 16:23:56 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 14:04:44 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,5 @@
 # define CATCH_ERRORS_H
 
 void			error_params(char *supported, char param);
-t_dir_content	*catch_error(int err_code, char *err_msg);
+int				catch_error(int err_code, char *err_msg);
 #endif

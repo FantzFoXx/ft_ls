@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/01 11:38:27 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 16:48:27 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,18 @@
 #include "libft.h"
 #include <sys/stat.h>
 
+typedef struct	s_dir_item
+{
+	struct dirent	*item;
+	struct stat		prop;
+	struct s_dir_item *next;
+}				t_dir_item;
+
 typedef struct	s_dir_content
 {
 	DIR						*cur_dir;
-	struct dirent			**items;
+	s_dir_item				*items;
 	char					*dir_name;
-	struct stat				*props;
 	int						is_dir;
 	struct s_dir_content 	*next;
 }				t_dir_content;
@@ -37,9 +43,10 @@ void			switch_props(struct stat *s1, struct stat *s2);
 void			switch_dirs(t_dir_content *first, t_dir_content *last);
 void			t_dir_add_file(t_dir_content **first,
 		struct stat file, char *dir_name);
-
 void			t_dir_free_all(t_dir_content **cur);
 void			close_dirs(t_dir_content *first);
 
+t_dir_item	*t_item_new(struct dirent *item);
+void			t_item_push(t_dir_item **first, t_dir_item *new);
 
 #endif
