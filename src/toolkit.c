@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/28 16:24:00 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 09:10:38 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,3 @@ void	realloc_props(struct stat **props, size_t size)
 	*props = new;
 }*/
 
-char	*escape_non_ascii(char *path)
-{
-	
-}

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/28 16:24:00 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 11:59:06 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ static void				get_dir_items(t_dir_content *first)
 			first->items[i++] = items;
 			sort_t_dir_elems(first);
 		}
-		first = first->next;
-		i = 0;
 	}
-	i = 0;
 }
 
 static t_dir_content	*open_dir(char *path, char *params)
@@ -71,13 +68,20 @@ static t_dir_content	*open_dir(char *path, char *params)
 	{
 		t_dir_push(&dirs, t_dir_new(cur_dir, path));
 		get_dir_items(dirs);
-	closedir(cur_dir);
+		sort_t_dir_elems(dirs);
 	}
 	if (ft_strchr(params, 'R') && dirs->items)
+	{
 		while (dirs->items[++i])
-			if (dirs->items[i]->d_type == (DT_LNK) && (ft_strcmp(dirs->items[i]->d_name, ".")
+		{
+			if (dirs->items[i]->d_type == DT_DIR && (ft_strcmp(dirs->items[i]->d_name, ".")
 						!= 0 && ft_strcmp(dirs->items[i]->d_name, "..") != 0))
+			{
 				t_dir_push(&dirs, open_dir(ft_strjoin(ft_strjoin(path, dirs->items[i]->d_name), "/"), params));
+				
+			}
+		}
+	}
 
 	return (dirs);
 }
@@ -91,13 +95,17 @@ static t_dir_content	*open_dirs(char **paths, char *params)
 
 	i = -1;
 	size_tab = ft_tab_size(paths);
+	if (size_tab == 0)
+	{
+		ft_realloc_tab(&paths, 1);
+		paths[0] = ".";
+	}
 	dirs = NULL;
 	while (paths[++i])
 	{
 		check = open_dir(ft_strjoin(paths[i], "/"), params);
 		if (check)
 			t_dir_push(&dirs, check);
-		//sort_t_dir(dirs);
 	}
 	return (dirs);
 }
@@ -111,8 +119,17 @@ int						ft_ls(char *params, char **path)
 	dirs = NULL;
 	cur_dir = NULL;
 	i = 0;
+	if (params)
+		check_params(params);
+	/*else
+		params = ft_strnew(0);
+	if (!path)
+	{
+		path = ft_create_tab(1);
+		path[0] = ".";
+	}*/
 	dirs = open_dirs(path, params);
-	print_all_items(dirs);
+	print_items(dirs);
 	//print_all_items(dirs);
 
 	return (1);

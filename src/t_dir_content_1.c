@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/28 16:24:01 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 11:59:09 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,20 @@ t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name)
 		new->props = (struct stat *)malloc(sizeof(struct stat));
 		//new->props[0] = NULL;
 		new->dir_name = dir_name;
+		new->is_dir = 1;
 		new->next = NULL;
 	}
 	return (new);
+}
+
+void			close_dirs(t_dir_content *first)
+{
+	while (first)
+	{
+		closedir(first->cur_dir);
+		first->cur_dir = NULL;
+		first = first->next;
+	}
 }
 
 void			t_dir_push(t_dir_content **first, t_dir_content *new)
@@ -69,6 +80,7 @@ void			t_dir_add_file(t_dir_content **first,
 		new->cur_dir = NULL;
 		new->props = &file;
 		new->dir_name = dir_name;
+		new->is_dir = 0;
 		new->next = *first;
 	}
 	*first = new;

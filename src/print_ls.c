@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/27 18:35:45 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 11:39:45 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void				print_all_items(t_dir_content *first)
 	int i;
 
 	i = 0;
-	if (first && !first->cur_dir)
-		while (first && !first->cur_dir)
+	if (first && !first->is_dir)
+		while (first && !first->is_dir)
 		{
 			ft_putendl(first->dir_name);
 			first = first->next;
@@ -50,8 +50,8 @@ void				print_items(t_dir_content *first)
 	int i;
 
 	i = 0;
-	if (first && !first->cur_dir)
-		while (first && !first->cur_dir)
+	if (first && !first->is_dir)
+		while (first && !first->is_dir)
 		{
 			ft_putendl(first->dir_name);
 			first = first->next;

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:26:49 by udelorme          #+#    #+#             */
-/*   Updated: 2016/01/26 17:00:32 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/01 10:19:18 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,14 @@ void		get_args(int ac, char **av, char **ret_params, char ***ret_paths)
 
 	i = 0;
 	*ret_params = ft_strnew(0);
-	while (++i < ac && (av[i][0] == '-' && ft_strlen(av[i]) != 1)
-			&& (ft_strcmp(av[i], "--") != 0))
-		*ret_params = get_params(ret_params, av[i]);
 	*ret_paths = (char **)malloc(sizeof(char *) * 1);
 	*ret_paths[0] = NULL;
-	while (i < ac)
-		*ret_paths = get_entity(ret_paths, av[i++]);
+	if (ac > 1)
+	{
+		while (++i < ac && (av[i][0] == '-' && ft_strlen(av[i]) != 1)
+				&& (ft_strcmp(av[i], "--") != 0))
+			*ret_params = get_params(ret_params, av[i]);
+		while (i < ac)
+			*ret_paths = get_entity(ret_paths, av[i++]);
+	}
 }
