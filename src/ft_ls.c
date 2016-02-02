@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 15:33:46 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/02 17:41:13 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static void				get_dir_items(t_dir_content *first)
 			t_item_place(&(first->items), t_item_new(items));
 		ft_putstr(first->dir_name);
 		ft_putendl(":");
-		ft_putendl("");
 		print_ls(first->items);
+		ft_putendl("");
 	}
 }
 
@@ -46,7 +46,7 @@ static int			open_dir(char *path, char *params)
 	t_dir_item		*content;
 
 
-	ft_putendl(path);
+	//ft_putendl(path);
 	dirs = NULL;
 	cur_dir = opendir(path);
 	i = -1;
@@ -71,20 +71,18 @@ static int			open_dir(char *path, char *params)
 	if (ft_strchr(params, 'R') && dirs->items)
 	{
 		content = dirs->items;
-		while (content->item)
+		while (content && content->item)
 		{
-			if (content->item->d_type == DT_DIR && (ft_strcmp(content->item->d_name, ".")
-						!= 0 && ft_strcmp(content->item->d_name, "..") != 0))
+			if (content->item->d_type == DT_DIR && (ft_strcmp(content->item_name, ".")
+						!= 0 && ft_strcmp(content->item_name, "..") != 0))
 			{
-				ft_trace("__pass________", "recursive");
-				open_dir(ft_strjoin(ft_strjoin(path, content->item->d_name), "/"), params);
+				//ft_trace("__pass________", "recursive");
+				open_dir(ft_strjoin(ft_strjoin(path, content->item_name), "/"), params);
 			}
 			content = content->next;
 		}
 	}
-
 	closedir(cur_dir);
-	//t_dir_free_all(&dirs);
 	return (1);
 	}
 

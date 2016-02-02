@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 15:33:47 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/02 17:41:14 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int			t_item_place(t_dir_item **first, t_dir_item *new)
 	t_dir_item *index;
 	t_dir_item *bak;
 
-			ft_trace("__pass________", "place");
+		//	ft_trace("__pass________", "place");
 	bak = *first;
 	index = *first;
 	if (!index)
