@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 11:57:00 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/02 15:33:46 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,18 @@
 static void				get_dir_items(t_dir_content *first)
 {
 	struct dirent	*items;
-	int				i;
 
 	items = NULL;
-	i = 0;
 	while (first && !first->cur_dir)
 		first = first->next;
 	if (first)
 	{
 		while ((items = readdir(first->cur_dir)) && items != NULL)
-		{
-			//realloc_dirent(&first->items, 1);
-			//first->items[i] = items;
-			t_item_push(&(first->items), t_item_new(items));
-			i++;
-		}
-		//print_cur_dir(first);
+			t_item_place(&(first->items), t_item_new(items));
+		ft_putstr(first->dir_name);
+		ft_putendl(":");
+		ft_putendl("");
+		print_ls(first->items);
 	}
 }
 
@@ -49,6 +45,8 @@ static int			open_dir(char *path, char *params)
 	int 			i;
 	t_dir_item		*content;
 
+
+	ft_putendl(path);
 	dirs = NULL;
 	cur_dir = opendir(path);
 	i = -1;
@@ -78,9 +76,10 @@ static int			open_dir(char *path, char *params)
 			if (content->item->d_type == DT_DIR && (ft_strcmp(content->item->d_name, ".")
 						!= 0 && ft_strcmp(content->item->d_name, "..") != 0))
 			{
+				ft_trace("__pass________", "recursive");
 				open_dir(ft_strjoin(ft_strjoin(path, content->item->d_name), "/"), params);
-				content = content->next;
 			}
+			content = content->next;
 		}
 	}
 
@@ -105,6 +104,8 @@ static int			open_dir(char *path, char *params)
 		dirs = NULL;
 		while (paths[++i])
 		{
+			if (ft_strcmp(paths[i], "/") == 0)
+				open_dir(paths[i], params);
 			open_dir(ft_strjoin(paths[i], "/"), params);
 		}
 		return (dirs);

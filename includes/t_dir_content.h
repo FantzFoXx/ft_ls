@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 11:55:50 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/02 14:38:08 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 typedef struct	s_dir_item
 {
+	char			*item_name;
 	struct dirent	*item;
 	struct stat		prop;
 	struct s_dir_item *next;
@@ -40,6 +41,6 @@ void			t_dir_free_all(t_dir_content **cur);
 void			close_dirs(t_dir_content *first);
 
 t_dir_item	*t_item_new(struct dirent *item);
-void			t_item_push(t_dir_item **first, t_dir_item *new);
+int				t_item_place(t_dir_item **first, t_dir_item *new);
 
 #endif

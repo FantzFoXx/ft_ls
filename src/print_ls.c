@@ -6,24 +6,29 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 11:56:58 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/02 14:41:17 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "print_ls.h"
 
-void				print_ls()
+void				print_ls(t_dir_item *items)
 {
-	
+	while (items)
+	{
+		ft_putendl(items->item_name);
+		items = items->next;
+	}
+	ft_putendl("");
 }
 
+/*
 static void			print_name_dir(char *name)
 {
 	ft_putstr(name);
 	ft_putendl(": ");
 }
 
-/*
 void				print_all_items(t_dir_content *first)
 {
 	int i;
