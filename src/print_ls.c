@@ -6,11 +6,16 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/01 15:36:08 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/02 11:56:58 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "print_ls.h"
+
+void				print_ls()
+{
+	
+}
 
 static void			print_name_dir(char *name)
 {
@@ -18,6 +23,7 @@ static void			print_name_dir(char *name)
 	ft_putendl(": ");
 }
 
+/*
 void				print_all_items(t_dir_content *first)
 {
 	int i;
@@ -88,3 +94,5 @@ void				print_cur_dir(t_dir_content *first)
 		}
 	}
 }
+*/
+

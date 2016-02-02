@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/01 16:48:27 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/02 11:55:50 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct	s_dir_item
 typedef struct	s_dir_content
 {
 	DIR						*cur_dir;
-	s_dir_item				*items;
+	t_dir_item				*items;
 	char					*dir_name;
 	int						is_dir;
 	struct s_dir_content 	*next;
@@ -36,13 +36,6 @@ typedef struct	s_dir_content
 t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name);
 t_dir_content	*get_last_item(t_dir_content *first);
 void			t_dir_push(t_dir_content **first, t_dir_content *new);
-void			sort_t_dir(t_dir_content *lst);
-void			sort_t_dir_elems(t_dir_content *lst);
-void			switch_items(struct dirent **d1, struct dirent **d2);
-void			switch_props(struct stat *s1, struct stat *s2);
-void			switch_dirs(t_dir_content *first, t_dir_content *last);
-void			t_dir_add_file(t_dir_content **first,
-		struct stat file, char *dir_name);
 void			t_dir_free_all(t_dir_content **cur);
 void			close_dirs(t_dir_content *first);
 
