@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/03 11:13:39 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/03 11:38:11 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ static void				get_dir_items(t_dir_content *first)
 			t_item_place(&(first->items), t_item_new(items));
 			//t_item_push(&(first->items), t_item_new(items));
 		}
-		ft_putstr(first->dir_name);
-		ft_putendl(":");
 		print_ls(first->items);
 		ft_putendl("");
 	}
@@ -81,6 +79,9 @@ static int			open_dir(char *path, char *params)
 						!= 0 && ft_strcmp(content->item_name, "..") != 0))
 			{
 				//ft_trace("__pass________", "recursive");
+				ft_putstr(path);
+				ft_putstr(content->item_name);
+				ft_putendl(":");
 				open_dir(ft_strjoin(ft_strjoin(path, content->item_name), "/"), params);
 			}
 			content = content->next;
