@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 17:41:13 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/03 11:13:39 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ static void				get_dir_items(t_dir_content *first)
 	if (first)
 	{
 		while ((items = readdir(first->cur_dir)) && items != NULL)
+		{
 			t_item_place(&(first->items), t_item_new(items));
+			//t_item_push(&(first->items), t_item_new(items));
+		}
 		ft_putstr(first->dir_name);
 		ft_putendl(":");
 		print_ls(first->items);
@@ -60,6 +63,7 @@ static int			open_dir(char *path, char *params)
 		   }
 		   else
 		   {
+		   }
 		   */
 		return (catch_error(1, path));
 	}
@@ -73,7 +77,7 @@ static int			open_dir(char *path, char *params)
 		content = dirs->items;
 		while (content && content->item)
 		{
-			if (content->item->d_type == DT_DIR && (ft_strcmp(content->item_name, ".")
+			if (content->item_type == DT_DIR && (ft_strcmp(content->item_name, ".")
 						!= 0 && ft_strcmp(content->item_name, "..") != 0))
 			{
 				//ft_trace("__pass________", "recursive");
@@ -84,52 +88,52 @@ static int			open_dir(char *path, char *params)
 	}
 	closedir(cur_dir);
 	return (1);
-	}
+}
 
-	static t_dir_content	*open_dirs(char **paths, char *params)
+static t_dir_content	*open_dirs(char **paths, char *params)
+{
+	int				i;
+	size_t			size_tab;
+	t_dir_content	*dirs;
+
+	i = -1;
+	size_tab = ft_tab_size(paths);
+	if (size_tab == 0)
 	{
-		int				i;
-		size_t			size_tab;
-		t_dir_content	*dirs;
-
-		i = -1;
-		size_tab = ft_tab_size(paths);
-		if (size_tab == 0)
-		{
-			ft_realloc_tab(&paths, 1);
-			paths[0] = ".";
-		}
-		dirs = NULL;
-		while (paths[++i])
-		{
-			if (ft_strcmp(paths[i], "/") == 0)
-				open_dir(paths[i], params);
-			open_dir(ft_strjoin(paths[i], "/"), params);
-		}
-		return (dirs);
+		ft_realloc_tab(&paths, 1);
+		paths[0] = ".";
 	}
-
-	int						ft_ls(char *params, char **path)
+	dirs = NULL;
+	while (paths[++i])
 	{
-		t_dir_content	*dirs;
-		DIR				*cur_dir;
-		int				i;
-
-		dirs = NULL;
-		cur_dir = NULL;
-		i = 0;
-		if (params)
-			check_params(params);
-		/*else
-		  params = ft_strnew(0);
-		  if (!path)
-		  {
-		  path = ft_create_tab(1);
-		  path[0] = ".";
-		  }*/
-		dirs = open_dirs(path, params);
-		//print_items(dirs);
-		//print_all_items(dirs);
-
-		return (1);
+		if (ft_strcmp(paths[i], "/") == 0)
+			open_dir(paths[i], params);
+		open_dir(ft_strjoin(paths[i], "/"), params);
 	}
+	return (dirs);
+}
+
+int						ft_ls(char *params, char **path)
+{
+	t_dir_content	*dirs;
+	DIR				*cur_dir;
+	int				i;
+
+	dirs = NULL;
+	cur_dir = NULL;
+	i = 0;
+	if (params)
+		check_params(params);
+	/*else
+	  params = ft_strnew(0);
+	  if (!path)
+	  {
+	  path = ft_create_tab(1);
+	  path[0] = ".";
+	  }*/
+	dirs = open_dirs(path, params);
+	//print_items(dirs);
+	//print_all_items(dirs);
+
+	return (1);
+}

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 17:41:14 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/03 09:41:43 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_dir_item	*t_item_new(struct dirent *item)
 	if (new)
 	{
 		new->item_name = ft_strdup(item->d_name);
+		ft_memcpy((void *)&(new->item_type), (void *)&(item->d_type), sizeof(__uint8_t));
 		new->item = item;
 		//new->prop = prop;
 		new->next = NULL;
@@ -57,4 +58,19 @@ int			t_item_place(t_dir_item **first, t_dir_item *new)
 			index = index->next;
 		}
 	return (0);
+}
+
+void			t_item_push(t_dir_item **first, t_dir_item *new)
+{
+	t_dir_item *index;
+
+	index = *first;
+	if (!index)
+		*first = new;
+	else
+	{
+		while (index->next)
+			index = index->next;
+		index->next = new;
+	}
 }
