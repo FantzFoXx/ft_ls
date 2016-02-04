@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/04 16:54:21 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/04 17:29:34 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "print_ls.h"
 #include <stdlib.h>
 #include <fcntl.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <dirent.h>
@@ -82,6 +81,7 @@ static int				open_dir(char *path, char *params)
 		}
 	}
 	closedir(cur_dir);
+	t_dir_free_all(&dirs);
 	return (1);
 }
 

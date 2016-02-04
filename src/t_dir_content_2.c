@@ -6,13 +6,12 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/04 16:14:32 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/04 17:20:44 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "t_dir_content.h"
 #include <stdlib.h>
-#include "print_ls.h"
 
 t_dir_item	*t_item_new(struct dirent *item, char *path)
 {

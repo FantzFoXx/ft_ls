@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/04 16:54:20 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/04 17:43:07 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,36 @@ void			t_dir_free_all(t_dir_content **cur)
 	}
 	if ((*cur)->dir_name)
 		free((*cur)->dir_name);
-	free((*cur)->items);
+	if ((*cur)->items)
+		t_item_free_all(&((*cur)->items));
 }
+
+void			t_item_free_all(t_dir_item **cur)
+{
+	if ((*cur)->next)
+	{
+		t_item_free_all(&((*cur)->next));
+		free((*cur)->next);
+		(*cur)->next = NULL;
+	}
+	//free((*cur)->item);
+	free((*cur)->item_name);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
