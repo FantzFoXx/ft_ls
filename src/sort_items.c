@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 17:31:23 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 17:41:28 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/04 16:12:01 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,3 @@
 #include <stdlib.h>
 #include "print_ls.h"
 #include <unistd.h>
-
-

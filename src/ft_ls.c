@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/03 17:32:48 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/04 16:54:21 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <dirent.h>
 #include <t_dir_content.h>
 
-static void				get_dir_items(t_dir_content *first)
+static void				get_dir_items(t_dir_content *first, char *params)
 {
 	struct dirent	*items;
 
@@ -31,54 +31,48 @@ static void				get_dir_items(t_dir_content *first)
 	{
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 		{
-			t_item_place(&(first->items), t_item_new(items));
-			//t_item_push(&(first->items), t_item_new(items));
+			if (ft_strchr(params, 'r'))
+				t_item_rev_place(&(first->items),
+						t_item_new(items, first->dir_name));
+			else
+				t_item_place(&(first->items),
+						t_item_new(items, first->dir_name));
 		}
-		print_ls(first->items);
+		if (ft_strchr(params, 'a'))
+			print_ls(first->items);
+		else
+			print_all_ls(first->items);
 		ft_putendl("");
 	}
 }
 
-static int			open_dir(char *path, char *params)
+static int				open_dir(char *path, char *params)
 {
 	DIR				*cur_dir;
 	t_dir_content	*dirs;
-	int 			i;
+	int				i;
 	t_dir_item		*content;
 
-
-	//ft_putendl(path);
 	dirs = NULL;
 	cur_dir = opendir(path);
 	i = -1;
 	if (!cur_dir)
 	{
-		/*
-		   if (lstat(path, &file_props) == 0)
-		   {
-		   ft_trace("unique file", "pass");
-		   t_dir_add_file(&dirs, file_props, path);
-		   }
-		   else
-		   {
-		   }
-		   */
 		return (catch_error(1, path));
 	}
 	else
 	{
 		t_dir_push(&dirs, t_dir_new(cur_dir, path));
-		get_dir_items(dirs);
+		get_dir_items(dirs, params);
 	}
 	if (ft_strchr(params, 'R') && dirs->items)
 	{
 		content = dirs->items;
 		while (content && content->item)
 		{
-			if (content->item_type == DT_DIR && (ft_strcmp(content->item_name, ".")
+			if (S_ISDIR(content->prop.st_mode) && (ft_strcmp(content->item_name, ".")
 						!= 0 && ft_strcmp(content->item_name, "..") != 0))
 			{
-				//ft_trace("__pass________", "recursive");
 				ft_putstr(path);
 				ft_putstr(content->item_name);
 				ft_putendl(":");
@@ -109,7 +103,8 @@ static t_dir_content	*open_dirs(char **paths, char *params)
 	{
 		if (ft_strcmp(paths[i], "/") == 0)
 			open_dir(paths[i], params);
-		open_dir(ft_strjoin(paths[i], "/"), params);
+		else
+			open_dir(ft_strjoin(paths[i], "/"), params);
 	}
 	return (dirs);
 }
@@ -125,16 +120,6 @@ int						ft_ls(char *params, char **path)
 	i = 0;
 	if (params)
 		check_params(params);
-	/*else
-	  params = ft_strnew(0);
-	  if (!path)
-	  {
-	  path = ft_create_tab(1);
-	  path[0] = ".";
-	  }*/
 	dirs = open_dirs(path, params);
-	//print_items(dirs);
-	//print_all_items(dirs);
-
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 11:52:15 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/04 16:54:20 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ t_dir_content	*get_last_item(t_dir_content *first)
 		first = first->next;
 	return (first);
 }
+
 /*
 void			t_dir_add_file(t_dir_content **first, char *dir_name)
 {
@@ -80,6 +81,7 @@ void			t_dir_add_file(t_dir_content **first, char *dir_name)
 	*first = new;
 }
 */
+
 void			t_dir_free_all(t_dir_content **cur)
 {
 	if ((*cur)->next)

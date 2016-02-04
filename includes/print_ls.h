@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:18:01 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/02 12:54:28 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/04 16:08:46 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,3 +18,4 @@ void			print_cur_dir(t_dir_content *first);
 */
 
 void				print_ls(t_dir_item *items);
+void				print_all_ls(t_dir_item *items);
