@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/04 17:20:44 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/05 11:12:47 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_dir_item	*t_item_new(struct dirent *item, char *path)
 	}
 	return (new);
 }
+
 /*
 int			t_item_place(t_dir_item **first, t_dir_item *new)
 {
@@ -65,7 +66,8 @@ int			t_item_place(t_dir_item **first, t_dir_item *new)
 	return (0);
 }
 */
-t_dir_item			*t_item_place(t_dir_item **first, t_dir_item *new)
+
+t_dir_item	*t_item_place(t_dir_item **first, t_dir_item *new)
 {
 	t_dir_item *index;
 
@@ -88,7 +90,7 @@ t_dir_item			*t_item_place(t_dir_item **first, t_dir_item *new)
 	return (index);
 }
 
-t_dir_item			*t_item_rev_place(t_dir_item **first, t_dir_item *new)
+t_dir_item	*t_item_rev_place(t_dir_item **first, t_dir_item *new)
 {
 	t_dir_item *index;
 

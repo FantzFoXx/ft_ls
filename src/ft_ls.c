@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/04 17:29:34 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/05 11:44:48 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ static void				get_dir_items(t_dir_content *first, char *params)
 				t_item_place(&(first->items),
 						t_item_new(items, first->dir_name));
 		}
-		if (ft_strchr(params, 'a'))
-			print_ls(first->items);
-		else
-			print_all_ls(first->items);
+		print_ls(first->items, params);
 		ft_putendl("");
 	}
 }
@@ -69,17 +66,18 @@ static int				open_dir(char *path, char *params)
 		content = dirs->items;
 		while (content && content->item)
 		{
-			if (S_ISDIR(content->prop.st_mode) && (ft_strcmp(content->item_name, ".")
-						!= 0 && ft_strcmp(content->item_name, "..") != 0))
+			if (S_ISDIR(content->prop.st_mode)
+					&& (ft_strcmp(content->item_name, ".") != 0
+						&& ft_strcmp(content->item_name, "..") != 0)
+					&& ((content->item_name[0] == '.'
+							&& ft_strchr(params, 'a'))
+						|| content->item_name[0] != '.'))
 			{
-				if ((ft_strchr(params, 'a') && content->item_name[0] != '.')
-						|| !ft_strchr(params, 'a'))
-				{
-					ft_putstr(path);
-					ft_putstr(content->item_name);
-					ft_putendl(":");
-					open_dir(ft_strjoin(ft_strjoin(path, content->item_name), "/"), params);
-				}
+				ft_putstr(path);
+				ft_putstr(content->item_name);
+				ft_putendl(":");
+				open_dir(ft_strjoin(ft_strjoin(path,
+					content->item_name), "/"), params);
 			}
 			content = content->next;
 		}
