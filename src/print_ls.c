@@ -6,11 +6,12 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/05 11:44:50 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/05 13:57:29 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "print_ls.h"
+#include <time.h>
 
 static void		print_basic_item(char *s)
 {
@@ -20,6 +21,25 @@ static void		print_basic_item(char *s)
 static void		print_list_item(t_dir_item *item)
 {
 	(void)item;
+
+	ft_putchar((S_ISDIR(item->prop.st_mode) ? 'd' : '-'));
+	ft_putchar(((item->prop.st_mode & S_IRUSR) ? 'r' : '-'));
+	ft_putchar(((item->prop.st_mode & S_IWUSR) ? 'w' : '-'));
+	ft_putchar(((item->prop.st_mode & S_IXUSR) ? 'x' : '-'));
+	ft_putchar(((item->prop.st_mode & S_IRGRP) ? 'r' : '-'));
+	ft_putchar(((item->prop.st_mode & S_IWGRP) ? 'w' : '-'));
+	ft_putchar(((item->prop.st_mode & S_IXGRP) ? 'x' : '-'));
+	ft_putchar(((item->prop.st_mode & S_IROTH) ? 'r' : '-'));
+	ft_putchar(((item->prop.st_mode & S_IWOTH) ? 'w' : '-'));
+	ft_putchar(((item->prop.st_mode & S_IXOTH) ? 'x' : '-'));
+
+	ft_putchar(' ');
+	ft_putstr(item->item_name);
+	ft_putchar(' ');
+	ft_putnbr(item->prop.st_size);
+	ft_putchar(' ');
+	ft_putnbr((item->prop.st_atimespec.tv_sec));
+	ft_putendl("");
 }
 
 static void		print_all_items(t_dir_item *items, char *params)
