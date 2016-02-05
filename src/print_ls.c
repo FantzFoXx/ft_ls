@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/05 13:57:29 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/05 14:20:30 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ static void		print_list_item(t_dir_item *item)
 	ft_putchar(((item->prop.st_mode & S_IXOTH) ? 'x' : '-'));
 
 	ft_putchar(' ');
-	ft_putstr(item->item_name);
-	ft_putchar(' ');
 	ft_putnbr(item->prop.st_size);
 	ft_putchar(' ');
 	ft_putnbr((item->prop.st_atimespec.tv_sec));
+	ft_putchar(' ');
+	ft_putstr(item->item_name);
 	ft_putendl("");
 }
 
