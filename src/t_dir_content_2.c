@@ -25,6 +25,7 @@ t_dir_item	*t_item_new(struct dirent *item, char *path)
 		ft_memcpy((void *)&(new->item_type),
 				(void *)&(item->d_type), sizeof(__uint8_t));
 		new->item = item;
+		new->path = path;
 		lstat(ft_strjoin(path, new->item_name), &new->prop);
 		new->next = NULL;
 	}

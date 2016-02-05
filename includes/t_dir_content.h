@@ -19,6 +19,7 @@
 
 typedef struct	s_dir_item
 {
+	char			*path;
 	char			*item_name;
 	__uint8_t		item_type;
 	struct dirent	*item;

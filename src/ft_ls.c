@@ -104,7 +104,7 @@ static t_dir_content	*open_dirs(char **paths, char *params)
 	while (paths[++i])
 	{
 		if (ft_strcmp(paths[i], "/") == 0)
-			open_dir(paths[i], params);
+			open_dir(ft_strdup(paths[i]), params);
 		else
 			open_dir(ft_strjoin(paths[i], "/"), params);
 	}
