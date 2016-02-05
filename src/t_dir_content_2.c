@@ -12,6 +12,7 @@
 
 #include "t_dir_content.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 t_dir_item	*t_item_new(struct dirent *item, char *path)
 {
@@ -29,7 +30,7 @@ t_dir_item	*t_item_new(struct dirent *item, char *path)
 	}
 	return (new);
 }
-
+/*
 int			t_item_place(t_dir_item **first, t_dir_item *new)
 {
 	t_dir_item *index;
@@ -63,39 +64,51 @@ int			t_item_place(t_dir_item **first, t_dir_item *new)
 		}
 	return (0);
 }
-
-int			t_item_rev_place(t_dir_item **first, t_dir_item *new)
+*/
+t_dir_item			*t_item_place(t_dir_item **first, t_dir_item *new)
 {
 	t_dir_item *index;
-	t_dir_item *bak;
 
-	bak = *first;
-	index = *first;
+	index = NULL;
+	if (*first)
+		index = *first;
 	if (!index)
-		*first = new;
-	else if (ft_strcmp(new->item_name, (*first)->item_name) > 0)
 	{
-		new->next = *first;
 		*first = new;
+		return (*first);
+	}
+	else if (ft_strcmp(new->item_name, index->item_name) < 0)
+	{
+		new->next = index;
+		*first = new;
+		return (new);
 	}
 	else
-		while (index)
-		{
-			if (ft_strcmp(new->item_name, index->item_name) > 0)
-			{
-				new->next = bak->next;
-				bak->next = new;
-				return (0);
-			}
-			if (!index->next)
-			{
-				index->next = new;
-				break ;
-			}
-			bak = index;
-			index = index->next;
-		}
-	return (0);
+		index->next = t_item_place(&index->next, new);
+	return (index);
+}
+
+t_dir_item			*t_item_rev_place(t_dir_item **first, t_dir_item *new)
+{
+	t_dir_item *index;
+
+	index = NULL;
+	if (*first)
+		index = *first;
+	if (!index)
+	{
+		*first = new;
+		return (*first);
+	}
+	else if (ft_strcmp(new->item_name, index->item_name) > 0)
+	{
+		new->next = index;
+		*first = new;
+		return (new);
+	}
+	else
+		index->next = t_item_rev_place(&index->next, new);
+	return (index);
 }
 
 void		t_item_push(t_dir_item **first, t_dir_item *new)

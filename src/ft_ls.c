@@ -72,10 +72,14 @@ static int				open_dir(char *path, char *params)
 			if (S_ISDIR(content->prop.st_mode) && (ft_strcmp(content->item_name, ".")
 						!= 0 && ft_strcmp(content->item_name, "..") != 0))
 			{
-				ft_putstr(path);
-				ft_putstr(content->item_name);
-				ft_putendl(":");
-				open_dir(ft_strjoin(ft_strjoin(path, content->item_name), "/"), params);
+				if ((ft_strchr(params, 'a') && content->item_name[0] != '.')
+						|| !ft_strchr(params, 'a'))
+				{
+					ft_putstr(path);
+					ft_putstr(content->item_name);
+					ft_putendl(":");
+					open_dir(ft_strjoin(ft_strjoin(path, content->item_name), "/"), params);
+				}
 			}
 			content = content->next;
 		}

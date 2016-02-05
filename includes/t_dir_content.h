@@ -42,8 +42,8 @@ void			t_dir_free_all(t_dir_content **cur);
 void			close_dirs(t_dir_content *first);
 
 t_dir_item		*t_item_new(struct dirent *item, char *path);
-int				t_item_place(t_dir_item **first, t_dir_item *new);
-int				t_item_rev_place(t_dir_item **first, t_dir_item *new);
+t_dir_item		*t_item_place(t_dir_item **first, t_dir_item *new);
+t_dir_item		*t_item_rev_place(t_dir_item **first, t_dir_item *new);
 void			t_item_push(t_dir_item **first, t_dir_item *new);
 void			t_item_free_all(t_dir_item **cur);
 
