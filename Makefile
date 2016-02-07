@@ -17,7 +17,7 @@ SRC = main.c ft_ls.c					\
 	  get_params.c toolkit.c			\
 	  catch_errors.c t_dir_content_1.c	\
 	  t_dir_content_2.c print_ls.c		\
-	  sort_items.c
+	  sort_items.c option_l.c
 
 OBJ = $(SRC:.c=.o)
 
