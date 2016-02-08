@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/08 12:53:05 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/08 18:29:22 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ void			print_ls(t_dir_item *items, char *params)
 
 	a = 0;
 	if (ft_strchr(params, 'l'))
-	{
 		print_ls_l(items, params);
-	}
 	else
 	{
 		if (ft_strchr(params, 'a'))

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/08 17:08:44 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/08 18:29:21 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static t_foo		*get_date(t_dir_item *item)
 	return (date);
 }
 
-static t_foo		*print_list_item(t_dir_item *item)
+static t_foo		*print_list_item(t_dir_item *item, int *total)
 {
 	t_foo *line;
 	int		i;
@@ -113,18 +113,21 @@ static t_foo		*print_list_item(t_dir_item *item)
 	t_foo_push(&line, t_foo_new(ft_itoa(count_elems(item))));
 	t_foo_push(&line, t_foo_new(getpwuid(item->prop.st_uid)->pw_name));
 	t_foo_push(&line, t_foo_new(getgrgid(item->prop.st_gid)->gr_name));
+	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_size)));
 	t_foo_push(&line, get_date(item));
 	t_foo_push(&line, t_foo_new(item->item_name));
-	i = -1;
+	*(total) += (int)(item->prop.st_blocks);
 	return (line);
 }
 
 void			print_ls_l(t_dir_item *items, char *params)
 {
+	int total;
 	int	a;
 	t_list *container;
 	t_foo *index;
 	container = NULL;
+	total = 0;
 	a = 0;
 	if (ft_strchr(params, 'a'))
 		a = 1;
@@ -132,11 +135,13 @@ void			print_ls_l(t_dir_item *items, char *params)
 	{
 		if ((items->item_name[0] == '.' && a)
 				|| items->item_name[0] != '.')
-			ft_lstpush(&container, ft_lstnew(print_list_item(items), sizeof(t_foo)));
+			ft_lstpush(&container, ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
 		items = items->next;
 	}
 	index = NULL;
 	ft_putstr("total ");
+	ft_putnbr((total % 512));
+	ft_putchar('\n');
 
 	while (container)
 	{
