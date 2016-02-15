@@ -6,25 +6,25 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/05 11:44:49 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/15 16:49:44 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef T_DIR_CONTENT_H
 # define T_DIR_CONTENT_H
 
-#include "dirent.h"
-#include "libft.h"
-#include <sys/stat.h>
+# include "dirent.h"
+# include "libft.h"
+# include <sys/stat.h>
 
 typedef struct	s_dir_item
 {
-	char			*path;
-	char			*item_name;
-	__uint8_t		item_type;
-	struct dirent	*item;
-	struct stat		prop;
-	struct s_dir_item *next;
+	char				*path;
+	char				*item_name;
+	__uint8_t			item_type;
+	struct dirent		*item;
+	struct stat			prop;
+	struct s_dir_item	*next;
 }				t_dir_item;
 
 typedef struct	s_dir_content
@@ -33,7 +33,7 @@ typedef struct	s_dir_content
 	t_dir_item				*items;
 	char					*dir_name;
 	int						is_dir;
-	struct s_dir_content 	*next;
+	struct s_dir_content	*next;
 }				t_dir_content;
 
 t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name);

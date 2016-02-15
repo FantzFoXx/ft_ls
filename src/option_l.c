@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/15 11:49:28 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/15 16:44:05 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static	int		count_elems(t_dir_item *item)
 		while (readdir(cur_dir))
 			i++;
 	else
-		return(1);
+		return (1);
 	if (cur_dir)
 		closedir(cur_dir);
 	return (i);
@@ -103,7 +103,7 @@ static	int		count_elems(t_dir_item *item)
    ft_putstr(date[2]);
    */
 
-static t_foo		*get_date(t_dir_item *item)
+static t_foo	*get_date(t_dir_item *item)
 {
 	char	**tmp;
 	t_foo	*date;
@@ -117,10 +117,11 @@ static t_foo		*get_date(t_dir_item *item)
 	return (date);
 }
 
-static t_foo		*print_list_item(t_dir_item *item, int *total)
+static t_foo	*print_list_item(t_dir_item *item, int *total)
 {
-	t_foo *line;
+	t_foo	*line;
 	int		i;
+
 	i = 0;
 	line = NULL;
 	t_foo_push(&line, get_rights(item->prop.st_mode));
@@ -134,30 +135,27 @@ static t_foo		*print_list_item(t_dir_item *item, int *total)
 	return (line);
 }
 
-static size_t	*max_size_elem(t_list *container)
+static int		*max_size_elem(t_list *container)
 {
-	size_t	*spaces;
+	int		*spaces;
 	t_foo	*index;
 	int		i;
-	size_t	ref;
 	size_t	cur;
 
-	spaces = (size_t *)malloc(sizeof(size_t) * 8);
-	ft_bzero(spaces, 8);
+	spaces = (int *)malloc(sizeof(int) * 10);
+	ft_bzero(spaces, sizeof(int) * 10);
 	i = 0;
-	ref = 0;
 	cur = 0;
 	index = NULL;
 	while (container)
 	{
-		i = 0;
 		index = container->content;
+		i = 0;
 		while (index)
 		{
 			cur = ft_strlen(index->str);
-			if (cur > ref)
-				ref = cur;
-			spaces[i] = ref;
+			if (spaces[i] <= (int)cur)
+				spaces[i] = cur;
 			index = index->next;
 			i++;
 		}
@@ -168,10 +166,12 @@ static size_t	*max_size_elem(t_list *container)
 
 void			print_ls_l(t_dir_item *items, char *params)
 {
-	int total;
-	int	a;
-	t_list *container;
-	t_foo *index;
+	int		*spaces;
+	int		total;
+	int		a;
+	t_list	*container;
+	t_foo	*index;
+
 	container = NULL;
 	total = 0;
 	a = 0;
@@ -181,22 +181,30 @@ void			print_ls_l(t_dir_item *items, char *params)
 	{
 		if ((items->item_name[0] == '.' && a)
 				|| items->item_name[0] != '.')
-			ft_lstpush(&container, ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
+			ft_lstpush(&container,
+					ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
 		items = items->next;
 	}
 	ft_putstr("total ");
 	ft_putnbr((total % 512));
 	ft_putchar('\n');
+	spaces = max_size_elem(container);
 	index = NULL;
 	while (container)
 	{
+		a = 0;
 		index = container->content;
 		while (index)
 		{
+			if (index->next && a != 0 && a != 2 && a != 3 && a != 5 && a != 7)
+				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str)));
 			ft_putstr(index->str);
+			if (index->next && a != 0 && a != 1 && a != 4 && a != 6)
+				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str)));
 			if (index->next)
 				ft_putchar(' ');
 			index = index->next;
+			a++;
 		}
 		container = container->next;
 		ft_putchar('\n');

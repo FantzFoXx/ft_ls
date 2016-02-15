@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/08 12:57:16 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/15 16:44:43 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,6 @@ t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name)
 	return (new);
 }
 
-void			close_dirs(t_dir_content *first)
-{
-	while (first)
-	{
-		closedir(first->cur_dir);
-		first->cur_dir = NULL;
-		first = first->next;
-	}
-}
-
 void			t_dir_push(t_dir_content **first, t_dir_content *new)
 {
 	t_dir_content *index;
@@ -63,24 +53,6 @@ t_dir_content	*get_last_item(t_dir_content *first)
 		first = first->next;
 	return (first);
 }
-
-/*
-void			t_dir_add_file(t_dir_content **first, char *dir_name)
-{
-	t_dir_content *new;
-
-	new = (t_dir_content *)malloc(sizeof(t_dir_content));
-	if (new)
-	{
-		new->items = NULL;
-		new->cur_dir = NULL;
-		new->dir_name = dir_name;
-		new->is_dir = 0;
-		new->next = *first;
-	}
-	*first = new;
-}
-*/
 
 void			t_dir_free_all(t_dir_content **cur)
 {
@@ -104,6 +76,6 @@ void			t_item_free_all(t_dir_item **cur)
 		free((*cur)->next);
 		(*cur)->next = NULL;
 	}
-	//free((*cur)->item);
+	/* free((*cur)->item); */
 	free((*cur)->item_name);
 }

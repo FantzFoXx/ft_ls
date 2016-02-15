@@ -6,12 +6,12 @@
 #    By: udelorme <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/14 11:43:18 by udelorme          #+#    #+#              #
-#    Updated: 2016/02/08 13:44:07 by udelorme         ###   ########.fr        #
+#    Updated: 2016/02/15 14:43:13 by udelorme         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -O3
 NAME = ft_ls
 SRC = main.c ft_ls.c					\
 	  get_params.c toolkit.c			\

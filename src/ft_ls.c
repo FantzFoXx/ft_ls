@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/08 12:56:45 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/15 16:29:21 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void				get_dir_items(t_dir_content *first, char *params)
 						t_item_new(items, first->dir_name));
 		}
 		print_ls(first->items, params);
-		ft_putendl("");
 	}
 }
 
@@ -73,11 +72,12 @@ static int				open_dir(char *path, char *params)
 							&& ft_strchr(params, 'a'))
 						|| content->item_name[0] != '.'))
 			{
+				ft_putendl("");
 				ft_putstr(path);
 				ft_putstr(content->item_name);
 				ft_putendl(":");
 				open_dir(ft_strjoin(ft_strjoin(path,
-					content->item_name), "/"), params);
+								content->item_name), "/"), params);
 			}
 			content = content->next;
 		}
@@ -92,21 +92,31 @@ static t_dir_content	*open_dirs(char **paths, char *params)
 	int				i;
 	size_t			size_tab;
 	t_dir_content	*dirs;
+	char			*cur_path;
 
 	i = -1;
 	size_tab = ft_tab_size(paths);
+	cur_path = NULL;
+	dirs = NULL;
 	if (size_tab == 0)
 	{
 		ft_realloc_tab(&paths, 1);
 		paths[0] = ".";
 	}
-	dirs = NULL;
 	while (paths[++i])
 	{
+		if (size_tab > 1)
+		{
+			ft_putstr(paths[i]);
+			ft_putendl(":");
+		}
 		if (ft_strcmp(paths[i], "/") == 0)
-			open_dir(ft_strdup(paths[i]), params);
+			cur_path = ft_strdup(paths[i]);
 		else
-			open_dir(ft_strjoin(paths[i], "/"), params);
+			cur_path = ft_strjoin(paths[i], "/");
+		open_dir(cur_path, params);
+		if (paths[i + 1] != 0)
+			ft_putendl("");
 	}
 	return (dirs);
 }

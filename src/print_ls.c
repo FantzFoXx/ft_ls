@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/15 10:43:14 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/15 16:38:25 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ void			print_ls(t_dir_item *items, char *params)
 		{
 			if ((items->item_name[0] == '.' && a)
 					|| items->item_name[0] != '.')
-					print_basic_item(items->item_name);
+				print_basic_item(items->item_name);
 			items = items->next;
 		}
 	}
 }
-
-

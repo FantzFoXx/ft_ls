@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:31 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/08 17:08:45 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/15 16:47:48 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ typedef struct	s_foo
 	struct s_foo	*next;
 }				t_foo;
 
-
-void	print_ls_l(t_dir_item *items, char *params);
+void			print_ls_l(t_dir_item *items, char *params);
 
 #endif
