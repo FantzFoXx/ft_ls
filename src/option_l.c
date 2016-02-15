@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/09 10:34:31 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/15 11:49:28 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static t_foo	*t_foo_new(char *str)
 	new = (t_foo *)malloc(sizeof(t_foo));
 	if (new)
 	{
-			new->str = ft_strdup(str);
-			new->next = NULL;
+		new->str = ft_strdup(str);
+		new->next = NULL;
 	}
 	return (new);
 }
@@ -48,7 +48,21 @@ static t_foo	*get_rights(mode_t mode)
 {
 	char *rights;
 
-	rights = ft_strdup((S_ISDIR(mode) ? "d" : "-"));
+	rights = NULL;
+	if (S_ISDIR(mode))
+		rights = ft_strdup("d");
+	else if (S_ISCHR(mode))
+		rights = ft_strdup("c");
+	else if (S_ISFIFO(mode))
+		rights = ft_strdup("P");
+	else if (S_ISLNK(mode))
+		rights = ft_strdup("l");
+	else if (S_ISSOCK(mode))
+		rights = ft_strdup("s");
+	else if (S_ISBLK(mode))
+		rights = ft_strdup("b");
+	else if (S_ISREG(mode))
+		rights = ft_strdup("-");
 	rights = ft_strjoin(rights, ((mode & S_IRUSR) ? "r" : "-"));
 	rights = ft_strjoin(rights, ((mode & S_IWUSR) ? "w" : "-"));
 	rights = ft_strjoin(rights, ((mode & S_IXUSR) ? "x" : "-"));
@@ -79,15 +93,15 @@ static	int		count_elems(t_dir_item *item)
 }
 
 /*
-	ft_putstr(rights);
-	i = count_elems(item);
-	ft_putnbr(i);
-	ft_putstr(getpwuid(item->prop.st_uid)->pw_name);
-	ft_putstr(getgrgid(item->prop.st_gid)->gr_name);
-	ft_putnbr(item->prop.st_size);
-	ft_putstr(date[1]);
-	ft_putstr(date[2]);
-*/
+   ft_putstr(rights);
+   i = count_elems(item);
+   ft_putnbr(i);
+   ft_putstr(getpwuid(item->prop.st_uid)->pw_name);
+   ft_putstr(getgrgid(item->prop.st_gid)->gr_name);
+   ft_putnbr(item->prop.st_size);
+   ft_putstr(date[1]);
+   ft_putstr(date[2]);
+   */
 
 static t_foo		*get_date(t_dir_item *item)
 {
@@ -120,6 +134,38 @@ static t_foo		*print_list_item(t_dir_item *item, int *total)
 	return (line);
 }
 
+static size_t	*max_size_elem(t_list *container)
+{
+	size_t	*spaces;
+	t_foo	*index;
+	int		i;
+	size_t	ref;
+	size_t	cur;
+
+	spaces = (size_t *)malloc(sizeof(size_t) * 8);
+	ft_bzero(spaces, 8);
+	i = 0;
+	ref = 0;
+	cur = 0;
+	index = NULL;
+	while (container)
+	{
+		i = 0;
+		index = container->content;
+		while (index)
+		{
+			cur = ft_strlen(index->str);
+			if (cur > ref)
+				ref = cur;
+			spaces[i] = ref;
+			index = index->next;
+			i++;
+		}
+		container = container->next;
+	}
+	return (spaces);
+}
+
 void			print_ls_l(t_dir_item *items, char *params)
 {
 	int total;
@@ -138,17 +184,16 @@ void			print_ls_l(t_dir_item *items, char *params)
 			ft_lstpush(&container, ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
 		items = items->next;
 	}
-	index = NULL;
 	ft_putstr("total ");
 	ft_putnbr((total % 512));
 	ft_putchar('\n');
-
+	index = NULL;
 	while (container)
 	{
 		index = container->content;
 		while (index)
 		{
-			ft_putstr((char *)index->str);
+			ft_putstr(index->str);
 			if (index->next)
 				ft_putchar(' ');
 			index = index->next;
