@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/15 16:44:05 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/15 17:53:42 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,13 +196,13 @@ void			print_ls_l(t_dir_item *items, char *params)
 		index = container->content;
 		while (index)
 		{
-			if (index->next && a != 0 && a != 2 && a != 3 && a != 5 && a != 7)
-				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str)));
-			ft_putstr(index->str);
-			if (index->next && a != 0 && a != 1 && a != 4 && a != 6)
-				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str)));
-			if (index->next)
+			if (a > 0 && a != 4 && a != 6 && a != 8 && a != 6)
 				ft_putchar(' ');
+			if (index->next && a != 0 && a != 2 && a != 3 && a != 5 && a != 7)
+				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
+			ft_putstr(index->str);
+			if (index->next && a != 0 && a != 1 && a != 4 && a != 5 && a != 6)
+				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
 			index = index->next;
 			a++;
 		}

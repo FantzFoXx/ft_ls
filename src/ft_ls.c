@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/15 16:29:21 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/15 17:53:41 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void				get_dir_items(t_dir_content *first, char *params)
 	{
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 		{
+			ft_trace(NULL, "pass");
 			if (ft_strchr(params, 'r'))
 				t_item_rev_place(&(first->items),
 						t_item_new(items, first->dir_name));
@@ -37,6 +38,8 @@ static void				get_dir_items(t_dir_content *first, char *params)
 				t_item_place(&(first->items),
 						t_item_new(items, first->dir_name));
 		}
+			if (items == NULL)
+				perror("ft_ls");
 		print_ls(first->items, params);
 	}
 }
