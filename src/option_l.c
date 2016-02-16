@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/15 17:53:42 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/16 13:22:23 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,13 @@ static int		*max_size_elem(t_list *container)
 	return (spaces);
 }
 
+static void		print_total(int total)
+{
+	ft_putstr("total ");
+	ft_putnbr((total % 512));
+	ft_putchar('\n');
+}
+
 void			print_ls_l(t_dir_item *items, char *params)
 {
 	int		*spaces;
@@ -172,22 +179,22 @@ void			print_ls_l(t_dir_item *items, char *params)
 	t_list	*container;
 	t_foo	*index;
 
+	(void)params;
 	container = NULL;
 	total = 0;
 	a = 0;
-	if (ft_strchr(params, 'a'))
-		a = 1;
+	//if (ft_strchr(params, 'a'))
+	//	a = 1;
 	while (items)
 	{
-		if ((items->item_name[0] == '.' && a)
-				|| items->item_name[0] != '.')
-			ft_lstpush(&container,
-					ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
+		//	if ((items->item_name[0] == '.' && a)
+		//			|| items->item_name[0] != '.')
+		ft_lstpush(&container,
+				ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
 		items = items->next;
 	}
-	ft_putstr("total ");
-	ft_putnbr((total % 512));
-	ft_putchar('\n');
+	if (total)
+		print_total(total);
 	spaces = max_size_elem(container);
 	index = NULL;
 	while (container)

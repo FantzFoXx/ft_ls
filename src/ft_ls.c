@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/15 17:53:41 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/16 13:46:26 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,40 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <t_dir_content.h>
+#include <errno.h>
 
 static void				get_dir_items(t_dir_content *first, char *params)
 {
 	struct dirent	*items;
+	int 			a;
+	int 			r;
 
+	a = 0;
+	r = 0;
 	items = NULL;
 	while (first && !first->cur_dir)
 		first = first->next;
 	if (first)
 	{
+		if (ft_strchr(params, 'a'))
+			a = 1;
+		if (ft_strchr(params, 'r'))
+			r = 1;
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 		{
-			ft_trace(NULL, "pass");
-			if (ft_strchr(params, 'r'))
-				t_item_rev_place(&(first->items),
-						t_item_new(items, first->dir_name));
-			else
-				t_item_place(&(first->items),
-						t_item_new(items, first->dir_name));
+			if ((items->d_name[0] == '.' && a)
+					|| items->d_name[0] != '.')
+			{
+				if (r)
+					t_item_rev_place(&(first->items),
+							t_item_new(items, first->dir_name));
+				else if (!r)
+					t_item_place(&(first->items),
+							t_item_new(items, first->dir_name));
+				if (errno)
+					catch_error(0, first->dir_name);
+			}
 		}
-			if (items == NULL)
-				perror("ft_ls");
 		print_ls(first->items, params);
 	}
 }
@@ -60,6 +72,7 @@ static int				open_dir(char *path, char *params)
 	}
 	else
 	{
+		errno = 0;
 		t_dir_push(&dirs, t_dir_new(cur_dir, path));
 		get_dir_items(dirs, params);
 	}
@@ -82,8 +95,10 @@ static int				open_dir(char *path, char *params)
 				open_dir(ft_strjoin(ft_strjoin(path,
 								content->item_name), "/"), params);
 			}
+
 			content = content->next;
 		}
+		//ft_trace(NULL, "pass");
 	}
 	closedir(cur_dir);
 	t_dir_free_all(&dirs);
