@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/04 16:15:06 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/18 17:02:04 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,34 @@ void	realloc_dirent(struct dirent ***props, size_t size)
 		new[i] = (*props)[i];
 	free(*props);
 	*props = new;
+}
+
+void	print_dir_name(char *dir_name)
+{
+	ft_putstr(dir_name);
+	ft_putendl(":");
+}
+
+void	realloc_dir(DIR ***dirs, size_t size)
+{
+	DIR				**new;
+	int				size_tab;
+	int				i;
+
+	new = NULL;
+	size_tab = 0;
+	if (*dirs)
+		while ((*dirs)[size_tab] != 0)
+		{
+			size_tab++;
+		}
+	new = (DIR **)malloc(sizeof(DIR *) *
+			(size_tab + size + 1));
+	new[size_tab + size] = NULL;
+	i = -1;
+	if (dirs)
+		while (++i < size_tab)
+			new[i] = (*dirs)[i];
+	free(*dirs);
+	*dirs = new;
 }

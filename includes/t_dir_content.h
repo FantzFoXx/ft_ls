@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/15 17:53:43 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/18 11:13:18 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct	s_dir_content
 	t_dir_item				*items;
 	char					*dir_name;
 	int						is_dir;
+	struct stat				dir_prop;
 	struct s_dir_content	*next;
 }				t_dir_content;
 
