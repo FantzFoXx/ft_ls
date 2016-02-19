@@ -47,6 +47,32 @@ void			t_dir_push(t_dir_content **first, t_dir_content *new)
 	}
 }
 
+t_dir_content	*t_dir_place(t_dir_content **first, t_dir_content *new)
+{
+	t_dir_content *index;
+
+	index = NULL;
+	if (new)
+	{
+		if (*first)
+			index = *first;
+		if (!index)
+		{
+			*first = new;
+			return (*first);
+		}
+		else if (ft_strcmp(new->dir_name, index->dir_name) < 0)
+		{
+			new->next = index;
+			*first = new;
+			return (new);
+		}
+		else
+			index->next = t_dir_place(&index->next, new);
+	}
+	return (index);
+}
+
 t_dir_content	*get_last_item(t_dir_content *first)
 {
 	while (first->next)

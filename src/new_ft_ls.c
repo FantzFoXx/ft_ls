@@ -122,28 +122,21 @@ static void				get_dir_items(t_dir_content *first, char *params)
 		if (ft_strchr(params, 'r'))
 			r = 1;
 		while ((items = readdir(first->cur_dir)) && items != NULL)
-		{
 			if ((items->d_name[0] == '.' && a)
 					|| items->d_name[0] != '.')
-			{
 				if (r)
-				{
 					t_item_rev_place(&(first->items),
 							t_item_new(items, first->dir_name));
-				}
 				else
-				{
 					t_item_place(&(first->items),
 							t_item_new(items, first->dir_name));
-				}
-			}
-		}
 		print_ls(first->items, params);
 	}
 }
 
 static int				open_dir(t_dir_content *dirs, char *params)
 {
+
 	get_dir_items(dirs, params);
 	return (1);
 }
@@ -159,10 +152,14 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 	dirs = NULL;
 	i = -1;
 	while (paths[++i])
+	{
 		if ((cur_dir = opendir(paths[i])) && cur_dir)
-			t_dir_push(&dirs, t_dir_new(cur_dir, paths[i]));
+			t_dir_place(&dirs, t_dir_new(cur_dir, paths[i]));
 		else
 			catch_error(0, paths[i]);
+	}
+	if (!paths[0])
+		t_dir_place(&dirs, t_dir_new(opendir("."), "."));
 	return (dirs);
 }
 

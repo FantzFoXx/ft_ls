@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
+CC = clang
 FLAGS = -Wall -Werror -Wextra -O3
 NAME = ft_ls
 SRC = main.c new_ft_ls.c					\

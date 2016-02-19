@@ -49,6 +49,8 @@ static t_foo	*get_rights(mode_t mode)
 	char *rights;
 
 	rights = NULL;
+	
+	ft_trace(NULL, "pass gr1");
 	if (S_ISDIR(mode))
 		rights = ft_strdup("d");
 	else if (S_ISCHR(mode))
@@ -63,15 +65,27 @@ static t_foo	*get_rights(mode_t mode)
 		rights = ft_strdup("b");
 	else if (S_ISREG(mode))
 		rights = ft_strdup("-");
+	/*
 	rights = ft_strjoin(rights, ((mode & S_IRUSR) ? "r" : "-"));
+	ft_trace(NULL, "pass gr3");
 	rights = ft_strjoin(rights, ((mode & S_IWUSR) ? "w" : "-"));
+	ft_trace(NULL, "pass gr4");
 	rights = ft_strjoin(rights, ((mode & S_IXUSR) ? "x" : "-"));
+	ft_trace(NULL, "pass gr5");
 	rights = ft_strjoin(rights, ((mode & S_IRGRP) ? "r" : "-"));
+	ft_trace(NULL, "pass gr6");
 	rights = ft_strjoin(rights, ((mode & S_IWGRP) ? "w" : "-"));
+	ft_trace(NULL, "pass gr7");
 	rights = ft_strjoin(rights, ((mode & S_IXGRP) ? "x" : "-"));
+	ft_trace(NULL, "pass gr8");
 	rights = ft_strjoin(rights, ((mode & S_IROTH) ? "r" : "-"));
+	ft_trace(NULL, "pass gr9");
 	rights = ft_strjoin(rights, ((mode & S_IWOTH) ? "w" : "-"));
+	ft_trace(NULL, "pass gr0");
 	rights = ft_strjoin(rights, ((mode & S_IXOTH) ? "x" : "-"));
+	ft_trace(NULL, "pass gr01");
+	*/
+	ft_trace(NULL, "pass gr2");
 	return (t_foo_new(rights));
 }
 
@@ -109,7 +123,8 @@ static t_foo	*get_date(t_dir_item *item)
 	t_foo	*date;
 
 	date = NULL;
-	tmp = ft_strsplit(ctime(&item->prop.st_mtimespec.tv_sec), ' ');
+	tmp = ft_strsplit(ctime(&item->prop.st_mtime), ' ');
+	//tmp = ft_strsplit(ctime(&item->prop.st_mtimespec.tv_sec), ' ');
 	t_foo_push(&date, t_foo_new(tmp[1]));
 	t_foo_push(&date, t_foo_new(tmp[2]));
 	t_foo_push(&date, t_foo_new(ft_strsub(tmp[3], 0, 5)));
@@ -124,14 +139,23 @@ static t_foo	*print_list_item(t_dir_item *item, int *total)
 
 	i = 0;
 	line = NULL;
+	ft_trace(NULL, "pass items1");
 	t_foo_push(&line, get_rights(item->prop.st_mode));
+	ft_trace(NULL, "pass items2");
 	t_foo_push(&line, t_foo_new(ft_itoa(count_elems(item))));
+	ft_trace(NULL, "pass items3");
 	t_foo_push(&line, t_foo_new(getpwuid(item->prop.st_uid)->pw_name));
+	ft_trace(NULL, "pass items4");
 	t_foo_push(&line, t_foo_new(getgrgid(item->prop.st_gid)->gr_name));
+	ft_trace(NULL, "pass items5");
 	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_size)));
+	ft_trace(NULL, "pass items6");
 	t_foo_push(&line, get_date(item));
+	ft_trace(NULL, "pass items7");
 	t_foo_push(&line, t_foo_new(item->item_name));
+	ft_trace(NULL, "pass items8");
 	*(total) += (int)(item->prop.st_blocks);
+	ft_trace(NULL, "pass items9");
 	return (line);
 }
 
@@ -191,7 +215,9 @@ void			print_ls_l(t_dir_item *items, char *params)
 		//			|| items->item_name[0] != '.')
 		ft_lstpush(&container,
 				ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
+	ft_trace(NULL, "pass gr2");
 		items = items->next;
+
 	}
 	if (total)
 		print_total(total);

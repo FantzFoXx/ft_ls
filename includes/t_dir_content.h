@@ -48,5 +48,5 @@ t_dir_item		*t_item_place(t_dir_item **first, t_dir_item *new);
 t_dir_item		*t_item_rev_place(t_dir_item **first, t_dir_item *new);
 void			t_item_push(t_dir_item **first, t_dir_item *new);
 void			t_item_free_all(t_dir_item **cur);
-
+t_dir_content	*t_dir_place(t_dir_content **first, t_dir_content *new);
 #endif
