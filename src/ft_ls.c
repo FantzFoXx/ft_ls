@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:16:18 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/16 16:25:50 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/22 10:15:50 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void				get_dir_items(t_dir_content *first, char *params)
 		if (ft_strchr(params, 'r'))
 			r = 1;
 		while ((items = readdir(first->cur_dir)) && items != NULL)
-		{
 			if ((items->d_name[0] == '.' && a)
 					|| items->d_name[0] != '.')
 			{
@@ -51,7 +50,6 @@ static void				get_dir_items(t_dir_content *first, char *params)
 				if (errno)
 					catch_error(0, first->dir_name);
 			}
-		}
 		print_ls(first->items, params);
 	}
 }
