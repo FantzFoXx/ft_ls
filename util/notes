@@ -1,1 +1,7 @@
-l'option r s'applique aussi pour les dossiers passes en parametres
+- l'option r s'applique aussi pour les dossiers passes en parametres
+- penser a ajouter gestion links option l
+- penser a ajouter les fichiers uniques dans opendir et verifier gestion erreurs
+- ajouter recursive
+- norme
+- leaks
+- verifier recrsive avec gestion erreurs

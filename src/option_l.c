@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/22 11:05:14 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/22 14:45:26 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static t_foo	*get_rights(mode_t mode)
 		rights = ft_strdup("b");
 	else if (S_ISREG(mode))
 		rights = ft_strdup("-");
-	//printf("%p\n", rights);
 	rights = ft_strjoin(rights, ((mode & S_IRUSR) ? "r" : "-"));
 	rights = ft_strjoin(rights, ((mode & S_IWUSR) ? "w" : "-"));
 	rights = ft_strjoin(rights, ((mode & S_IXUSR) ? "x" : "-"));
@@ -78,31 +77,32 @@ static t_foo	*get_rights(mode_t mode)
 
 static	int		count_elems(t_dir_item *item)
 {
-	int i;
-	DIR	*cur_dir;
+	int				i;
+	DIR				*cur_dir;
+	struct dirent	*inf;
+	struct stat		prop;
+	char			*path;
 
 	i = 0;
-	cur_dir = opendir(ft_strjoin(item->path, item->item_name));
+	inf = NULL;
+	cur_dir = opendir(item->item_name);
+	path = NULL;
 	if (cur_dir)
-		while (readdir(cur_dir))
-			i++;
+		while ((inf = readdir(cur_dir)) && inf)
+		{
+			path = ft_strjoin(item->item_name, "/");
+			path = ft_strjoin(path, inf->d_name);
+			lstat(path, &prop);
+			if (S_ISDIR(prop.st_mode))
+				i++;
+			free(path);
+		}
 	else
 		return (1);
 	if (cur_dir)
 		closedir(cur_dir);
 	return (i);
 }
-
-/*
-   ft_putstr(rights);
-   i = count_elems(item);
-   ft_putnbr(i);
-   ft_putstr(getpwuid(item->prop.st_uid)->pw_name);
-   ft_putstr(getgrgid(item->prop.st_gid)->gr_name);
-   ft_putnbr(item->prop.st_size);
-   ft_putstr(date[1]);
-   ft_putstr(date[2]);
-   */
 
 static t_foo	*get_date(t_dir_item *item)
 {
@@ -111,7 +111,6 @@ static t_foo	*get_date(t_dir_item *item)
 
 	date = NULL;
 	tmp = ft_strsplit(ctime(&item->prop.st_mtime), ' ');
-	//tmp = ft_strsplit(ctime(&item->prop.st_mtimespec.tv_sec), ' ');
 	t_foo_push(&date, t_foo_new(tmp[1]));
 	t_foo_push(&date, t_foo_new(tmp[2]));
 	t_foo_push(&date, t_foo_new(ft_strsub(tmp[3], 0, 5)));
@@ -185,14 +184,10 @@ void			print_ls_l(t_dir_item *items, char *params)
 	container = NULL;
 	total = 0;
 	a = 0;
-	//if (ft_strchr(params, 'a'))
-	//	a = 1;
 	while (items)
 	{
-		//if ((items->item_name[0] == '.' && a)
-		//		|| items->item_name[0] != '.')
-			ft_lstpush(&container,
-					ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
+		ft_lstpush(&container,
+				ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
 		items = items->next;
 	}
 	if (total)
