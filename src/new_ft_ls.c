@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/22 16:27:34 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/23 14:21:26 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 	while (paths[++i])
 		if ((cur_dir = opendir(paths[i])) && cur_dir)
 		{
+			ft_trace(NULL, paths[i]);
 			if (r)
 				t_dir_rev_place(&dirs, t_dir_new(cur_dir, paths[i]));
 			else

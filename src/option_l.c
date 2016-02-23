@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/22 14:45:26 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/23 14:21:25 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,13 +118,28 @@ static t_foo	*get_date(t_dir_item *item)
 	return (date);
 }
 
-static t_foo	*print_list_item(t_dir_item *item, int *total)
+static char		*get_item_name(t_dir_item *item, char *params)
+{
+	static int	option_g = -1;
+	char		*filename;
+	char		*tmp;
+	tmp = NULL;
+	if (option_g == -1)
+		option_g = (ft_strchr(params, 'G')) ? 1 : 0;
+	if (option_g)
+		
+
+	return (filename);
+}
+
+static t_foo	*print_list_item(t_dir_item *item, int *total, char *params)
 {
 	t_foo	*line;
 	int		i;
 
 	i = 0;
 	line = NULL;
+	(void)params;
 	t_foo_push(&line, get_rights(item->prop.st_mode));
 	t_foo_push(&line, t_foo_new(ft_itoa(count_elems(item))));
 	t_foo_push(&line, t_foo_new(getpwuid(item->prop.st_uid)->pw_name));
@@ -180,14 +195,13 @@ void			print_ls_l(t_dir_item *items, char *params)
 	t_list	*container;
 	t_foo	*index;
 
-	(void)params;
 	container = NULL;
 	total = 0;
 	a = 0;
 	while (items)
 	{
 		ft_lstpush(&container,
-				ft_lstnew(print_list_item(items, &total), sizeof(t_foo)));
+				ft_lstnew(print_list_item(items, &total, params), sizeof(t_foo)));
 		items = items->next;
 	}
 	if (total)
