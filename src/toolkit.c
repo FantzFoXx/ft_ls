@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/22 16:27:39 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/23 17:01:19 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "libft.h"
 #include "t_dir_content.h"
 #include <unistd.h>
+#include <pwd.h>
+#include <sys/stat.h>
 
 void	realloc_dirent(struct dirent ***props, size_t size)
 {
@@ -49,6 +51,27 @@ void	print_dir_name(char *dir_name)
 	ft_putendl(":");
 }
 
+int		is_exec_file(mode_t mode)
+{
+	if (mode & S_IXUSR || mode & S_IXGRP || mode & S_IXOTH)
+		return (1);
+	return (0);
+}
+
+int		is_archive_file(char *filename)
+{
+	if (ft_strstr(filename, ".tar"))
+		return (1);
+	else if (ft_strstr(filename, ".zip"))
+		return (1);
+	else if (ft_strstr(filename, ".deb"))
+		return (1);
+	else if (ft_strstr(filename, ".rpm"))
+		return (1);
+	else
+		return (0);
+}
+
 void	realloc_dir(DIR ***dirs, size_t size)
 {
 	DIR				**new;
@@ -76,7 +99,7 @@ void	realloc_dir(DIR ***dirs, size_t size)
 int		is_meta_dir(char *dir_name)
 {
 	if (ft_strcmp(dir_name, ".") != 0
-		&& ft_strcmp(dir_name, "..") != 0)
+			&& ft_strcmp(dir_name, "..") != 0)
 		return (0);
 	return (1);
 }

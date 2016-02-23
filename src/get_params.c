@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:26:49 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/01 13:57:06 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/23 15:11:13 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void		check_params(char *params)
 	int		i;
 
 	i = 0;
-	supported_params = ft_strdup("lRart");
+	supported_params = ft_strdup("lRartG");
 	while (params[i] != 0)
 	{
 		if (!ft_strchr(supported_params, params[i]))

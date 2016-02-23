@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/23 14:21:25 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/23 18:39:07 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <pwd.h>
 #include <grp.h>
 #include "option_l.h"
+#include "colors.h"
+#include <unistd.h>
 
 static t_foo	*t_foo_new(char *str)
 {
@@ -54,7 +56,7 @@ static t_foo	*get_rights(mode_t mode)
 	else if (S_ISCHR(mode))
 		rights = ft_strdup("c");
 	else if (S_ISFIFO(mode))
-		rights = ft_strdup("P");
+		rights = ft_strdup("p");
 	else if (S_ISLNK(mode))
 		rights = ft_strdup("l");
 	else if (S_ISSOCK(mode))
@@ -118,16 +120,64 @@ static t_foo	*get_date(t_dir_item *item)
 	return (date);
 }
 
-static char		*get_item_name(t_dir_item *item, char *params)
+char		*get_item_name(t_dir_item *item, char *params)
 {
 	static int	option_g = -1;
 	char		*filename;
 	char		*tmp;
 	tmp = NULL;
+	filename = NULL;
 	if (option_g == -1)
 		option_g = (ft_strchr(params, 'G')) ? 1 : 0;
 	if (option_g)
-		
+		if (S_ISDIR(item->prop.st_mode))
+		{
+			tmp = ft_strjoin(CYAN, item->item_name);
+			filename = ft_strjoin(tmp, DEFAULT_COLOR);
+			free(tmp);
+		}
+		else if (S_ISCHR(item->prop.st_mode))
+		{
+			tmp = ft_strjoin(DARK_BLUE, HLIGHT_YELLOW);
+			tmp = ft_strjoin(tmp, item->item_name);
+			filename = ft_strjoin(tmp, DEFAULT_COLOR);
+			free(tmp);
+		}
+		else if (is_archive_file(item->item_name))
+		{
+			tmp = ft_strjoin(DARK_RED, item->item_name);
+			filename = ft_strjoin(tmp, DEFAULT_COLOR);
+			free(tmp);
+		}
+		else if (S_ISBLK(item->prop.st_mode))
+		{
+			tmp = ft_strjoin(DARK_BLUE, HLIGHT_CYAN);
+			tmp = ft_strjoin(tmp, item->item_name);
+			filename = ft_strjoin(tmp, DEFAULT_COLOR);
+			free(tmp);
+		}
+		else if (S_ISFIFO(item->prop.st_mode))
+		{
+			tmp = ft_strjoin(DARK_YELLOW, item->item_name);
+			filename = ft_strjoin(tmp, DEFAULT_COLOR);
+			free(tmp);
+		}
+		else if (S_ISLNK(item->prop.st_mode))
+		{
+			tmp = ft_strjoin(DARK_PURPLE, item->item_name);
+			filename = ft_strjoin(tmp, DEFAULT_COLOR);
+			free(tmp);
+		}
+		else if (is_exec_file(item->prop.st_mode))
+		{
+			tmp = ft_strjoin(GREEN, item->item_name);
+			filename = ft_strjoin(tmp, DEFAULT_COLOR);
+			free(tmp);
+		}
+		else
+			filename = ft_strdup(item->item_name);
+	else
+		filename = ft_strdup(item->item_name);
 
 	return (filename);
 }
@@ -146,7 +196,8 @@ static t_foo	*print_list_item(t_dir_item *item, int *total, char *params)
 	t_foo_push(&line, t_foo_new(getgrgid(item->prop.st_gid)->gr_name));
 	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_size)));
 	t_foo_push(&line, get_date(item));
-	t_foo_push(&line, t_foo_new(item->item_name));
+	t_foo_push(&line, t_foo_new(get_item_name(item, params)));
+	//t_foo_push(&line, t_foo_new(item->item_name));
 	*(total) += (int)(item->prop.st_blocks);
 	return (line);
 }
