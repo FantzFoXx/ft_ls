@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:48:44 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/23 17:01:29 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/24 17:28:42 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ void	print_dir_name(char *dir_name);
 int		is_meta_dir(char *dir_name);
 int		is_archive_file(char *filename);
 int		is_exec_file(mode_t mode);
+char	*ft_join_paths(char *path, char *filename);
 
 #endif

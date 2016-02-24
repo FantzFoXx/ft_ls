@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/24 15:56:06 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/24 17:28:40 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,81 +19,6 @@
 #include <dirent.h>
 #include <t_dir_content.h>
 #include <errno.h>
-
-/*
-   static int				open_dir(char *path, char *params, size_t size_tab)
-   {
-   DIR				*cur_dir;
-   t_dir_content	*dirs;
-
-   dirs = NULL;
-   cur_dir = opendir(path);
-   if (!cur_dir)
-   {
-   return (catch_error(1, path));
-   }
-   else
-   {
-   t_dir_push(&dirs, t_dir_new(cur_dir, path));
-   get_dir_items(dirs, params, size_tab);
-   }
-   return (1);
-   }
-
-   static void				open_dirs(char **paths, char *params)
-   {
-   char			*cur_path;
-   int				i;
-   size_t			size_tab;
-
-
-   i = -1;
-   size_tab = ft_tab_size(paths);
-   if (paths && paths[0])
-   while (paths[++i])
-   {
-   cur_path = ft_strjoin(paths[i], ((ft_strcmp(paths[i], "/") == 0) ? "" : "/"));
-//cur_path = ft_strjoin(paths[i], "/");
-open_dir(cur_path, params, size_tab);
-free(cur_path);
-if (paths[i + 1])
-ft_putchar('\n');
-}
-else
-open_dir(".", params, size_tab);
-}
-
-static char				**check_dirs(char **paths)
-{
-DIR		*cur_dir;
-int		st_paths;
-int		fn_paths;
-char	**clear_paths;
-
-st_paths = -1;
-fn_paths = 0;
-cur_dir = NULL;
-clear_paths = NULL;
-if (paths)
-{
-ft_realloc_tab(&clear_paths, 0);
-while (paths[++st_paths])
-if ((cur_dir = opendir(paths[st_paths])) && cur_dir != NULL)
-{
-ft_realloc_tab(&clear_paths, 1);
-clear_paths[fn_paths] = paths[st_paths];
-closedir(cur_dir);
-fn_paths++;
-}
-else
-perror("ft_ls");
-ft_freetab(paths);
-}
-else
-return (paths);
-return (clear_paths);
-}
-*/
 
 static void				get_dir_items(t_dir_content *first, char *params)
 {
@@ -133,10 +58,8 @@ static int				rec_open_dir(char *path, char *params, t_dir_item *item)
 	t_dir_content	*dirs;
 	int				i;
 	t_dir_item		*content;
-	char			*tmp_rec;
 
 	dirs = NULL;
-	tmp_rec = NULL;
 	cur_dir = opendir(path);
 	i = -1;
 	if (!cur_dir)
@@ -157,13 +80,8 @@ static int				rec_open_dir(char *path, char *params, t_dir_item *item)
 			if (S_ISDIR(content->prop.st_mode)
 					&& !is_meta_dir(content->item_name))
 			{
-				ft_putendl("");
-				ft_putstr(path);
-				ft_putstr(content->item_name);
-				ft_putendl(":");
-				tmp_rec = ft_strjoin(path, content->item_name);
-				rec_open_dir(ft_strjoin(tmp_rec, "/"), params, content);
-				free(tmp_rec);
+				print_dir_name(ft_strjoin(path, content->item_name));
+				rec_open_dir(ft_join_paths(path, content->item_name), params, content);
 			}
 			content = content->next;
 		}
@@ -174,15 +92,12 @@ static int				rec_open_dir(char *path, char *params, t_dir_item *item)
 	free(path);
 	return (1);
 }
+
 static int				open_dir(t_dir_content *dirs, char *params)
 {
-	char	*path;
-	char	*tmp;
 	t_dir_item *items;
 
-	path = NULL;
 	items = NULL;
-	tmp = NULL;
 	get_dir_items(dirs, params);
 	if (ft_strchr(params, 'R'))
 	{
@@ -191,15 +106,8 @@ static int				open_dir(t_dir_content *dirs, char *params)
 		{
 			if (S_ISDIR(items->prop.st_mode) && !is_meta_dir(items->item_name))
 			{
-				path = ft_strjoin(items->path, items->item_name);
-				ft_putendl("");
-				ft_putstr(path);
-				ft_putendl(":");
-				tmp = ft_strdup(path);
-				free(path);
-				path = ft_strjoin(tmp, "/");
-				free(tmp);
-				rec_open_dir(path, params, items);
+				print_dir_name(ft_strjoin(items->path, items->item_name));
+				rec_open_dir(ft_join_paths(items->path, items->item_name), params, items);
 			}
 			items = items->next;
 		}
@@ -259,6 +167,8 @@ int						ft_ls(char *params, char **path)
 		if (mult_dirs && dirs)
 			ft_putchar('\n');
 	}
+	ft_freetab(path);
+	free(params);
 	//while (1);
 	return (1);
 }

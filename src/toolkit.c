@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/23 17:01:19 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/24 17:28:41 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,23 @@ void	realloc_dirent(struct dirent ***props, size_t size)
 
 void	print_dir_name(char *dir_name)
 {
+	ft_putchar('\n');
 	ft_putstr(dir_name);
 	ft_putendl(":");
+	free(dir_name);
+}
+
+char	*ft_join_paths(char *path, char *filename)
+{
+	char *tmp;
+	char *ret;
+
+	ret = NULL;
+	tmp = NULL;
+	tmp = ft_strjoin(path, filename);
+	ret = ft_strjoin(tmp, "/");
+	free(tmp);
+	return (ret);
 }
 
 int		is_exec_file(mode_t mode)
