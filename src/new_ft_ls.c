@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/24 12:10:26 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/24 15:56:06 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ static void				get_dir_items(t_dir_content *first, char *params)
 	}
 }
 
-static int				rec_open_dir(char *path, char *params)
+static int				rec_open_dir(char *path, char *params, t_dir_item *item)
 {
 	DIR				*cur_dir;
 	t_dir_content	*dirs;
@@ -141,7 +141,7 @@ static int				rec_open_dir(char *path, char *params)
 	i = -1;
 	if (!cur_dir)
 	{
-		return (catch_error(1, path));
+		return (catch_error(1, item->item_name));
 	}
 	else
 	{
@@ -162,7 +162,7 @@ static int				rec_open_dir(char *path, char *params)
 				ft_putstr(content->item_name);
 				ft_putendl(":");
 				tmp_rec = ft_strjoin(path, content->item_name);
-				rec_open_dir(ft_strjoin(tmp_rec, "/"), params);
+				rec_open_dir(ft_strjoin(tmp_rec, "/"), params, content);
 				free(tmp_rec);
 			}
 			content = content->next;
@@ -199,7 +199,7 @@ static int				open_dir(t_dir_content *dirs, char *params)
 				free(path);
 				path = ft_strjoin(tmp, "/");
 				free(tmp);
-				rec_open_dir(path, params);
+				rec_open_dir(path, params, items);
 			}
 			items = items->next;
 		}
@@ -259,6 +259,6 @@ int						ft_ls(char *params, char **path)
 		if (mult_dirs && dirs)
 			ft_putchar('\n');
 	}
-	while (1);
+	//while (1);
 	return (1);
 }

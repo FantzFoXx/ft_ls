@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/24 12:10:27 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/24 15:55:31 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,36 +105,36 @@ static t_foo	*get_rights(mode_t mode)
 	free(tmp);
 	return (t_foo_new(rights));
 }
+/*
+   static	int		count_elems(t_dir_item *item)
+   {
+   int				i;
+   DIR				*cur_dir;
+   struct dirent	*inf;
+   struct stat		prop;
+   char			*path;
 
-static	int		count_elems(t_dir_item *item)
-{
-	int				i;
-	DIR				*cur_dir;
-	struct dirent	*inf;
-	struct stat		prop;
-	char			*path;
-
-	i = 0;
-	inf = NULL;
-	cur_dir = opendir(item->item_name);
-	path = NULL;
-	if (cur_dir)
-		while ((inf = readdir(cur_dir)) && inf)
-		{
-			path = ft_strjoin(item->item_name, "/");
-			path = ft_strjoin(path, inf->d_name);
-			lstat(path, &prop);
-			if (S_ISDIR(prop.st_mode))
-				i++;
-			free(path);
-		}
-	else
-		return (1);
-	if (cur_dir)
-		closedir(cur_dir);
-	return (i);
-}
-
+   i = 0;
+   inf = NULL;
+   cur_dir = opendir(item->item_name);
+   path = NULL;
+   if (cur_dir)
+   while ((inf = readdir(cur_dir)) && inf)
+   {
+   path = ft_strjoin(item->item_name, "/");
+   path = ft_strjoin(path, inf->d_name);
+   lstat(path, &prop);
+   if (S_ISDIR(prop.st_mode))
+   i++;
+   free(path);
+   }
+   else
+   return (1);
+   if (cur_dir)
+   closedir(cur_dir);
+   return (i);
+   }
+   */
 static t_foo	*get_date(t_dir_item *item)
 {
 	char	**tmp;
@@ -162,11 +162,20 @@ char		*get_item_name(t_dir_item *item, char *params)
 		option_g = (ft_strchr(params, 'G')) ? 1 : 0;
 	if (option_g)
 		if (S_ISDIR(item->prop.st_mode))
-		{
-			tmp = ft_strjoin(CYAN, item->item_name);
-			filename = ft_strjoin(tmp, DEFAULT_COLOR);
-			free(tmp);
-		}
+			if ((S_IWOTH & item->prop.st_mode))
+			{
+				filename = ft_strjoin(DARK_BLACK, HLIGHT_YELLOW);
+				tmp = ft_strjoin(filename, item->item_name);
+				free(filename);
+				filename = ft_strjoin(tmp, DEFAULT_COLOR);
+				free(tmp);
+			}
+			else
+			{
+				tmp = ft_strjoin(CYAN, item->item_name);
+				filename = ft_strjoin(tmp, DEFAULT_COLOR);
+				free(tmp);
+			}
 		else if (S_ISCHR(item->prop.st_mode))
 		{
 			filename = ft_strjoin(DARK_BLUE, HLIGHT_YELLOW);
@@ -200,16 +209,7 @@ char		*get_item_name(t_dir_item *item, char *params)
 			tmp = ft_strjoin(DARK_PURPLE, item->item_name);
 			filename = ft_strjoin(tmp, DEFAULT_COLOR);
 			free(tmp);
-			if (ft_strchr(params, 'l'))
-			{
-				tmp = ft_strjoin(filename, " -> ");
-				free(filename);
-				filename = ft_strjoin(item->path, item->item_name);
-				readlink(filename, buf, 1024);
-				free(filename);
-				filename = ft_strjoin(tmp, buf);
-				free(tmp);
-			}
+
 		}
 		else if (is_exec_file(item->prop.st_mode))
 		{
@@ -221,6 +221,16 @@ char		*get_item_name(t_dir_item *item, char *params)
 			filename = ft_strdup(item->item_name);
 	else
 		filename = ft_strdup(item->item_name);
+	if (ft_strchr(params, 'l') && S_ISLNK(item->prop.st_mode))
+	{
+		tmp = ft_strjoin(filename, " -> ");
+		free(filename);
+		filename = ft_strjoin(item->path, item->item_name);
+		readlink(filename, buf, 1024);
+		free(filename);
+		filename = ft_strjoin(tmp, buf);
+		free(tmp);
+	}
 	return (filename);
 }
 
@@ -233,7 +243,8 @@ static t_foo	*print_list_item(t_dir_item *item, int *total, char *params)
 	line = NULL;
 	(void)params;
 	t_foo_push(&line, get_rights(item->prop.st_mode));
-	t_foo_push(&line, t_foo_new(ft_itoa(count_elems(item))));
+	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_nlink)));
+	//ft_nbrtrace("debug", item->prop.st_nlink);
 	t_foo_push(&line, t_foo_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
 	t_foo_push(&line, t_foo_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
 	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_size)));
