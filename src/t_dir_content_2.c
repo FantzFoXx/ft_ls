@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/23 13:30:47 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/24 11:43:51 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ t_dir_item	*t_item_new(struct dirent *item, char *path)
 	t_dir_item	*new;
 	char		*join;
 	struct stat	prop;
+	char		*tmp;
 
+	tmp = NULL;
 	if (ft_strcmp(path, "/") != 0)
 		join = ft_strjoin(path, "/");
 	else
@@ -29,9 +31,16 @@ t_dir_item	*t_item_new(struct dirent *item, char *path)
 	new = NULL;
 	errno = 0;
 	if (ft_strcmp(path, ".") == 0)
-		lstat(ft_strdup(item->d_name), &prop);
+	{
+		tmp = ft_strdup(item->d_name);
+		lstat(tmp, &prop);
+	}
 	else
-		lstat(ft_strjoin(join, item->d_name), &prop);
+	{
+		tmp = ft_strjoin(join, item->d_name);
+		lstat(tmp, &prop);
+	}
+	free(tmp);
 	if (errno)
 		catch_error(0, item->d_name);
 	else

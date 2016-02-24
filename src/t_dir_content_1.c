@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/23 13:30:07 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/24 12:10:31 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,6 @@ void			t_item_free_all(t_dir_item **cur)
 		free((*cur)->next);
 		(*cur)->next = NULL;
 	}
-	/* free((*cur)->item); */
 	free((*cur)->item_name);
+	free((*cur)->path);
 }

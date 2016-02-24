@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/23 18:39:07 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/24 12:10:27 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static t_foo	*t_foo_new(char *str)
 	new = (t_foo *)malloc(sizeof(t_foo));
 	if (new)
 	{
-		new->str = ft_strdup(str);
+		//new->str = ft_strdup(str);
+		new->str = str;
 		new->next = NULL;
 	}
 	return (new);
@@ -48,7 +49,8 @@ static void		t_foo_push(t_foo **first, t_foo *new)
 
 static t_foo	*get_rights(mode_t mode)
 {
-	char *rights;
+	char	*rights;
+	char	*tmp;
 
 	rights = NULL;
 	if (S_ISDIR(mode))
@@ -65,15 +67,42 @@ static t_foo	*get_rights(mode_t mode)
 		rights = ft_strdup("b");
 	else if (S_ISREG(mode))
 		rights = ft_strdup("-");
-	rights = ft_strjoin(rights, ((mode & S_IRUSR) ? "r" : "-"));
-	rights = ft_strjoin(rights, ((mode & S_IWUSR) ? "w" : "-"));
-	rights = ft_strjoin(rights, ((mode & S_IXUSR) ? "x" : "-"));
-	rights = ft_strjoin(rights, ((mode & S_IRGRP) ? "r" : "-"));
-	rights = ft_strjoin(rights, ((mode & S_IWGRP) ? "w" : "-"));
-	rights = ft_strjoin(rights, ((mode & S_IXGRP) ? "x" : "-"));
-	rights = ft_strjoin(rights, ((mode & S_IROTH) ? "r" : "-"));
-	rights = ft_strjoin(rights, ((mode & S_IWOTH) ? "w" : "-"));
-	rights = ft_strjoin(rights, ((mode & S_IXOTH) ? "x" : "-"));
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, ((mode & S_IRUSR) ? "r" : "-"));
+	free(tmp);
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, ((mode & S_IWUSR) ? "w" : "-"));
+	free(tmp);
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, ((mode & S_IXUSR) ? "x" : "-"));
+	free(tmp);
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, ((mode & S_IRGRP) ? "r" : "-"));
+	free(tmp);
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, ((mode & S_IWGRP) ? "w" : "-"));
+	free(tmp);
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, ((mode & S_IXGRP) ? "x" : "-"));
+	free(tmp);
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, ((mode & S_IROTH) ? "r" : "-"));
+	free(tmp);
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, ((mode & S_IWOTH) ? "w" : "-"));
+	free(tmp);
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, ((mode & S_IXOTH) ? "x" : "-"));
+	free(tmp);
 	return (t_foo_new(rights));
 }
 
@@ -113,8 +142,8 @@ static t_foo	*get_date(t_dir_item *item)
 
 	date = NULL;
 	tmp = ft_strsplit(ctime(&item->prop.st_mtime), ' ');
-	t_foo_push(&date, t_foo_new(tmp[1]));
-	t_foo_push(&date, t_foo_new(tmp[2]));
+	t_foo_push(&date, t_foo_new(ft_strdup(tmp[1])));
+	t_foo_push(&date, t_foo_new(ft_strdup(tmp[2])));
 	t_foo_push(&date, t_foo_new(ft_strsub(tmp[3], 0, 5)));
 	ft_freetab(tmp);
 	return (date);
@@ -125,6 +154,8 @@ char		*get_item_name(t_dir_item *item, char *params)
 	static int	option_g = -1;
 	char		*filename;
 	char		*tmp;
+	char		buf[1024];
+
 	tmp = NULL;
 	filename = NULL;
 	if (option_g == -1)
@@ -138,21 +169,23 @@ char		*get_item_name(t_dir_item *item, char *params)
 		}
 		else if (S_ISCHR(item->prop.st_mode))
 		{
-			tmp = ft_strjoin(DARK_BLUE, HLIGHT_YELLOW);
-			tmp = ft_strjoin(tmp, item->item_name);
+			filename = ft_strjoin(DARK_BLUE, HLIGHT_YELLOW);
+			tmp = ft_strjoin(filename, item->item_name);
+			free(filename);
 			filename = ft_strjoin(tmp, DEFAULT_COLOR);
 			free(tmp);
 		}
 		else if (is_archive_file(item->item_name))
 		{
-			tmp = ft_strjoin(DARK_RED, item->item_name);
+			tmp = ft_strjoin(GREEN, item->item_name);
 			filename = ft_strjoin(tmp, DEFAULT_COLOR);
 			free(tmp);
 		}
 		else if (S_ISBLK(item->prop.st_mode))
 		{
-			tmp = ft_strjoin(DARK_BLUE, HLIGHT_CYAN);
-			tmp = ft_strjoin(tmp, item->item_name);
+			filename = ft_strjoin(DARK_BLUE, HLIGHT_CYAN);
+			tmp = ft_strjoin(filename, item->item_name);
+			free(filename);
 			filename = ft_strjoin(tmp, DEFAULT_COLOR);
 			free(tmp);
 		}
@@ -167,10 +200,20 @@ char		*get_item_name(t_dir_item *item, char *params)
 			tmp = ft_strjoin(DARK_PURPLE, item->item_name);
 			filename = ft_strjoin(tmp, DEFAULT_COLOR);
 			free(tmp);
+			if (ft_strchr(params, 'l'))
+			{
+				tmp = ft_strjoin(filename, " -> ");
+				free(filename);
+				filename = ft_strjoin(item->path, item->item_name);
+				readlink(filename, buf, 1024);
+				free(filename);
+				filename = ft_strjoin(tmp, buf);
+				free(tmp);
+			}
 		}
 		else if (is_exec_file(item->prop.st_mode))
 		{
-			tmp = ft_strjoin(GREEN, item->item_name);
+			tmp = ft_strjoin(DARK_RED, item->item_name);
 			filename = ft_strjoin(tmp, DEFAULT_COLOR);
 			free(tmp);
 		}
@@ -178,7 +221,6 @@ char		*get_item_name(t_dir_item *item, char *params)
 			filename = ft_strdup(item->item_name);
 	else
 		filename = ft_strdup(item->item_name);
-
 	return (filename);
 }
 
@@ -192,12 +234,11 @@ static t_foo	*print_list_item(t_dir_item *item, int *total, char *params)
 	(void)params;
 	t_foo_push(&line, get_rights(item->prop.st_mode));
 	t_foo_push(&line, t_foo_new(ft_itoa(count_elems(item))));
-	t_foo_push(&line, t_foo_new(getpwuid(item->prop.st_uid)->pw_name));
-	t_foo_push(&line, t_foo_new(getgrgid(item->prop.st_gid)->gr_name));
+	t_foo_push(&line, t_foo_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
+	t_foo_push(&line, t_foo_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
 	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_size)));
 	t_foo_push(&line, get_date(item));
 	t_foo_push(&line, t_foo_new(get_item_name(item, params)));
-	//t_foo_push(&line, t_foo_new(item->item_name));
 	*(total) += (int)(item->prop.st_blocks);
 	return (line);
 }
@@ -238,6 +279,25 @@ static void		print_total(int total)
 	ft_putchar('\n');
 }
 
+static void			free_ligtn(t_list **container)
+{
+	t_list	*bak;
+	t_foo	*index;
+	t_foo	*index_next;
+
+	index = NULL;
+	index_next = NULL;
+	bak = (*container)->next;
+	index = (*container)->content;
+	while (index)
+	{
+		index_next = index->next;
+		free(index->str);
+		index = index_next;
+	}
+	*container = bak;
+}
+
 void			print_ls_l(t_dir_item *items, char *params)
 {
 	int		*spaces;
@@ -275,7 +335,8 @@ void			print_ls_l(t_dir_item *items, char *params)
 			index = index->next;
 			a++;
 		}
-		container = container->next;
+		free_ligtn(&container);
+		//container = container->next;
 		ft_putchar('\n');
 	}
 }

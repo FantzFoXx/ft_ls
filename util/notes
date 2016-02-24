@@ -1,7 +1,7 @@
 - l'option r s'applique aussi pour les dossiers passes en parametres
-- penser a ajouter gestion links option l
 - penser a ajouter les fichiers uniques dans opendir et verifier gestion erreurs
-- ajouter recursive
 - norme
 - leaks
 - verifier recrsive avec gestion erreurs
+- penser a gerer le bug du -- pris en compte dans les parametres
+- regarder bug ft_ls ""

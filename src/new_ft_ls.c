@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/23 14:54:04 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/24 12:10:26 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,10 @@ static int				rec_open_dir(char *path, char *params)
 	t_dir_content	*dirs;
 	int				i;
 	t_dir_item		*content;
+	char			*tmp_rec;
 
 	dirs = NULL;
+	tmp_rec = NULL;
 	cur_dir = opendir(path);
 	i = -1;
 	if (!cur_dir)
@@ -144,8 +146,7 @@ static int				rec_open_dir(char *path, char *params)
 	else
 	{
 		errno = 0;
-		//t_dir_push(&dirs, t_dir_new(cur_dir, path));
-		t_dir_place(&dirs, t_dir_new(cur_dir, path));
+		t_dir_place(&dirs, t_dir_new(cur_dir, ft_strdup(path)));
 		get_dir_items(dirs, params);
 	}
 	if (ft_strchr(params, 'R') && dirs->items)
@@ -160,24 +161,28 @@ static int				rec_open_dir(char *path, char *params)
 				ft_putstr(path);
 				ft_putstr(content->item_name);
 				ft_putendl(":");
-				rec_open_dir(ft_strjoin(ft_strjoin(path, content->item_name), "/"), params);
+				tmp_rec = ft_strjoin(path, content->item_name);
+				rec_open_dir(ft_strjoin(tmp_rec, "/"), params);
+				free(tmp_rec);
 			}
 			content = content->next;
 		}
-		//ft_trace(NULL, "pass");
 	}
 	if (cur_dir)
 		closedir(cur_dir);
-	//t_dir_free_all(&dirs);
+	t_dir_free_all(&dirs);
+	free(path);
 	return (1);
 }
 static int				open_dir(t_dir_content *dirs, char *params)
 {
-	char *path;
+	char	*path;
+	char	*tmp;
 	t_dir_item *items;
 
 	path = NULL;
 	items = NULL;
+	tmp = NULL;
 	get_dir_items(dirs, params);
 	if (ft_strchr(params, 'R'))
 	{
@@ -190,7 +195,10 @@ static int				open_dir(t_dir_content *dirs, char *params)
 				ft_putendl("");
 				ft_putstr(path);
 				ft_putendl(":");
-				path = ft_strjoin(path, "/");
+				tmp = ft_strdup(path);
+				free(path);
+				path = ft_strjoin(tmp, "/");
+				free(tmp);
 				rec_open_dir(path, params);
 			}
 			items = items->next;
@@ -215,7 +223,6 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 	while (paths[++i])
 		if ((cur_dir = opendir(paths[i])) && cur_dir)
 		{
-			ft_trace(NULL, paths[i]);
 			if (r)
 				t_dir_rev_place(&dirs, t_dir_new(cur_dir, paths[i]));
 			else
@@ -252,5 +259,6 @@ int						ft_ls(char *params, char **path)
 		if (mult_dirs && dirs)
 			ft_putchar('\n');
 	}
+	while (1);
 	return (1);
 }
