@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/24 17:28:41 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/25 12:54:47 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,6 @@ void	realloc_dirent(struct dirent ***props, size_t size)
 		new[i] = (*props)[i];
 	free(*props);
 	*props = new;
-}
-
-void	print_dir_name(char *dir_name)
-{
-	ft_putchar('\n');
-	ft_putstr(dir_name);
-	ft_putendl(":");
-	free(dir_name);
 }
 
 char	*ft_join_paths(char *path, char *filename)
