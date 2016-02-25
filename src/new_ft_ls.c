@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 17:14:59 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/25 18:09:05 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void				get_dir_items(t_dir_content *first, char *params)
 		ft_trace("not cur_dir", "pass");
 		first = first->next;
 	}
-	if (first && !first->is_lfile)
+	if (first)
 	{
 		if (ft_strchr(params, 'a'))
 			a = 1;
@@ -145,13 +145,11 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 	t_dir_content	*dirs;
 	int				i;
 	int				r;
-	t_dir_content	*files;
 
 	cur_dir = NULL;
 	dirs = NULL;
 	i = -1;
 	r = 0;
-	files = NULL;
 	if (ft_strchr(params, 'r'))
 		r = 1;
 	while (paths[++i])
@@ -169,8 +167,6 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 		else
 			catch_error(0, paths[i]);
 	}
-	if (files)
-		t_dir_push(&dirs, files);
 	if (!paths[0])
 		t_dir_place(&dirs, t_dir_new(opendir("."), ".", 0));
 	return (dirs);
@@ -188,6 +184,7 @@ int						ft_ls(char *params, char **path)
 	mult_dirs = 0;
 	if (params)
 		check_params(params);
+	ft_trace("params", params);
 	dirs = open_dirs(path, params);
 	if (ft_tab_size(path) > 1)
 		mult_dirs = 1;
@@ -201,8 +198,8 @@ int						ft_ls(char *params, char **path)
 		if (mult_dirs && dirs && !dirs->is_lfile)
 			ft_putchar('\n');
 	}
-	ft_freetab(path);
-	free(params);
+	//ft_freetab(path);
+	//free(params);
 	//while (1);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 17:14:58 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/25 18:09:04 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,18 @@ t_dir_item	*t_item_new(char *d_name, char *path)
 
 	tmp = NULL;
 	if (ft_strcmp(path, "/") != 0)
-		join = ft_strjoin(path, "/");
+	{
+//		char *foo = "foo";
+//		char *bar = "bar";
+		ft_trace("path", path);
+		char str[80];
+		strcpy(str, "");
+		strcat(str, path);
+		strcat(str, "/");
+		//join = strjoin(path, "u");
+		//join = ft_strdup(path);
+		ft_trace("path", str);
+	}
 	else
 		join = ft_strdup(path);
 	new = NULL;
@@ -38,6 +49,7 @@ t_dir_item	*t_item_new(char *d_name, char *path)
 	}
 	else
 	{
+		ft_trace(d_name, path);
 		tmp = ft_strjoin(path, d_name);
 		ft_trace("join tmp", tmp);
 		lstat(tmp, &prop);
