@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 15:09:25 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/25 17:15:00 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name, int is_lfile)
 	{
 		new->items = NULL;
 		new->cur_dir = cur_dir;
-		ft_trace("stock dir_name", dir_name);
+		//ft_trace("dir new -> dir_name", dir_name);
 		new->dir_name = ft_strdup(dir_name);
 		new->is_lfile = is_lfile;
 		new->next = NULL;

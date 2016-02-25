@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 15:09:26 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/25 17:14:58 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <errno.h>
 #include "catch_errors.h"
 
-t_dir_item	*t_item_new(struct dirent *item, char *path)
+t_dir_item	*t_item_new(char *d_name, char *path)
 {
 	t_dir_item	*new;
 	char		*join;
@@ -32,13 +32,13 @@ t_dir_item	*t_item_new(struct dirent *item, char *path)
 	errno = 0;
 	if (ft_strcmp(path, ".") == 0)
 	{
-		tmp = ft_strdup(item->d_name);
-		//ft_trace("dup tmp", tmp);
+		tmp = ft_strdup(d_name);
+		ft_trace("dup tmp", tmp);
 		lstat(tmp, &prop);
 	}
 	else
 	{
-		tmp = ft_strjoin(path, item->d_name);
+		tmp = ft_strjoin(path, d_name);
 		ft_trace("join tmp", tmp);
 		lstat(tmp, &prop);
 	}
@@ -46,16 +46,16 @@ t_dir_item	*t_item_new(struct dirent *item, char *path)
 	if (errno)
 	{
 		//ft_trace("errno", "pass");
-		catch_error(0, item->d_name);
+		catch_error(0, d_name);
 	}
 	else
 		new = (t_dir_item *)malloc(sizeof(t_dir_item));
 	if (new)
 	{
-		new->item_name = ft_strdup(item->d_name);
-		ft_memcpy((void *)&(new->item_type),
-				(void *)&(item->d_type), sizeof(__uint8_t));
-		new->item = item;
+		new->item_name = ft_strdup(d_name);
+		//ft_memcpy((void *)&(new->item_type),
+		//		(void *)&(item->d_type), sizeof(__uint8_t));
+		//new->item = item;
 		new->path = join;
 		new->next = NULL;
 		new->prop = prop;
