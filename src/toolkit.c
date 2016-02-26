@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 12:54:47 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/26 15:14:59 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ char	*ft_join_paths(char *path, char *filename)
 	tmp = NULL;
 	tmp = ft_strjoin(path, filename);
 	ret = ft_strjoin(tmp, "/");
-	free(tmp);
+	//free(tmp);
+	ft_putendl("###########");
+	write(1, ret, ft_strlen(ret));
+	ft_putendl("");
+	ft_putendl("###########");
 	return (ret);
 }
 

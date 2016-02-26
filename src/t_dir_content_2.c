@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 18:09:04 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/26 16:51:36 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,19 @@ t_dir_item	*t_item_new(char *d_name, char *path)
 	t_dir_item	*new;
 	char		*join;
 	struct stat	prop;
-	char		*tmp;
+	char *tmp;
 
 	tmp = NULL;
 	if (ft_strcmp(path, "/") != 0)
 	{
-//		char *foo = "foo";
-//		char *bar = "bar";
+		ft_putendl("#### in join 1 ####");
 		ft_trace("path", path);
-		char str[80];
-		strcpy(str, "");
-		strcat(str, path);
-		strcat(str, "/");
-		//join = strjoin(path, "u");
+		ft_trace("path", path);
+		join = ft_strjoin(path, "/");
 		//join = ft_strdup(path);
-		ft_trace("path", str);
+		ft_trace("path", path);
+		//ft_trace("join", join);
+		ft_putendl("########");
 	}
 	else
 		join = ft_strdup(path);
@@ -44,17 +42,17 @@ t_dir_item	*t_item_new(char *d_name, char *path)
 	if (ft_strcmp(path, ".") == 0)
 	{
 		tmp = ft_strdup(d_name);
-		ft_trace("dup tmp", tmp);
+		//ft_trace("dup tmp", tmp);
 		lstat(tmp, &prop);
 	}
 	else
 	{
 		ft_trace(d_name, path);
-		tmp = ft_strjoin(path, d_name);
-		ft_trace("join tmp", tmp);
+		tmp = ft_strjoin(join, d_name);
+		//ft_trace("join tmp", tmp);
+		//ft_trace("var join", join);
 		lstat(tmp, &prop);
 	}
-	free(tmp);
 	if (errno)
 	{
 		//ft_trace("errno", "pass");

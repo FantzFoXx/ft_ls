@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:26:49 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/23 15:11:13 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/26 16:25:30 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	**get_entity(char ***params, char *cur_param)
 
 	ft_realloc_tab(params, 1);
 	i++;
-	params[0][i] = ft_strdup(cur_param);
+	(*params)[i] = ft_strdup(cur_param);
 	return (*params);
 }
 

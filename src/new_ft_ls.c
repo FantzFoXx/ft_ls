@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 18:09:05 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/26 16:51:38 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void				get_dir_items(t_dir_content *first, char *params)
 	items = NULL;
 	while (first && !first->cur_dir)
 	{
-		ft_trace("not cur_dir", "pass");
+		//ft_trace("not cur_dir", "pass");
 		first = first->next;
 	}
 	if (first)
@@ -44,13 +44,14 @@ static void				get_dir_items(t_dir_content *first, char *params)
 			if ((items->d_name[0] == '.' && a)
 					|| items->d_name[0] != '.')
 			{
+				//ft_putendl(first->dir_name);
 				ft_trace("dir_name", first->dir_name);
 				if (r)
 					t_item_rev_place(&(first->items),
-							t_item_new(items->d_name, first->dir_name));
+							t_item_new(items->d_name, ft_strdup(first->dir_name)));
 				else
 					t_item_place(&(first->items),
-							t_item_new(items->d_name, first->dir_name));
+							t_item_new(items->d_name, ft_strdup(first->dir_name)));
 			}
 		print_ls(first->items, params);
 	}
@@ -121,6 +122,7 @@ static int				open_dir(t_dir_content *dirs, char *params)
 	return (1);
 }
 
+/*
 static int			open_file(char *path, char *params)
 {
 	struct stat	file;
@@ -138,6 +140,7 @@ static int			open_file(char *path, char *params)
 	}
 	return (0);
 }
+*/
 
 static t_dir_content			*open_dirs(char **paths, char *params)
 {
@@ -161,9 +164,9 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 			else
 				t_dir_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
 		}
-		else if (open_file(paths[i], params))
-		{}
-			//ft_trace(NULL, "debug");
+		//else if (open_file(paths[i], params))
+		//{}
+		//ft_trace(NULL, "debug");
 		else
 			catch_error(0, paths[i]);
 	}
@@ -184,7 +187,7 @@ int						ft_ls(char *params, char **path)
 	mult_dirs = 0;
 	if (params)
 		check_params(params);
-	ft_trace("params", params);
+	//ft_trace("params", params);
 	dirs = open_dirs(path, params);
 	if (ft_tab_size(path) > 1)
 		mult_dirs = 1;
