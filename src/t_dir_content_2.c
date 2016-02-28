@@ -20,58 +20,68 @@ t_dir_item	*t_item_new(char *d_name, char *path)
 {
 	t_dir_item	*new;
 	char		*join;
+	char 		*tmp;
 	struct stat	prop;
-	char *tmp;
 
-	tmp = NULL;
-	if (ft_strcmp(path, "/") != 0)
-	{
-		ft_putendl("#### in join 1 ####");
-		ft_trace("path", path);
-		ft_trace("path", path);
-		join = ft_strjoin(path, "/");
-		//join = ft_strdup(path);
-		ft_trace("path", path);
-		//ft_trace("join", join);
-		ft_putendl("########");
-	}
-	else
-		join = ft_strdup(path);
 	new = NULL;
 	errno = 0;
-	if (ft_strcmp(path, ".") == 0)
-	{
-		tmp = ft_strdup(d_name);
-		//ft_trace("dup tmp", tmp);
-		lstat(tmp, &prop);
-	}
+	if (ft_strcmp(path, "/") != 0)
+		join = ft_strjoin(path, "/");
 	else
-	{
-		ft_trace(d_name, path);
+		join = ft_strdup(path);
+	if (ft_strcmp(path, ".") == 0)
+		tmp = ft_strdup(d_name);
+	else
 		tmp = ft_strjoin(join, d_name);
-		//ft_trace("join tmp", tmp);
-		//ft_trace("var join", join);
-		lstat(tmp, &prop);
-	}
+	lstat(tmp, &prop);
+	free(tmp);
 	if (errno)
-	{
-		//ft_trace("errno", "pass");
 		catch_error(0, d_name);
-	}
 	else
 		new = (t_dir_item *)malloc(sizeof(t_dir_item));
 	if (new)
 	{
 		new->item_name = ft_strdup(d_name);
-		//ft_memcpy((void *)&(new->item_type),
-		//		(void *)&(item->d_type), sizeof(__uint8_t));
-		//new->item = item;
 		new->path = join;
 		new->next = NULL;
 		new->prop = prop;
 	}
 	return (new);
 }
+/*
+t_dir_item	*t_file_new(char *d_name, char *path)
+{
+	t_dir_item	*new;
+	char		*join;
+	char 		*tmp;
+	struct stat	prop;
+
+	new = NULL;
+	errno = 0;
+	if (ft_strcmp(path, "/") != 0)
+		join = ft_strjoin(path, "/");
+	else
+		join = ft_strdup(path);
+	if (ft_strcmp(path, ".") == 0)
+		tmp = ft_strdup(d_name);
+	else
+		tmp = ft_strjoin(join, d_name);
+	lstat(tmp, &prop);
+	free(tmp);
+	if (errno)
+		catch_error(0, d_name);
+	else
+		new = (t_dir_item *)malloc(sizeof(t_dir_item));
+	if (new)
+	{
+		new->item_name = ft_strdup(d_name);
+		new->path = join;
+		new->next = NULL;
+		new->prop = prop;
+	}
+	return (new);
+}
+*/
 
 /*
    int			t_item_place(t_dir_item **first, t_dir_item *new)

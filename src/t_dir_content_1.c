@@ -25,7 +25,6 @@ t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name, int is_lfile)
 	{
 		new->items = NULL;
 		new->cur_dir = cur_dir;
-		//ft_trace("dir new -> dir_name", dir_name);
 		new->dir_name = ft_strdup(dir_name);
 		new->is_lfile = is_lfile;
 		new->next = NULL;

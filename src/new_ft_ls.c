@@ -31,7 +31,6 @@ static void				get_dir_items(t_dir_content *first, char *params)
 	items = NULL;
 	while (first && !first->cur_dir)
 	{
-		//ft_trace("not cur_dir", "pass");
 		first = first->next;
 	}
 	if (first)
@@ -44,8 +43,6 @@ static void				get_dir_items(t_dir_content *first, char *params)
 			if ((items->d_name[0] == '.' && a)
 					|| items->d_name[0] != '.')
 			{
-				//ft_putendl(first->dir_name);
-				ft_trace("dir_name", first->dir_name);
 				if (r)
 					t_item_rev_place(&(first->items),
 							t_item_new(items->d_name, ft_strdup(first->dir_name)));
@@ -122,7 +119,6 @@ static int				open_dir(t_dir_content *dirs, char *params)
 	return (1);
 }
 
-/*
 static int			open_file(char *path, char *params)
 {
 	struct stat	file;
@@ -134,13 +130,12 @@ static int			open_file(char *path, char *params)
 	if ((lstat_ret = lstat(path, &file)) == 0)
 	{
 		//t_dir_place(dirs, t_dir_new(NULL, path, 1));
-		t_item_push(&prop, t_item_new("", path));
+		t_item_push(&prop, t_item_new(path, path));
 		print_ls(prop, params);
 		return (1);
 	}
 	return (0);
 }
-*/
 
 static t_dir_content			*open_dirs(char **paths, char *params)
 {
@@ -164,9 +159,8 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 			else
 				t_dir_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
 		}
-		//else if (open_file(paths[i], params))
-		//{}
-		//ft_trace(NULL, "debug");
+		else if (open_file(paths[i], params))
+		{}
 		else
 			catch_error(0, paths[i]);
 	}
@@ -187,22 +181,20 @@ int						ft_ls(char *params, char **path)
 	mult_dirs = 0;
 	if (params)
 		check_params(params);
-	//ft_trace("params", params);
 	dirs = open_dirs(path, params);
 	if (ft_tab_size(path) > 1)
 		mult_dirs = 1;
 	while (dirs)
 	{
-		//ft_trace("pass", "dirs");
 		if (mult_dirs && !dirs->is_lfile)
-			print_dir_name(dirs->dir_name);
+			print_dir_name(ft_strdup(dirs->dir_name));
 		open_dir(dirs, params);
 		dirs = dirs->next;
 		if (mult_dirs && dirs && !dirs->is_lfile)
 			ft_putchar('\n');
 	}
-	//ft_freetab(path);
-	//free(params);
+	ft_freetab(path);
+	free(params);
 	//while (1);
 	return (1);
 }
