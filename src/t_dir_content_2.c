@@ -48,26 +48,15 @@ t_dir_item	*t_item_new(char *d_name, char *path)
 	}
 	return (new);
 }
-/*
-t_dir_item	*t_file_new(char *d_name, char *path)
+
+t_dir_item	*t_file_new(char *d_name)
 {
 	t_dir_item	*new;
-	char		*join;
-	char 		*tmp;
 	struct stat	prop;
 
 	new = NULL;
 	errno = 0;
-	if (ft_strcmp(path, "/") != 0)
-		join = ft_strjoin(path, "/");
-	else
-		join = ft_strdup(path);
-	if (ft_strcmp(path, ".") == 0)
-		tmp = ft_strdup(d_name);
-	else
-		tmp = ft_strjoin(join, d_name);
-	lstat(tmp, &prop);
-	free(tmp);
+	lstat(d_name, &prop);
 	if (errno)
 		catch_error(0, d_name);
 	else
@@ -75,13 +64,12 @@ t_dir_item	*t_file_new(char *d_name, char *path)
 	if (new)
 	{
 		new->item_name = ft_strdup(d_name);
-		new->path = join;
+		new->path = NULL;;
 		new->next = NULL;
 		new->prop = prop;
 	}
 	return (new);
 }
-*/
 
 /*
    int			t_item_place(t_dir_item **first, t_dir_item *new)

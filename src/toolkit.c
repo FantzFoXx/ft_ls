@@ -50,15 +50,9 @@ char	*ft_join_paths(char *path, char *filename)
 	char *tmp;
 	char *ret;
 
-	ret = NULL;
-	tmp = NULL;
 	tmp = ft_strjoin(path, filename);
 	ret = ft_strjoin(tmp, "/");
-	//free(tmp);
-	ft_putendl("###########");
-	write(1, ret, ft_strlen(ret));
-	ft_putendl("");
-	ft_putendl("###########");
+	free(tmp);
 	return (ret);
 }
 

@@ -45,10 +45,10 @@ static void				get_dir_items(t_dir_content *first, char *params)
 			{
 				if (r)
 					t_item_rev_place(&(first->items),
-							t_item_new(items->d_name, ft_strdup(first->dir_name)));
+							t_item_new(items->d_name, first->dir_name));
 				else
 					t_item_place(&(first->items),
-							t_item_new(items->d_name, ft_strdup(first->dir_name)));
+							t_item_new(items->d_name, first->dir_name));
 			}
 		print_ls(first->items, params);
 	}
@@ -129,8 +129,7 @@ static int			open_file(char *path, char *params)
 	prop = NULL;
 	if ((lstat_ret = lstat(path, &file)) == 0)
 	{
-		//t_dir_place(dirs, t_dir_new(NULL, path, 1));
-		t_item_push(&prop, t_item_new(path, path));
+		t_item_push(&prop, t_file_new(path));
 		print_ls(prop, params);
 		return (1);
 	}
@@ -195,6 +194,6 @@ int						ft_ls(char *params, char **path)
 	}
 	ft_freetab(path);
 	free(params);
-	//while (1);
+	while (1);
 	return (1);
 }

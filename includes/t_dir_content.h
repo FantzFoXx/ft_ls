@@ -51,4 +51,5 @@ void			t_item_push(t_dir_item **first, t_dir_item *new);
 void			t_item_free_all(t_dir_item **cur);
 t_dir_content	*t_dir_place(t_dir_content **first, t_dir_content *new);
 t_dir_content	*t_dir_rev_place(t_dir_content **first, t_dir_content *new);
+t_dir_item		*t_file_new(char *d_name);
 #endif

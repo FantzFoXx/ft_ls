@@ -35,6 +35,7 @@ static char	*get_params(char **params, char *cur_param)
 	char	*str;
 	int		i;
 	int		j;
+	char	*tmp;
 
 	i = 0;
 	j = 0;
@@ -42,7 +43,10 @@ static char	*get_params(char **params, char *cur_param)
 	while (cur_param[++i] != 0)
 		if (!in_args(*params, str, cur_param[i]))
 			str[j++] = cur_param[i];
+	tmp = *params;
 	*params = ft_strjoin(*params, str);
+	free(tmp);
+	free(str);
 	return (*params);
 }
 
