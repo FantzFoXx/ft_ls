@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 15:39:55 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/29 11:38:17 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,6 @@ static t_foo	*print_list_item(t_dir_item *item, int *total, char *params)
 	(void)params;
 	t_foo_push(&line, get_rights(item->prop.st_mode));
 	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_nlink)));
-	//ft_nbrtrace("debug", item->prop.st_nlink);
 	t_foo_push(&line, t_foo_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
 	t_foo_push(&line, t_foo_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
 	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_size)));

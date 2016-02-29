@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/26 16:51:36 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/02/29 11:38:17 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_dir_item	*t_item_new(char *d_name, char *path)
 	lstat(tmp, &prop);
 	free(tmp);
 	if (errno)
-		catch_error(0, d_name);
+		catch_error(0, ft_strdup(d_name));
 	else
 		new = (t_dir_item *)malloc(sizeof(t_dir_item));
 	if (new)
@@ -58,7 +58,7 @@ t_dir_item	*t_file_new(char *d_name)
 	errno = 0;
 	lstat(d_name, &prop);
 	if (errno)
-		catch_error(0, d_name);
+		catch_error(0, ft_strdup(d_name));
 	else
 		new = (t_dir_item *)malloc(sizeof(t_dir_item));
 	if (new)

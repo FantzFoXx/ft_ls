@@ -4,6 +4,5 @@
 - leaks restants
 - verifier recrsive avec gestion erreurs
 - penser a gerer le bug du -- pris en compte dans les parametres
-- regarder bug ft_ls ""
 - corriger les inclues un peu bordeliques
 - option t
