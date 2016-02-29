@@ -50,7 +50,7 @@ static void				get_dir_items(t_dir_content *first, char *params)
 					t_item_place(&(first->items),
 							t_item_new(items->d_name, first->dir_name));
 			}
-		print_ls(first->items, params);
+		print_ls(first->items, params, 1);
 	}
 }
 
@@ -81,7 +81,7 @@ static int				rec_open_dir(char *path, char *params, t_dir_item *item)
 					&& !is_meta_dir(content->item_name))
 			{
 				if (!dirs->is_lfile)
-					print_dir_name(ft_strjoin(path, content->item_name));
+					rec_print_dir_name(ft_strjoin(path, content->item_name));
 				rec_open_dir(ft_join_paths(path, content->item_name), params, content);
 			}
 			content = content->next;
@@ -108,7 +108,7 @@ static int				open_dir(t_dir_content *dirs, char *params)
 			if (S_ISDIR(items->prop.st_mode) && !is_meta_dir(items->item_name))
 			{
 				if (!dirs->is_lfile)
-					print_dir_name(ft_strjoin(items->path, items->item_name));
+					rec_print_dir_name(ft_strjoin(items->path, items->item_name));
 				rec_open_dir(ft_join_paths(items->path, items->item_name), params, items);
 			}
 			items = items->next;
@@ -117,18 +117,22 @@ static int				open_dir(t_dir_content *dirs, char *params)
 	return (1);
 }
 
-static int			open_file(char **path, char *params)
+static int			open_file(t_dir_item **files, char *path, char *params)
 {
 	struct stat	file;
-	t_dir_item		*prop;
 	int				lstat_ret;
+	int				r;
 
 	lstat_ret = -1;
-	prop = NULL;
+	r = 0;
+	if (ft_strchr(params, 'r'))
+		r = 1;
 	if ((lstat_ret = lstat(path, &file)) == 0)
 	{
-		t_item_push(&prop, t_file_new(path));
-		print_ls(prop, params);
+		if (r)
+			t_item_rev_place(files, t_file_new(path));
+		else
+			t_item_place(files, t_file_new(path));
 		return (1);
 	}
 	return (0);
@@ -138,31 +142,26 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 {
 	DIR				*cur_dir;
 	t_dir_content	*dirs;
+	t_dir_item		*files;
 	int				i;
 	int				r;
 
-	cur_dir = NULL;
 	dirs = NULL;
+	files = NULL;
 	i = -1;
-	r = 0;
-	if (ft_strchr(params, 'r'))
-		r = 1;
-	open_file(paths, params);
+	r = (ft_strchr(params, 'r') ? 0 : 1);
 	while (paths[++i])
-	{
 		if ((cur_dir = opendir(paths[i])) && cur_dir)
-		{
 			if (r)
 				t_dir_rev_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
 			else
 				t_dir_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
-		}
-		else if (open_file(paths[i], params))
-		{
-		}
+		else if (!cur_dir)
+			open_file(&files, paths[i], params);
 		else
 			catch_error(0, ft_strdup(paths[i]));
-	}
+	print_ls(files, params, 0);
+	ft_putchar('\n');
 	if (!paths[0])
 		t_dir_place(&dirs, t_dir_new(opendir("."), ".", 0));
 	return (dirs);
@@ -186,7 +185,10 @@ int						ft_ls(char *params, char **path)
 	while (dirs)
 	{
 		if (mult_dirs && !dirs->is_lfile)
+		{
+			//ft_trace(NULL, "passs");
 			print_dir_name(ft_strdup(dirs->dir_name));
+		}
 		open_dir(dirs, params);
 		dirs = dirs->next;
 		if (mult_dirs && dirs && !dirs->is_lfile)

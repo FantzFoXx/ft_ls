@@ -22,13 +22,13 @@ static void		print_basic_item(t_dir_item *items, char *params)
 	free(s);
 }
 
-void			print_ls(t_dir_item *items, char *params)
+void			print_ls(t_dir_item *items, char *params, int only_dirs)
 {
 	int a;
 
 	a = 0;
 	if (ft_strchr(params, 'l'))
-		print_ls_l(items, params);
+		print_ls_l(items, params, only_dirs);
 	else
 	{
 		if (ft_strchr(params, 'a'))
@@ -42,6 +42,14 @@ void			print_ls(t_dir_item *items, char *params)
 }
 
 void	print_dir_name(char *dir_name)
+{
+	//ft_putchar('\n');
+	ft_putstr(dir_name);
+	ft_putendl(":");
+	free(dir_name);
+}
+
+void	rec_print_dir_name(char *dir_name)
 {
 	ft_putchar('\n');
 	ft_putstr(dir_name);

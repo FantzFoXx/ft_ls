@@ -19,7 +19,7 @@ typedef struct	s_foo
 	struct s_foo	*next;
 }				t_foo;
 
-void			print_ls_l(t_dir_item *items, char *params);
+void		print_ls_l(t_dir_item *items, char *params, int only_dirs);
 char		*get_item_name(t_dir_item *item, char *params);
 
 #endif

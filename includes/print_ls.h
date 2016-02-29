@@ -15,7 +15,8 @@
 
 # include "ft_ls.h"
 
-void				print_ls(t_dir_item *items, char *params);
+void			print_ls(t_dir_item *items, char *params, int only_dirs);
 void				print_dir_name(char *dir_name);
+void				rec_print_dir_name(char *dir_name);
 
 #endif

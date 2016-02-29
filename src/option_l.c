@@ -308,7 +308,7 @@ static void			free_ligtn(t_list **container)
 	*container = bak;
 }
 
-void			print_ls_l(t_dir_item *items, char *params)
+void			print_ls_l(t_dir_item *items, char *params, int only_dirs)
 {
 	int		*spaces;
 	int		total;
@@ -325,7 +325,7 @@ void			print_ls_l(t_dir_item *items, char *params)
 				ft_lstnew(print_list_item(items, &total, params), sizeof(t_foo)));
 		items = items->next;
 	}
-	if (total)
+	if (only_dirs)
 		print_total(total);
 	spaces = max_size_elem(container);
 	index = NULL;
