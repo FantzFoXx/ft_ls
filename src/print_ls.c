@@ -39,6 +39,8 @@ void			print_ls(t_dir_item *items, char *params, int only_dirs)
 			items = items->next;
 		}
 	}
+	if (!only_dirs)
+		ft_putchar('\n');
 }
 
 void	print_dir_name(char *dir_name)

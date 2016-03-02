@@ -105,36 +105,7 @@ static t_foo	*get_rights(mode_t mode)
 	free(tmp);
 	return (t_foo_new(rights));
 }
-/*
-   static	int		count_elems(t_dir_item *item)
-   {
-   int				i;
-   DIR				*cur_dir;
-   struct dirent	*inf;
-   struct stat		prop;
-   char			*path;
 
-   i = 0;
-   inf = NULL;
-   cur_dir = opendir(item->item_name);
-   path = NULL;
-   if (cur_dir)
-   while ((inf = readdir(cur_dir)) && inf)
-   {
-   path = ft_strjoin(item->item_name, "/");
-   path = ft_strjoin(path, inf->d_name);
-   lstat(path, &prop);
-   if (S_ISDIR(prop.st_mode))
-   i++;
-   free(path);
-   }
-   else
-   return (1);
-   if (cur_dir)
-   closedir(cur_dir);
-   return (i);
-   }
-   */
 static t_foo	*get_date(t_dir_item *item)
 {
 	char	**tmp;

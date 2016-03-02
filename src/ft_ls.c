@@ -26,19 +26,11 @@ static void				get_dir_items(t_dir_content *first, char *params)
 	int 			a;
 	int 			r;
 
-	a = 0;
-	r = 0;
 	items = NULL;
-	//while (first && !first->cur_dir)
-	//{
-	//	first = first->next;
-	//}
 	if (first)
 	{
-		if (ft_strchr(params, 'a'))
-			a = 1;
-		if (ft_strchr(params, 'r'))
-			r = 1;
+		a = (ft_strchr(params, 'a')) ? 1 : 0;
+		r = (ft_strchr(params, 'r')) ? 1 : 0;
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 			if ((items->d_name[0] == '.' && a)
 					|| items->d_name[0] != '.')
@@ -149,7 +141,7 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 	dirs = NULL;
 	files = NULL;
 	i = -1;
-	r = (ft_strchr(params, 'r') ? 0 : 1);
+	r = (ft_strchr(params, 'r') ? 1 : 0);
 	while (paths[++i])
 		if ((cur_dir = opendir(paths[i])) && cur_dir)
 			if (r)
@@ -160,8 +152,8 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 			open_file(&files, paths[i], params);
 		else
 			catch_error(0, ft_strdup(paths[i]));
-	print_ls(files, params, 0);
-	ft_putchar('\n');
+	if (files)
+		print_ls(files, params, 0);
 	if (!paths[0])
 		t_dir_place(&dirs, t_dir_new(opendir("."), ".", 0));
 	return (dirs);
@@ -185,10 +177,7 @@ int						ft_ls(char *params, char **path)
 	while (dirs)
 	{
 		if (mult_dirs && !dirs->is_lfile)
-		{
-			//ft_trace(NULL, "passs");
 			print_dir_name(ft_strdup(dirs->dir_name));
-		}
 		open_dir(dirs, params);
 		dirs = dirs->next;
 		if (mult_dirs && dirs && !dirs->is_lfile)

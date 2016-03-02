@@ -91,5 +91,12 @@ void		get_args(int ac, char **av, char **ret_params, char ***ret_paths)
 			*ret_params = get_params(ret_params, av[i]);
 		while (i < ac)
 			*ret_paths = get_entity(ret_paths, av[i++]);
+		if (ft_strcmp(*ret_paths[0], "--") == 0)
+		{
+			if (ft_tab_size(*ret_paths) == 1)
+				ft_realloc_tab(ret_paths, 1);
+			ret_paths = &ret_paths[1];
+		}
+		//if (ft_tab_size)
 	}
 }
