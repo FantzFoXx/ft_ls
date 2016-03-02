@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/29 11:38:17 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/02 17:32:54 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,22 @@ static t_foo	*get_date(t_dir_item *item)
 {
 	char	**tmp;
 	t_foo	*date;
+	char	**cur_time;
+	time_t	today;
+
 
 	date = NULL;
+	today = time(0);
+	cur_time = ft_strsplit(ctime(&today), ' ');
 	tmp = ft_strsplit(ctime(&item->prop.st_mtime), ' ');
 	t_foo_push(&date, t_foo_new(ft_strdup(tmp[1])));
 	t_foo_push(&date, t_foo_new(ft_strdup(tmp[2])));
-	t_foo_push(&date, t_foo_new(ft_strsub(tmp[3], 0, 5)));
+	if ((int)(today - item->prop.st_mtime) >= 15768000)
+		t_foo_push(&date, t_foo_new(ft_strsub(tmp[4], 0, ft_strchr(tmp[4], '\n') - tmp[4])));
+	else
+		t_foo_push(&date, t_foo_new(ft_strsub(tmp[3], 0, 5)));
 	ft_freetab(tmp);
+	ft_freetab(cur_time);
 	return (date);
 }
 
@@ -126,9 +135,11 @@ char		*get_item_name(t_dir_item *item, char *params)
 	char		*filename;
 	char		*tmp;
 	char		buf[1024];
+	ssize_t		read;
 
 	tmp = NULL;
 	filename = NULL;
+	read = 0;
 	if (option_g == -1)
 		option_g = (ft_strchr(params, 'G')) ? 1 : 0;
 	if (option_g)
@@ -197,7 +208,8 @@ char		*get_item_name(t_dir_item *item, char *params)
 		tmp = ft_strjoin(filename, " -> ");
 		free(filename);
 		filename = ft_strjoin(item->path, item->item_name);
-		readlink(filename, buf, 1024);
+		read = readlink(filename, buf, sizeof(buf));
+		buf[read] = 0;
 		free(filename);
 		filename = ft_strjoin(tmp, buf);
 		free(tmp);
@@ -217,7 +229,7 @@ static t_foo	*print_list_item(t_dir_item *item, int *total, char *params)
 	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_nlink)));
 	t_foo_push(&line, t_foo_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
 	t_foo_push(&line, t_foo_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
-	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_size)));
+	t_foo_push(&line, t_foo_new(ft_itoa((long)item->prop.st_size)));
 	t_foo_push(&line, get_date(item));
 	t_foo_push(&line, t_foo_new(get_item_name(item, params)));
 	*(total) += (int)(item->prop.st_blocks);
@@ -256,7 +268,8 @@ static int		*max_size_elem(t_list *container)
 static void		print_total(int total)
 {
 	ft_putstr("total ");
-	ft_putnbr((total % 512));
+	//ft_putnbr((total % 512));
+	ft_putnbr((total));
 	ft_putchar('\n');
 }
 
@@ -296,7 +309,7 @@ void			print_ls_l(t_dir_item *items, char *params, int only_dirs)
 				ft_lstnew(print_list_item(items, &total, params), sizeof(t_foo)));
 		items = items->next;
 	}
-	if (only_dirs)
+	if (container && only_dirs)
 		print_total(total);
 	spaces = max_size_elem(container);
 	index = NULL;
@@ -306,13 +319,21 @@ void			print_ls_l(t_dir_item *items, char *params, int only_dirs)
 		index = container->content;
 		while (index)
 		{
-			if (a > 0 && a != 4 && a != 6 && a != 8 && a != 6)
+			if (a > 0 && a != 4 && a != 6 && a != 7 && a != 6)
+				ft_putchar(' ');
+			if (index->next && a != 0 && a != 2 && a != 3 && a != 5 )
+				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
+			ft_putstr(index->str);
+			if (index->next && a != 0 && a != 1 && a != 4 && a != 5 && a != 6 && a != 7)
+				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
+			/*if (a > 0 && a != 4 && a != 6 && a != 8 && a != 6)
 				ft_putchar(' ');
 			if (index->next && a != 0 && a != 2 && a != 3 && a != 5 && a != 7)
 				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
 			ft_putstr(index->str);
 			if (index->next && a != 0 && a != 1 && a != 4 && a != 5 && a != 6)
 				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
+			*/
 			index = index->next;
 			a++;
 		}

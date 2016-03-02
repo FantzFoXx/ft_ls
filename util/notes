@@ -3,7 +3,7 @@
 - norme
 - leaks restants
 - verifier recrsive avec gestion erreurs
-- penser a gerer le bug du -- pris en compte dans les parametres
 - corriger les inclues un peu bordeliques
 - option t
 - si le fichier date d'une annee anetrieure, c'est le nom de l'annee qui s'affiche au lieu de l'heure
+- remettre de base la getion du fts_open

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:26:49 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/26 16:25:30 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/02 13:43:39 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,9 @@ void		get_args(int ac, char **av, char **ret_params, char ***ret_paths)
 		while (++i < ac && (av[i][0] == '-' && ft_strlen(av[i]) != 1)
 				&& (ft_strcmp(av[i], "--") != 0))
 			*ret_params = get_params(ret_params, av[i]);
+		if (av[i] && ft_strcmp(av[i], "--") == 0)
+			i++;
 		while (i < ac)
 			*ret_paths = get_entity(ret_paths, av[i++]);
-		if (ft_strcmp(*ret_paths[0], "--") == 0)
-		{
-			if (ft_tab_size(*ret_paths) == 1)
-				ft_realloc_tab(ret_paths, 1);
-			ret_paths = &ret_paths[1];
-		}
-		//if (ft_tab_size)
 	}
 }
