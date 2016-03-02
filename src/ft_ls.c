@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/02 18:10:03 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/02 18:56:52 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ int						ft_ls(char *params, char **path)
 	DIR				*cur_dir;
 	int				i;
 	t_dir_content	*dirs;
+	t_dir_content	*bak;
 
 	cur_dir = NULL;
 	i = 0;
@@ -175,6 +176,7 @@ int						ft_ls(char *params, char **path)
 	if (params)
 		check_params(params);
 	dirs = open_dirs(path, params);
+	bak = dirs;
 	if (ft_tab_size(path) > 1)
 		mult_dirs = 1;
 	while (dirs)

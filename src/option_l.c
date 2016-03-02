@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/02 17:32:54 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/02 18:57:01 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,8 +287,10 @@ static void			free_ligtn(t_list **container)
 	{
 		index_next = index->next;
 		free(index->str);
+		free(index);
 		index = index_next;
 	}
+	free(*container);
 	*container = bak;
 }
 
@@ -341,4 +343,5 @@ void			print_ls_l(t_dir_item *items, char *params, int only_dirs)
 		//container = container->next;
 		ft_putchar('\n');
 	}
+	free(spaces);
 }
