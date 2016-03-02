@@ -7,3 +7,4 @@
 - option t
 - si le fichier date d'une annee anetrieure, c'est le nom de l'annee qui s'affiche au lieu de l'heure
 - remettre de base la getion du fts_open
+- revoir le ft_ls "" pour remettre la gestion d'erreur qui n'affiche plus rien

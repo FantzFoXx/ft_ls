@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/29 11:38:15 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/02 18:10:03 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,14 @@ static int				rec_open_dir(char *path, char *params, t_dir_item *item)
 	cur_dir = opendir(path);
 	i = -1;
 	if (!cur_dir)
+	{
+		free(path);
 		return (catch_error(1, ft_strdup(item->item_name)));
+	}
 	else
 	{
 		errno = 0;
-		t_dir_place(&dirs, t_dir_new(cur_dir, ft_strdup(path), 0));
+		t_dir_place(&dirs, t_dir_new(cur_dir, path, 0));
 		get_dir_items(dirs, params);
 	}
 	if (ft_strchr(params, 'R') && dirs->items)
@@ -82,7 +85,7 @@ static int				rec_open_dir(char *path, char *params, t_dir_item *item)
 	if (cur_dir)
 		closedir(cur_dir);
 	t_dir_free_all(&dirs);
-	free(path);
+	//free(path);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/26 13:26:34 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/02 18:10:05 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name, int is_lfile)
 	{
 		new->items = NULL;
 		new->cur_dir = cur_dir;
-		new->dir_name = ft_strdup(dir_name);
+		new->dir_name = dir_name;
 		new->is_lfile = is_lfile;
 		new->next = NULL;
 	}
@@ -118,6 +118,8 @@ void			t_dir_free_all(t_dir_content **cur)
 		free((*cur)->dir_name);
 	if ((*cur)->items)
 		t_item_free_all(&((*cur)->items));
+	free((*cur)->items);
+	free(*cur);
 }
 
 void			t_item_free_all(t_dir_item **cur)
