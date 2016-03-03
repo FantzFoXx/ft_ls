@@ -16,6 +16,8 @@
 #include <errno.h>
 #include "catch_errors.h"
 
+#include <stdio.h>
+
 t_dir_item	*t_item_new(char *d_name, char *path)
 {
 	t_dir_item	*new;
@@ -106,35 +108,43 @@ t_dir_item	*t_file_new(char *d_name)
  return (0);
  }
  */
-static t_dir_item	*t_item_time_ascii_swap(t_dir_item **item)
+
+static void			t_item_swap(t_dir_item *index)
 {
-	t_dir_item *index;
-	t_dir_item *begin;
 	t_dir_item *bak;
 
-	bak = NULL;
+	bak = index->next;
+	index->next = index->next->next;
+	bak->next = index->next->next;
+	index->next->next = bak;
+}
 
-	/*if (((*item)->prop.st_mtime - (*item)->next->prop.st_mtime) < 60)
-	{
-		if (ft_strcmp((*item)->item_name, (*item)->next->item_name) < 0)
-		{
-			bak = (*item);
-			(*item) = (*item)->next;
-			(*item)->next = bak;
-		}
-	}*/
+static t_dir_item	*t_item_time_ascii_swap(t_dir_item **item)
+{
+	// a revoir, ne gere pas le swap avec le premier elem de la liste
+	t_dir_item *index;
+	t_dir_item *begin;
+
 	index = *item;
 	begin = *item;
 	while (index && index->next && index->next->next)
 	{
-		if ((index->next->prop.st_mtime - index->next->next->prop.st_mtime) < 60)
+		if ((index->next->prop.st_mtimespec.tv_sec
+					- index->next->next->prop.st_mtimespec.tv_sec) == 0)
 		{
-			if (ft_strcmp(index->next->item_name, index->next->next->item_name) > 0)
+			if ((index->next->prop.st_mtimespec.tv_nsec
+						- index->next->next->prop.st_mtimespec.tv_nsec) == 0)
 			{
-				bak = index->next;
-				index->next = index->next->next;
-				bak->next = index->next->next;
-				index->next->next = bak;
+				if (ft_strcmp(index->next->item_name, index->next->next->item_name) > 0)
+				{
+					t_item_swap(index);
+					return(t_item_time_ascii_swap(&begin));
+				}
+			}
+			else if ((index->next->prop.st_mtimespec.tv_nsec
+						- index->next->next->prop.st_mtimespec.tv_nsec) < 0)
+			{
+				t_item_swap(index);
 				return(t_item_time_ascii_swap(&begin));
 			}
 		}
@@ -156,8 +166,7 @@ t_dir_item	*t_item_sort(t_dir_item **item, t_dir_item *new, char *params)
 	if (t)
 	{
 		t_item_time_place(item, new);
-t_item_time_ascii_swap(item);
-
+		t_item_time_ascii_swap(item);
 	}
 	else
 		t_item_place(item,
@@ -205,8 +214,9 @@ t_dir_item	*t_item_time_place(t_dir_item **first, t_dir_item *new)
 			*first = new;
 			return (*first);
 		}
-		else if ((new->prop.st_mtime - index->prop.st_mtime) > 60)
+		else if ((new->prop.st_mtimespec.tv_sec - index->prop.st_mtimespec.tv_sec) > 0)
 		{
+
 			new->next = index;
 			*first = new;
 			return (new);
