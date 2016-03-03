@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/02 18:10:06 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/03 17:56:06 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,64 @@ t_dir_item	*t_file_new(char *d_name)
  return (0);
  }
  */
+static t_dir_item	*t_item_time_ascii_swap(t_dir_item **item)
+{
+	t_dir_item *index;
+	t_dir_item *begin;
+	t_dir_item *bak;
+
+	bak = NULL;
+
+	/*if (((*item)->prop.st_mtime - (*item)->next->prop.st_mtime) < 60)
+	{
+		if (ft_strcmp((*item)->item_name, (*item)->next->item_name) < 0)
+		{
+			bak = (*item);
+			(*item) = (*item)->next;
+			(*item)->next = bak;
+		}
+	}*/
+	index = *item;
+	begin = *item;
+	while (index && index->next && index->next->next)
+	{
+		if ((index->next->prop.st_mtime - index->next->next->prop.st_mtime) < 60)
+		{
+			if (ft_strcmp(index->next->item_name, index->next->next->item_name) > 0)
+			{
+				bak = index->next;
+				index->next = index->next->next;
+				bak->next = index->next->next;
+				index->next->next = bak;
+				return(t_item_time_ascii_swap(&begin));
+			}
+		}
+		index = index->next;
+	}
+	return (*item);
+}
+
+t_dir_item	*t_item_sort(t_dir_item **item, t_dir_item *new, char *params)
+{
+	static int bool_pass = 0;
+	static int t = 0;
+
+	if (!bool_pass)
+	{
+		t = (ft_strchr(params, 't')) ? 1 : 0;
+		bool_pass = 1;
+	}
+	if (t)
+	{
+		t_item_time_place(item, new);
+t_item_time_ascii_swap(item);
+
+	}
+	else
+		t_item_place(item,
+				new);
+	return (*item);
+}
 
 t_dir_item	*t_item_place(t_dir_item **first, t_dir_item *new)
 {
@@ -129,6 +187,32 @@ t_dir_item	*t_item_place(t_dir_item **first, t_dir_item *new)
 		}
 		else
 			index->next = t_item_place(&index->next, new);
+	}
+	return (index);
+}
+
+t_dir_item	*t_item_time_place(t_dir_item **first, t_dir_item *new)
+{
+	t_dir_item *index;
+
+	index = NULL;
+	if (new)
+	{
+		if (*first)
+			index = *first;
+		if (!index)
+		{
+			*first = new;
+			return (*first);
+		}
+		else if ((new->prop.st_mtime - index->prop.st_mtime) > 60)
+		{
+			new->next = index;
+			*first = new;
+			return (new);
+		}
+		else
+			index->next = t_item_time_place(&index->next, new);
 	}
 	return (index);
 }

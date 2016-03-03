@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/02 18:57:01 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/03 17:56:09 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 #include "option_l.h"
 #include "colors.h"
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/acl.h>
+
+#include <stdio.h>
 
 static t_foo	*t_foo_new(char *str)
 {
@@ -105,7 +109,19 @@ static t_foo	*get_rights(mode_t mode)
 	free(tmp);
 	return (t_foo_new(rights));
 }
+/*
+static void		get_acl(t_dir_item *item)
+{
+	char *path;
+	acl_t ret;
+	acl_type_t type;
 
+	path = ft_strjoin(item->path, item->item_name);
+	ret = acl_get_file(path, type);
+	printf("%d\n", ret);
+	free(path);
+}
+*/
 static t_foo	*get_date(t_dir_item *item)
 {
 	char	**tmp;
@@ -268,7 +284,6 @@ static int		*max_size_elem(t_list *container)
 static void		print_total(int total)
 {
 	ft_putstr("total ");
-	//ft_putnbr((total % 512));
 	ft_putnbr((total));
 	ft_putchar('\n');
 }
@@ -340,7 +355,6 @@ void			print_ls_l(t_dir_item *items, char *params, int only_dirs)
 			a++;
 		}
 		free_ligtn(&container);
-		//container = container->next;
 		ft_putchar('\n');
 	}
 	free(spaces);

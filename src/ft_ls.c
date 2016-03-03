@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/02 18:56:52 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/03 17:56:08 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,14 @@ static void				get_dir_items(t_dir_content *first, char *params)
 	items = NULL;
 	if (first)
 	{
-		a = (ft_strchr(params, 'a')) ? 1 : 0;
 		r = (ft_strchr(params, 'r')) ? 1 : 0;
+		a = (ft_strchr(params, 'a')) ? 1 : 0;
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 			if ((items->d_name[0] == '.' && a)
 					|| items->d_name[0] != '.')
 			{
-				if (r)
-					t_item_rev_place(&(first->items),
-							t_item_new(items->d_name, first->dir_name));
-				else
-					t_item_place(&(first->items),
-							t_item_new(items->d_name, first->dir_name));
+				t_item_sort(&(first->items),
+						t_item_new(items->d_name, first->dir_name), params);
 			}
 		print_ls(first->items, params, 1);
 	}
