@@ -1,10 +1,8 @@
-- l'option r s'applique aussi pour les dossiers passes en parametres
-- reorganiser la gestion des fichier uniques passes en parametres
 - norme
 - leaks restants
 - corriger les inclues un peu bordeliques
-- revoir option t
-- modifier tri reverse en tri par swap
+- reverifier option t
 - si le fichier date d'une annee anetrieure, c'est le nom de l'annee qui s'affiche au lieu de l'heure (re-regler)
 - remettre de base la getion du fts_open
-- revoir le ft_ls "" pour remettre la gestion d'erreur qui n'affiche plus rien
+- gerer cas speciaux avec liens
+- gerer noms de groupes et utilisqteurs non reconnus parl e systeme

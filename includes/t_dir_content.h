@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/03 14:01:28 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/04 16:49:12 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void			close_dirs(t_dir_content *first);
 //t_dir_item		*t_item_new(struct dirent *item, char *path);
 t_dir_item		*t_item_new(char *d_name/*struct dirent *item*/, char *path);
 t_dir_item		*t_item_sort(t_dir_item **item, t_dir_item *new, char *params);
+void			t_item_rev_sort(t_dir_item *first, t_dir_item *new_next, t_dir_item **new_first);
 t_dir_item		*t_item_place(t_dir_item **first, t_dir_item *new);
 t_dir_item		*t_item_time_place(t_dir_item **first, t_dir_item *new);
 t_dir_item		*t_item_rev_place(t_dir_item **first, t_dir_item *new);

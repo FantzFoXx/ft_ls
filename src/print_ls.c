@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/02 18:53:02 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/04 20:05:51 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,14 @@ void			print_ls(t_dir_item *items, char *params, int only_dirs)
 		ft_putchar('\n');
 }
 
-void	print_dir_name(char *dir_name)
+void			print_dir_name(char *dir_name)
 {
-	//ft_putchar('\n');
 	ft_putstr(dir_name);
 	ft_putendl(":");
 	free(dir_name);
 }
 
-void	rec_print_dir_name(char *dir_name)
+void			rec_print_dir_name(char *dir_name)
 {
 	ft_putchar('\n');
 	ft_putstr(dir_name);

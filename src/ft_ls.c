@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_ft_ls.c                                        :+:      :+:    :+:   */
+/*   ft_ls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/16 13:30:59 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/03 17:56:08 by udelorme         ###   ########.fr       */
+/*   Created: 2016/03/04 15:53:34 by udelorme          #+#    #+#             */
+/*   Updated: 2016/03/04 20:05:52 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ static void				get_dir_items(t_dir_content *first, char *params)
 		while ((items = readdir(first->cur_dir)) && items != NULL)
 			if ((items->d_name[0] == '.' && a)
 					|| items->d_name[0] != '.')
-			{
 				t_item_sort(&(first->items),
 						t_item_new(items->d_name, first->dir_name), params);
-			}
+		if (first->items && r)
+			t_item_rev_sort(first->items, NULL, &(first->items));
 		print_ls(first->items, params, 1);
 	}
 }
@@ -112,18 +112,11 @@ static int			open_file(t_dir_item **files, char *path, char *params)
 {
 	struct stat	file;
 	int				lstat_ret;
-	int				r;
 
 	lstat_ret = -1;
-	r = 0;
-	if (ft_strchr(params, 'r'))
-		r = 1;
 	if ((lstat_ret = lstat(path, &file)) == 0)
 	{
-		if (r)
-			t_item_rev_place(files, t_file_new(path));
-		else
-			t_item_place(files, t_file_new(path));
+		t_item_sort(files, t_file_new(path), params);
 		return (1);
 	}
 	return (0);
@@ -147,12 +140,16 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 				t_dir_rev_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
 			else
 				t_dir_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
-		else if (!cur_dir)
-			open_file(&files, paths[i], params);
+		else if (!cur_dir && open_file(&files, paths[i], params))
+		{}
 		else
 			catch_error(0, ft_strdup(paths[i]));
 	if (files)
+	{
+		if (r)
+			t_item_rev_sort(files, NULL, &files);
 		print_ls(files, params, 0);
+	}
 	if (!paths[0])
 		t_dir_place(&dirs, t_dir_new(opendir("."), ".", 0));
 	return (dirs);
@@ -164,7 +161,6 @@ int						ft_ls(char *params, char **path)
 	DIR				*cur_dir;
 	int				i;
 	t_dir_content	*dirs;
-	t_dir_content	*bak;
 
 	cur_dir = NULL;
 	i = 0;
@@ -172,7 +168,6 @@ int						ft_ls(char *params, char **path)
 	if (params)
 		check_params(params);
 	dirs = open_dirs(path, params);
-	bak = dirs;
 	if (ft_tab_size(path) > 1)
 		mult_dirs = 1;
 	while (dirs)
@@ -184,8 +179,8 @@ int						ft_ls(char *params, char **path)
 		if (mult_dirs && dirs && !dirs->is_lfile)
 			ft_putchar('\n');
 	}
-	ft_freetab(path);
 	free(params);
+	ft_freetab(path);
 	//while (1);
 	return (1);
 }
