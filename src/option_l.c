@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/05 17:15:57 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 21:06:35 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,29 @@ static t_litem	*get_date(t_dir_item *item)
 	return (date);
 }
 
+static char		*get_maj_min(dev_t st_rdev)
+{
+	char	*maj;
+	char	*min;
+	char	*tmp;
+	char	*final;
+	size_t	i;
+
+	maj = ft_strdup(ft_itoa(major(st_rdev)));
+	tmp = ft_strjoin(maj, ", ");
+	min = ft_strdup(ft_itoa(minor(st_rdev)));
+	i = -1;
+	while (++i < (3 - ft_strlen(min)))
+	{
+		final = ft_strjoin(tmp, " ");
+		free(tmp);
+		tmp = final;
+	}
+	final = ft_strjoin(tmp, min);
+	free(tmp);
+	return (final);
+}
+
 static t_litem	*print_list_item(t_dir_item *item, int *total, char *params)
 {
 	t_litem	*line;
@@ -117,11 +140,20 @@ static t_litem	*print_list_item(t_dir_item *item, int *total, char *params)
 	line = NULL;
 	t_litem_push(&line, get_rights(item->prop.st_mode));
 	t_litem_push(&line, t_litem_new(ft_itoa(item->prop.st_nlink)));
-	t_litem_push(&line,
-			t_litem_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
-	t_litem_push(&line,
-			t_litem_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
-	t_litem_push(&line, t_litem_new(ft_itoa((long)item->prop.st_size)));
+	if (getpwuid(item->prop.st_uid) != NULL)
+		t_litem_push(&line,
+				t_litem_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
+	else
+		t_litem_push(&line, t_litem_new(ft_itoa((long)(item->prop.st_uid))));
+	if (getgrgid(item->prop.st_gid) != NULL)
+		t_litem_push(&line,
+				t_litem_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
+	else
+		t_litem_push(&line, t_litem_new(ft_itoa((long)(item->prop.st_gid))));
+	if (S_ISCHR(item->prop.st_mode) || S_ISBLK(item->prop.st_mode))
+		t_litem_push(&line, t_litem_new(get_maj_min(item->prop.st_rdev)));
+	else
+		t_litem_push(&line, t_litem_new(ft_itoa((long)item->prop.st_size)));
 	t_litem_push(&line, get_date(item));
 	t_litem_push(&line, t_litem_new(get_item_name(item, params)));
 	*(total) += (int)(item->prop.st_blocks);

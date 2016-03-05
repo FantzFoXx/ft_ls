@@ -1,6 +1,8 @@
 - norme
 - leaks restants
-- finir de corriger les inclues un peu bordeliques
-- si le fichier date d'une annee anetrieure, c'est le nom de l'annee qui s'affiche au lieu de l'heure (re-regler)
-- gerer noms de groupes et utilisqteurs non reconnus parl e systeme
-- gerer les espaces a la fin du ls
+- finir de corriger les includes un peu bordeliques
+- gerer noms de groupes et utilisqteurs non reconnus par le systeme
+- retirer flags inutiles makefile et mettre lft en statique
+
+
+path user non reconnu par le systeme : /opt/local/var/macports/sources/rsync.macports.org/release/tarballs/base/src/thread2.6

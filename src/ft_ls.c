@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 15:53:34 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/05 17:11:04 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 21:06:35 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void				get_dir_items(t_dir_content *first, char *params)
 		}
 		if (first->items && r)
 			t_item_rev_sort(first->items, NULL, &(first->items));
-		print_ls(first->items, params, 1);
+		print_ls(first->items, params, 1, 1);
 	}
 }
 
@@ -157,7 +157,7 @@ static t_dir_content	*open_dirs(char **paths, char *params)
 	{
 		if (r)
 			t_item_rev_sort(files, NULL, &files);
-		print_ls(files, params, 0);
+		print_ls(files, params, 0, (dirs) ? 0 : 1);
 	}
 	if (!paths[0])
 		t_dir_place(&dirs, t_dir_new(opendir("."), ".", 0));

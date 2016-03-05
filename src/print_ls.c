@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/04 20:05:51 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 21:06:33 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void		print_basic_item(t_dir_item *items, char *params)
 	free(s);
 }
 
-void			print_ls(t_dir_item *items, char *params, int only_dirs)
+void			print_ls(t_dir_item *items, char *params, int only_dirs, int ret_c)
 {
 	int a;
 
@@ -40,7 +40,7 @@ void			print_ls(t_dir_item *items, char *params, int only_dirs)
 			items = items->next;
 		}
 	}
-	if (!only_dirs)
+	if (!ret_c)
 		ft_putchar('\n');
 }
 
