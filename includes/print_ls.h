@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:18:01 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 12:54:01 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 17:19:47 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "ft_ls.h"
 
-void			print_ls(t_dir_item *items, char *params, int only_dirs);
-void				print_dir_name(char *dir_name);
-void				rec_print_dir_name(char *dir_name);
+void	print_ls(t_dir_item *items, char *params, int only_dirs);
+void	print_dir_name(char *dir_name);
+void	rec_print_dir_name(char *dir_name);
 
 #endif

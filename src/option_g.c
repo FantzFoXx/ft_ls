@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   option_g.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/03/05 17:09:38 by udelorme          #+#    #+#             */
+/*   Updated: 2016/03/05 17:10:06 by udelorme         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "option_g.h"
 #include "colors.h"
 #include "t_dir_content.h"
 #include "unistd.h"
 
-static char *colorize_item(t_dir_item *item, char *color_fg)
+static char	*colorize_item(t_dir_item *item, char *color_fg)
 {
 	char *tmp;
 	char *filename;
@@ -14,7 +26,7 @@ static char *colorize_item(t_dir_item *item, char *color_fg)
 	return (filename);
 }
 
-static char *colorize_item_hl(t_dir_item *item, char *color_fg, char *color_bg)
+static char	*colorize_item_hl(t_dir_item *item, char *color_fg, char *color_bg)
 {
 	char *filename;
 	char *tmp;
@@ -53,7 +65,7 @@ static char	*apply_option_g(t_dir_item *item)
 	return (filename);
 }
 
-static char *get_link_pointer(t_dir_item *item, char *filename)
+static char	*get_link_pointer(t_dir_item *item, char *filename)
 {
 	char	*tmp;
 	char	buf[1024];

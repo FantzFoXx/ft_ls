@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:48:44 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/25 12:54:05 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 17:19:56 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 # define TOOLKIT_H
 
 # include <stdlib.h>
-//# include <dirent.h>
-//# include "t_dir_content.h"
-//# include <sys/stat.h>
 
 size_t	size_tab(char **tab);
 void	realloc_tab(char ***tab, size_t size);

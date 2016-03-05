@@ -6,25 +6,23 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 15:53:34 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/04 20:05:52 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 17:11:04 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include "print_ls.h"
 #include <stdlib.h>
-//#include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
-//#include <dirent.h>
 #include <t_dir_content.h>
 #include <errno.h>
 
 static void				get_dir_items(t_dir_content *first, char *params)
 {
 	struct dirent	*items;
-	int 			a;
-	int 			r;
+	int				a;
+	int				r;
 
 	items = NULL;
 	if (first)
@@ -75,7 +73,8 @@ static int				rec_open_dir(char *path, char *params, t_dir_item *item)
 			{
 				if (!dirs->is_lfile)
 					rec_print_dir_name(ft_strjoin(path, content->item_name));
-				rec_open_dir(ft_join_paths(path, content->item_name), params, content);
+				rec_open_dir(ft_join_paths(path, content->item_name)
+						, params, content);
 			}
 			content = content->next;
 		}
@@ -83,7 +82,6 @@ static int				rec_open_dir(char *path, char *params, t_dir_item *item)
 	if (cur_dir)
 		closedir(cur_dir);
 	t_dir_free_all(&dirs);
-	//free(path);
 	return (1);
 }
 
@@ -101,8 +99,10 @@ static int				open_dir(t_dir_content *dirs, char *params)
 			if (S_ISDIR(items->prop.st_mode) && !is_meta_dir(items->item_name))
 			{
 				if (!dirs->is_lfile)
-					rec_print_dir_name(ft_strjoin(items->path, items->item_name));
-				rec_open_dir(ft_join_paths(items->path, items->item_name), params, items);
+					rec_print_dir_name(
+							ft_strjoin(items->path, items->item_name));
+				rec_open_dir(ft_join_paths(items->path, items->item_name)
+						, params, items);
 			}
 			items = items->next;
 		}
@@ -110,10 +110,10 @@ static int				open_dir(t_dir_content *dirs, char *params)
 	return (1);
 }
 
-static int			open_file(t_dir_item **files, char *path, char *params)
+static int				open_file(t_dir_item **files, char *path, char *params)
 {
 	struct stat	file;
-	int				lstat_ret;
+	int			lstat_ret;
 
 	lstat_ret = -1;
 	if ((lstat_ret = lstat(path, &file)) == 0)
@@ -128,7 +128,7 @@ static int			open_file(t_dir_item **files, char *path, char *params)
 	return (0);
 }
 
-static t_dir_content			*open_dirs(char **paths, char *params)
+static t_dir_content	*open_dirs(char **paths, char *params)
 {
 	DIR				*cur_dir;
 	t_dir_content	*dirs;
@@ -190,6 +190,5 @@ int						ft_ls(char *params, char **path)
 	}
 	free(params);
 	ft_freetab(path);
-	//while (1);
 	return (1);
 }

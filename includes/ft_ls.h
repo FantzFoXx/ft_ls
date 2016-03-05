@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:18:25 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/16 13:46:30 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 17:19:26 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@
 # define TYPE_FILE   8
 # define TYPE_LINK_S 10
 
-//# include "libft.h"
 # include "catch_errors.h"
 # include "toolkit.h"
-//# include <dirent.h>
 
 int		ft_ls(char *params, char **entity);
 void	get_args(int ac, char **av, char **ret_params, char ***ret_paths);

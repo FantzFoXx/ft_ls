@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 17:24:27 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/04 16:49:12 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 17:20:39 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ typedef struct	s_dir_item
 {
 	char				*path;
 	char				*item_name;
-	//__uint8_t			item_type;
 	struct dirent		*item;
 	struct stat			prop;
 	struct s_dir_item	*next;
@@ -43,10 +42,10 @@ void			t_dir_push(t_dir_content **first, t_dir_content *new);
 void			t_dir_free_all(t_dir_content **cur);
 void			close_dirs(t_dir_content *first);
 
-//t_dir_item		*t_item_new(struct dirent *item, char *path);
-t_dir_item		*t_item_new(char *d_name/*struct dirent *item*/, char *path);
+t_dir_item		*t_item_new(char *d_name, char *path);
 t_dir_item		*t_item_sort(t_dir_item **item, t_dir_item *new, char *params);
-void			t_item_rev_sort(t_dir_item *first, t_dir_item *new_next, t_dir_item **new_first);
+void			t_item_rev_sort(t_dir_item *first, t_dir_item *new_next
+					, t_dir_item **new_first);
 t_dir_item		*t_item_place(t_dir_item **first, t_dir_item *new);
 t_dir_item		*t_item_time_place(t_dir_item **first, t_dir_item *new);
 t_dir_item		*t_item_rev_place(t_dir_item **first, t_dir_item *new);

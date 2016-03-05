@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/04 15:48:54 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 17:15:57 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 
 static char		*add_mode_to_right(char *rights, char *add)
 {
-	char *tmp;
+	char	*tmp;
+
 	tmp = ft_strdup(rights);
 	free(rights);
 	rights = ft_strjoin(tmp, add);
@@ -69,6 +70,7 @@ static t_litem	*get_rights(mode_t mode)
 	rights = add_mode_to_right(rights, ((mode & S_IXOTH) ? "x" : "-"));
 	return (t_litem_new(rights));
 }
+
 /*
    static void		get_acl(t_dir_item *item)
    {
@@ -82,13 +84,13 @@ static t_litem	*get_rights(mode_t mode)
    free(path);
    }
    */
+
 static t_litem	*get_date(t_dir_item *item)
 {
 	char	**tmp;
 	t_litem	*date;
 	char	**cur_time;
 	time_t	today;
-
 
 	date = NULL;
 	today = time(0);
@@ -97,16 +99,14 @@ static t_litem	*get_date(t_dir_item *item)
 	t_litem_push(&date, t_litem_new(ft_strdup(tmp[1])));
 	t_litem_push(&date, t_litem_new(ft_strdup(tmp[2])));
 	if ((int)(today - item->prop.st_mtime) >= 15768000)
-		t_litem_push(&date,t_litem_new(ft_strsub(tmp[4], 0,
-						ft_strchr(tmp[4], '\n') - tmp[4])));
+		t_litem_push(&date, t_litem_new(ft_strsub(tmp[4], 0
+						, ft_strchr(tmp[4], '\n') - tmp[4])));
 	else
 		t_litem_push(&date, t_litem_new(ft_strsub(tmp[3], 0, 5)));
 	ft_freetab(tmp);
 	ft_freetab(cur_time);
 	return (date);
 }
-
-
 
 static t_litem	*print_list_item(t_dir_item *item, int *total, char *params)
 {
@@ -117,8 +117,10 @@ static t_litem	*print_list_item(t_dir_item *item, int *total, char *params)
 	line = NULL;
 	t_litem_push(&line, get_rights(item->prop.st_mode));
 	t_litem_push(&line, t_litem_new(ft_itoa(item->prop.st_nlink)));
-	t_litem_push(&line, t_litem_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
-	t_litem_push(&line, t_litem_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
+	t_litem_push(&line,
+			t_litem_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
+	t_litem_push(&line,
+			t_litem_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
 	t_litem_push(&line, t_litem_new(ft_itoa((long)item->prop.st_size)));
 	t_litem_push(&line, get_date(item));
 	t_litem_push(&line, t_litem_new(get_item_name(item, params)));
@@ -162,7 +164,7 @@ static void		print_total(int total)
 	ft_putchar('\n');
 }
 
-static void			free_ligtn(t_list **container)
+static void		free_ligtn(t_list **container)
 {
 	t_list	*bak;
 	t_litem	*index;
@@ -185,8 +187,8 @@ static void			free_ligtn(t_list **container)
 
 static void		print_padded_item(t_list *container, int *spaces)
 {
-	t_litem *index;
-	int i;
+	t_litem	*index;
+	int		i;
 
 	i = 0;
 	index = NULL;
@@ -201,7 +203,8 @@ static void		print_padded_item(t_list *container, int *spaces)
 			if (index->next && i != 0 && i != 2 && i != 3 && i != 5)
 				ft_print_rep(' ', (spaces[i] - ft_strlen(index->str) + 1));
 			ft_putstr(index->str);
-			if (index->next && i != 0 && i != 1 && i != 4 && i != 5 && i != 6 && i != 7)
+			if (index->next && i != 0 && i != 1 && i != 4
+					&& i != 5 && i != 6 && i != 7)
 				ft_print_rep(' ', (spaces[i] - ft_strlen(index->str) + 1));
 			index = index->next;
 			i++;
@@ -221,8 +224,8 @@ void			print_ls_l(t_dir_item *items, char *params, int only_dirs)
 	total = 0;
 	while (items)
 	{
-		ft_lstpush(&container,
-				ft_lstnew(print_list_item(items, &total, params), sizeof(t_litem)));
+		ft_lstpush(&container, ft_lstnew(print_list_item(items, &total, params),
+					sizeof(t_litem)));
 		items = items->next;
 	}
 	if (container && only_dirs)

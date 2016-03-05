@@ -6,17 +6,11 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 10:45:47 by udelorme          #+#    #+#             */
-/*   Updated: 2016/02/29 10:12:07 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 17:04:53 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "toolkit.h"
 #include "ft_ls.h"
-//#include "libft.h"
-//#include "t_dir_content.h"
-//#include <unistd.h>
-//#include <pwd.h>
-//#include <sys/stat.h>
 
 char	*ft_join_paths(char *path, char *filename)
 {

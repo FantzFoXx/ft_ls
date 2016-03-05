@@ -6,13 +6,12 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:35 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/04 19:47:17 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 17:04:04 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "t_dir_content.h"
 #include <stdlib.h>
-//#include <unistd.h>
 #include <errno.h>
 #include "catch_errors.h"
 
@@ -20,7 +19,7 @@ t_dir_item	*t_item_new(char *d_name, char *path)
 {
 	t_dir_item	*new;
 	char		*join;
-	char 		*tmp;
+	char		*tmp;
 	struct stat	prop;
 
 	new = NULL;
@@ -64,57 +63,13 @@ t_dir_item	*t_file_new(char *d_name)
 	if (new)
 	{
 		new->item_name = ft_strdup(d_name);
-		new->path = NULL;;
+		new->path = NULL;
 		new->next = NULL;
 		new->prop = prop;
 	}
 	return (new);
 }
 
-/*
-   static void			t_item_swap(t_dir_item *index)
-   {
-   t_dir_item *bak;
-
-   bak = index->next;
-   index->next = index->next->next;
-   bak->next = index->next->next;
-   index->next->next = bak;
-   }
-   static t_dir_item	*t_item_time_ascii_swap(t_dir_item **item)
-   {
-// a revoir, ne gere pas le swap avec le premier elem de la liste
-t_dir_item *index;
-t_dir_item *begin;
-
-index = *item;
-begin = *item;
-while (index && index->next && index->next->next)
-{
-if ((index->next->prop.st_mtimespec.tv_sec
-- index->next->next->prop.st_mtimespec.tv_sec) == 0)
-{
-if ((index->next->prop.st_mtimespec.tv_nsec
-- index->next->next->prop.st_mtimespec.tv_nsec) == 0)
-{
-if (ft_strcmp(index->next->item_name, index->next->next->item_name) > 0)
-{
-t_item_swap(index);
-return(t_item_time_ascii_swap(&begin));
-}
-}
-else if ((index->next->prop.st_mtimespec.tv_nsec
-- index->next->next->prop.st_mtimespec.tv_nsec) < 0)
-{
-t_item_swap(index);
-return(t_item_time_ascii_swap(&begin));
-}
-}
-index = index->next;
-}
-return (*item);
-}
-*/
 static int	t_item_time_nsec_sort(t_dir_item *item, t_dir_item *new)
 {
 	if ((item->prop.st_mtimespec.tv_sec
@@ -153,7 +108,8 @@ t_dir_item	*t_item_sort(t_dir_item **item, t_dir_item *new, char *params)
 	return (*item);
 }
 
-void	t_item_rev_sort(t_dir_item *first, t_dir_item *new_next, t_dir_item **new_first)
+void		t_item_rev_sort(t_dir_item *first, t_dir_item *new_next,
+		t_dir_item **new_first)
 {
 	if (first->next)
 		t_item_rev_sort(first->next, first, new_first);
@@ -202,7 +158,8 @@ t_dir_item	*t_item_time_place(t_dir_item **first, t_dir_item *new)
 			*first = new;
 			return (*first);
 		}
-		else if (((new->prop.st_mtimespec.tv_sec - index->prop.st_mtimespec.tv_sec) > 0)
+		else if (((new->prop.st_mtimespec.tv_sec
+						- index->prop.st_mtimespec.tv_sec) > 0)
 				|| (t_item_time_nsec_sort(index, new)))
 		{
 			new->next = index;
