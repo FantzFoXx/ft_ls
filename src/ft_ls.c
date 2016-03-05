@@ -13,10 +13,10 @@
 #include "ft_ls.h"
 #include "print_ls.h"
 #include <stdlib.h>
-#include <fcntl.h>
+//#include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <dirent.h>
+//#include <dirent.h>
 #include <t_dir_content.h>
 #include <errno.h>
 
@@ -32,10 +32,12 @@ static void				get_dir_items(t_dir_content *first, char *params)
 		r = (ft_strchr(params, 'r')) ? 1 : 0;
 		a = (ft_strchr(params, 'a')) ? 1 : 0;
 		while ((items = readdir(first->cur_dir)) && items != NULL)
+		{
 			if ((items->d_name[0] == '.' && a)
 					|| items->d_name[0] != '.')
 				t_item_sort(&(first->items),
 						t_item_new(items->d_name, first->dir_name), params);
+		}
 		if (first->items && r)
 			t_item_rev_sort(first->items, NULL, &(first->items));
 		print_ls(first->items, params, 1);
@@ -116,7 +118,11 @@ static int			open_file(t_dir_item **files, char *path, char *params)
 	lstat_ret = -1;
 	if ((lstat_ret = lstat(path, &file)) == 0)
 	{
-		t_item_sort(files, t_file_new(path), params);
+		if ((S_ISLNK(file.st_mode) && ft_strchr(params, 'l'))
+				|| (!S_ISDIR(file.st_mode) && !S_ISLNK(file.st_mode)))
+			t_item_sort(files, t_file_new(path), params);
+		else
+			return (0);
 		return (1);
 	}
 	return (0);
@@ -135,15 +141,18 @@ static t_dir_content			*open_dirs(char **paths, char *params)
 	i = -1;
 	r = (ft_strchr(params, 'r') ? 1 : 0);
 	while (paths[++i])
-		if ((cur_dir = opendir(paths[i])) && cur_dir)
-			if (r)
-				t_dir_rev_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
+		if (!open_file(&files, paths[i], params))
+		{
+			if ((cur_dir = opendir(paths[i])) && cur_dir)
+			{
+				if (r)
+					t_dir_rev_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
+				else
+					t_dir_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
+			}
 			else
-				t_dir_place(&dirs, t_dir_new(cur_dir, paths[i], 0));
-		else if (!cur_dir && open_file(&files, paths[i], params))
-		{}
-		else
-			catch_error(0, ft_strdup(paths[i]));
+				catch_error(0, ft_strdup(paths[i]));
+		}
 	if (files)
 	{
 		if (r)

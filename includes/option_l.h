@@ -13,13 +13,16 @@
 #ifndef OPTION_L_H
 # define OPTION_L_H
 
-typedef struct	s_foo
+#include "t_dir_content.h"
+
+typedef struct	s_litem
 {
 	char			*str;
-	struct s_foo	*next;
-}				t_foo;
+	struct s_litem	*next;
+}				t_litem;
 
 void		print_ls_l(t_dir_item *items, char *params, int only_dirs);
-char		*get_item_name(t_dir_item *item, char *params);
 
+void		t_litem_push(t_litem **first, t_litem *new);
+t_litem		*t_litem_new(char *str);
 #endif

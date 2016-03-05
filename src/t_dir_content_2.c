@@ -12,11 +12,9 @@
 
 #include "t_dir_content.h"
 #include <stdlib.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <errno.h>
 #include "catch_errors.h"
-
-#include <stdio.h>
 
 t_dir_item	*t_item_new(char *d_name, char *path)
 {

@@ -13,7 +13,6 @@
 #include "t_dir_content.h"
 #include <stdlib.h>
 #include <errno.h>
-#include <stdio.h>
 
 t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name, int is_lfile)
 {

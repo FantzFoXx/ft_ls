@@ -13,7 +13,6 @@
 #ifndef CATCH_ERRORS_H
 # define CATCH_ERRORS_H
 
-# include <stdio.h>
 # include "t_dir_content.h"
 
 void			error_params(char *supported, char param);

@@ -12,6 +12,7 @@
 
 #include "ft_ls.h"
 #include <errno.h>
+#include <stdio.h>
 
 int				catch_error(int err_code, char *err_msg)
 {

@@ -12,6 +12,7 @@
 
 #include "print_ls.h"
 #include "option_l.h"
+#include "option_g.h"
 
 static void		print_basic_item(t_dir_item *items, char *params)
 {

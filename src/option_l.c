@@ -19,42 +19,21 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/acl.h>
+#include <option_g.h>
 
-#include <stdio.h>
-
-static t_foo	*t_foo_new(char *str)
+static char		*add_mode_to_right(char *rights, char *add)
 {
-	t_foo *new;
-
-	new = (t_foo *)malloc(sizeof(t_foo));
-	if (new)
-	{
-		//new->str = ft_strdup(str);
-		new->str = str;
-		new->next = NULL;
-	}
-	return (new);
+	char *tmp;
+	tmp = ft_strdup(rights);
+	free(rights);
+	rights = ft_strjoin(tmp, add);
+	free(tmp);
+	return (rights);
 }
 
-static void		t_foo_push(t_foo **first, t_foo *new)
+static char		*get_right_file_type(mode_t mode)
 {
-	t_foo *index;
-
-	index = *first;
-	if (!index)
-		*first = new;
-	else
-	{
-		while (index->next)
-			index = index->next;
-		index->next = new;
-	}
-}
-
-static t_foo	*get_rights(mode_t mode)
-{
-	char	*rights;
-	char	*tmp;
+	char *rights;
 
 	rights = NULL;
 	if (S_ISDIR(mode))
@@ -71,61 +50,42 @@ static t_foo	*get_rights(mode_t mode)
 		rights = ft_strdup("b");
 	else if (S_ISREG(mode))
 		rights = ft_strdup("-");
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, ((mode & S_IRUSR) ? "r" : "-"));
-	free(tmp);
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, ((mode & S_IWUSR) ? "w" : "-"));
-	free(tmp);
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, ((mode & S_IXUSR) ? "x" : "-"));
-	free(tmp);
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, ((mode & S_IRGRP) ? "r" : "-"));
-	free(tmp);
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, ((mode & S_IWGRP) ? "w" : "-"));
-	free(tmp);
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, ((mode & S_IXGRP) ? "x" : "-"));
-	free(tmp);
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, ((mode & S_IROTH) ? "r" : "-"));
-	free(tmp);
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, ((mode & S_IWOTH) ? "w" : "-"));
-	free(tmp);
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, ((mode & S_IXOTH) ? "x" : "-"));
-	free(tmp);
-	return (t_foo_new(rights));
+	return (rights);
+}
+
+static t_litem	*get_rights(mode_t mode)
+{
+	char	*rights;
+
+	rights = get_right_file_type(mode);
+	rights = add_mode_to_right(rights, ((mode & S_IRUSR) ? "r" : "-"));
+	rights = add_mode_to_right(rights, ((mode & S_IWUSR) ? "w" : "-"));
+	rights = add_mode_to_right(rights, ((mode & S_IXUSR) ? "x" : "-"));
+	rights = add_mode_to_right(rights, ((mode & S_IRGRP) ? "r" : "-"));
+	rights = add_mode_to_right(rights, ((mode & S_IWGRP) ? "w" : "-"));
+	rights = add_mode_to_right(rights, ((mode & S_IXGRP) ? "x" : "-"));
+	rights = add_mode_to_right(rights, ((mode & S_IROTH) ? "r" : "-"));
+	rights = add_mode_to_right(rights, ((mode & S_IWOTH) ? "w" : "-"));
+	rights = add_mode_to_right(rights, ((mode & S_IXOTH) ? "x" : "-"));
+	return (t_litem_new(rights));
 }
 /*
-static void		get_acl(t_dir_item *item)
-{
-	char *path;
-	acl_t ret;
-	acl_type_t type;
+   static void		get_acl(t_dir_item *item)
+   {
+   char *path;
+   acl_t ret;
+   acl_type_t type;
 
-	path = ft_strjoin(item->path, item->item_name);
-	ret = acl_get_file(path, type);
-	printf("%d\n", ret);
-	free(path);
-}
-*/
-static t_foo	*get_date(t_dir_item *item)
+   path = ft_strjoin(item->path, item->item_name);
+   ret = acl_get_file(path, type);
+   printf("%d\n", ret);
+   free(path);
+   }
+   */
+static t_litem	*get_date(t_dir_item *item)
 {
 	char	**tmp;
-	t_foo	*date;
+	t_litem	*date;
 	char	**cur_time;
 	time_t	today;
 
@@ -134,120 +94,34 @@ static t_foo	*get_date(t_dir_item *item)
 	today = time(0);
 	cur_time = ft_strsplit(ctime(&today), ' ');
 	tmp = ft_strsplit(ctime(&item->prop.st_mtime), ' ');
-	t_foo_push(&date, t_foo_new(ft_strdup(tmp[1])));
-	t_foo_push(&date, t_foo_new(ft_strdup(tmp[2])));
+	t_litem_push(&date, t_litem_new(ft_strdup(tmp[1])));
+	t_litem_push(&date, t_litem_new(ft_strdup(tmp[2])));
 	if ((int)(today - item->prop.st_mtime) >= 15768000)
-		t_foo_push(&date, t_foo_new(ft_strsub(tmp[4], 0, ft_strchr(tmp[4], '\n') - tmp[4])));
+		t_litem_push(&date,t_litem_new(ft_strsub(tmp[4], 0,
+						ft_strchr(tmp[4], '\n') - tmp[4])));
 	else
-		t_foo_push(&date, t_foo_new(ft_strsub(tmp[3], 0, 5)));
+		t_litem_push(&date, t_litem_new(ft_strsub(tmp[3], 0, 5)));
 	ft_freetab(tmp);
 	ft_freetab(cur_time);
 	return (date);
 }
 
-char		*get_item_name(t_dir_item *item, char *params)
+
+
+static t_litem	*print_list_item(t_dir_item *item, int *total, char *params)
 {
-	static int	option_g = -1;
-	char		*filename;
-	char		*tmp;
-	char		buf[1024];
-	ssize_t		read;
-
-	tmp = NULL;
-	filename = NULL;
-	read = 0;
-	if (option_g == -1)
-		option_g = (ft_strchr(params, 'G')) ? 1 : 0;
-	if (option_g)
-		if (S_ISDIR(item->prop.st_mode))
-			if ((S_IWOTH & item->prop.st_mode))
-			{
-				filename = ft_strjoin(DARK_BLACK, HLIGHT_YELLOW);
-				tmp = ft_strjoin(filename, item->item_name);
-				free(filename);
-				filename = ft_strjoin(tmp, DEFAULT_COLOR);
-				free(tmp);
-			}
-			else
-			{
-				tmp = ft_strjoin(CYAN, item->item_name);
-				filename = ft_strjoin(tmp, DEFAULT_COLOR);
-				free(tmp);
-			}
-		else if (S_ISCHR(item->prop.st_mode))
-		{
-			filename = ft_strjoin(DARK_BLUE, HLIGHT_YELLOW);
-			tmp = ft_strjoin(filename, item->item_name);
-			free(filename);
-			filename = ft_strjoin(tmp, DEFAULT_COLOR);
-			free(tmp);
-		}
-		else if (is_archive_file(item->item_name))
-		{
-			tmp = ft_strjoin(GREEN, item->item_name);
-			filename = ft_strjoin(tmp, DEFAULT_COLOR);
-			free(tmp);
-		}
-		else if (S_ISBLK(item->prop.st_mode))
-		{
-			filename = ft_strjoin(DARK_BLUE, HLIGHT_CYAN);
-			tmp = ft_strjoin(filename, item->item_name);
-			free(filename);
-			filename = ft_strjoin(tmp, DEFAULT_COLOR);
-			free(tmp);
-		}
-		else if (S_ISFIFO(item->prop.st_mode))
-		{
-			tmp = ft_strjoin(DARK_YELLOW, item->item_name);
-			filename = ft_strjoin(tmp, DEFAULT_COLOR);
-			free(tmp);
-		}
-		else if (S_ISLNK(item->prop.st_mode))
-		{
-			tmp = ft_strjoin(DARK_PURPLE, item->item_name);
-			filename = ft_strjoin(tmp, DEFAULT_COLOR);
-			free(tmp);
-
-		}
-		else if (is_exec_file(item->prop.st_mode))
-		{
-			tmp = ft_strjoin(DARK_RED, item->item_name);
-			filename = ft_strjoin(tmp, DEFAULT_COLOR);
-			free(tmp);
-		}
-		else
-			filename = ft_strdup(item->item_name);
-	else
-		filename = ft_strdup(item->item_name);
-	if (ft_strchr(params, 'l') && S_ISLNK(item->prop.st_mode))
-	{
-		tmp = ft_strjoin(filename, " -> ");
-		free(filename);
-		filename = ft_strjoin(item->path, item->item_name);
-		read = readlink(filename, buf, sizeof(buf));
-		buf[read] = 0;
-		free(filename);
-		filename = ft_strjoin(tmp, buf);
-		free(tmp);
-	}
-	return (filename);
-}
-
-static t_foo	*print_list_item(t_dir_item *item, int *total, char *params)
-{
-	t_foo	*line;
+	t_litem	*line;
 	int		i;
 
 	i = 0;
 	line = NULL;
-	(void)params;
-	t_foo_push(&line, get_rights(item->prop.st_mode));
-	t_foo_push(&line, t_foo_new(ft_itoa(item->prop.st_nlink)));
-	t_foo_push(&line, t_foo_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
-	t_foo_push(&line, t_foo_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
-	t_foo_push(&line, t_foo_new(ft_itoa((long)item->prop.st_size)));
-	t_foo_push(&line, get_date(item));
-	t_foo_push(&line, t_foo_new(get_item_name(item, params)));
+	t_litem_push(&line, get_rights(item->prop.st_mode));
+	t_litem_push(&line, t_litem_new(ft_itoa(item->prop.st_nlink)));
+	t_litem_push(&line, t_litem_new(ft_strdup(getpwuid(item->prop.st_uid)->pw_name)));
+	t_litem_push(&line, t_litem_new(ft_strdup(getgrgid(item->prop.st_gid)->gr_name)));
+	t_litem_push(&line, t_litem_new(ft_itoa((long)item->prop.st_size)));
+	t_litem_push(&line, get_date(item));
+	t_litem_push(&line, t_litem_new(get_item_name(item, params)));
 	*(total) += (int)(item->prop.st_blocks);
 	return (line);
 }
@@ -255,7 +129,7 @@ static t_foo	*print_list_item(t_dir_item *item, int *total, char *params)
 static int		*max_size_elem(t_list *container)
 {
 	int		*spaces;
-	t_foo	*index;
+	t_litem	*index;
 	int		i;
 	size_t	cur;
 
@@ -291,8 +165,8 @@ static void		print_total(int total)
 static void			free_ligtn(t_list **container)
 {
 	t_list	*bak;
-	t_foo	*index;
-	t_foo	*index_next;
+	t_litem	*index;
+	t_litem	*index_next;
 
 	index = NULL;
 	index_next = NULL;
@@ -309,53 +183,51 @@ static void			free_ligtn(t_list **container)
 	*container = bak;
 }
 
+static void		print_padded_item(t_list *container, int *spaces)
+{
+	t_litem *index;
+	int i;
+
+	i = 0;
+	index = NULL;
+	while (container)
+	{
+		i = 0;
+		index = container->content;
+		while (index)
+		{
+			if (i > 0 && i != 4 && i != 7 && i != 6)
+				ft_putchar(' ');
+			if (index->next && i != 0 && i != 2 && i != 3 && i != 5)
+				ft_print_rep(' ', (spaces[i] - ft_strlen(index->str) + 1));
+			ft_putstr(index->str);
+			if (index->next && i != 0 && i != 1 && i != 4 && i != 5 && i != 6 && i != 7)
+				ft_print_rep(' ', (spaces[i] - ft_strlen(index->str) + 1));
+			index = index->next;
+			i++;
+		}
+		free_ligtn(&container);
+		ft_putchar('\n');
+	}
+}
+
 void			print_ls_l(t_dir_item *items, char *params, int only_dirs)
 {
 	int		*spaces;
 	int		total;
-	int		a;
 	t_list	*container;
-	t_foo	*index;
 
 	container = NULL;
 	total = 0;
-	a = 0;
 	while (items)
 	{
 		ft_lstpush(&container,
-				ft_lstnew(print_list_item(items, &total, params), sizeof(t_foo)));
+				ft_lstnew(print_list_item(items, &total, params), sizeof(t_litem)));
 		items = items->next;
 	}
 	if (container && only_dirs)
 		print_total(total);
 	spaces = max_size_elem(container);
-	index = NULL;
-	while (container)
-	{
-		a = 0;
-		index = container->content;
-		while (index)
-		{
-			if (a > 0 && a != 4 && a != 6 && a != 7 && a != 6)
-				ft_putchar(' ');
-			if (index->next && a != 0 && a != 2 && a != 3 && a != 5 )
-				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
-			ft_putstr(index->str);
-			if (index->next && a != 0 && a != 1 && a != 4 && a != 5 && a != 6 && a != 7)
-				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
-			/*if (a > 0 && a != 4 && a != 6 && a != 8 && a != 6)
-				ft_putchar(' ');
-			if (index->next && a != 0 && a != 2 && a != 3 && a != 5 && a != 7)
-				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
-			ft_putstr(index->str);
-			if (index->next && a != 0 && a != 1 && a != 4 && a != 5 && a != 6)
-				ft_print_rep(' ', (spaces[a] - ft_strlen(index->str) + 1));
-			*/
-			index = index->next;
-			a++;
-		}
-		free_ligtn(&container);
-		ft_putchar('\n');
-	}
+	print_padded_item(container, spaces);
 	free(spaces);
 }

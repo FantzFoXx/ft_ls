@@ -18,10 +18,10 @@
 # define TYPE_FILE   8
 # define TYPE_LINK_S 10
 
-# include "libft.h"
+//# include "libft.h"
 # include "catch_errors.h"
 # include "toolkit.h"
-# include <dirent.h>
+//# include <dirent.h>
 
 int		ft_ls(char *params, char **entity);
 void	get_args(int ac, char **av, char **ret_params, char ***ret_paths);
