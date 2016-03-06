@@ -6,19 +6,20 @@
 #    By: udelorme <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/14 11:43:18 by udelorme          #+#    #+#              #
-#    Updated: 2016/02/29 11:27:58 by udelorme         ###   ########.fr        #
+#    Updated: 2016/03/06 00:43:01 by udelorme         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = clang
-FLAGS = -Wall -Werror -Wextra -O3 -g
+FLAGS = -Wall -Werror -Wextra -O3
 NAME = ft_ls
 SRC = main.c ft_ls.c					\
 	  get_params.c toolkit.c			\
 	  catch_errors.c t_dir_content_1.c	\
 	  t_dir_content_2.c print_ls.c		\
 	  sort_items.c option_l.c			\
-	  option_g.c t_litem.c
+	  option_g.c t_litem.c option_l_2.c	\
+	  t_dir_content_3.c read_dirs.c
 
 OBJ = $(SRC:.c=.o)
 

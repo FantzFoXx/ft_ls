@@ -1,8 +1,9 @@
 - norme
 - leaks restants
 - finir de corriger les includes un peu bordeliques
-- gerer noms de groupes et utilisqteurs non reconnus par le systeme
 - retirer flags inutiles makefile et mettre lft en statique
+- si un lien ne pointe vers rien, ls simple affiche le lien au lieu de ce qu'il contient
+- retirer option 1
 
 
 path user non reconnu par le systeme : /opt/local/var/macports/sources/rsync.macports.org/release/tarballs/base/src/thread2.6

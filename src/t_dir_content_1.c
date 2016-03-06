@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:00:26 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/02 18:57:01 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/06 00:22:01 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,6 @@ t_dir_content	*t_dir_new(DIR *cur_dir, char *dir_name, int is_lfile)
 		new->next = NULL;
 	}
 	return (new);
-}
-
-void			t_dir_push(t_dir_content **first, t_dir_content *new)
-{
-	t_dir_content *index;
-
-	index = *first;
-	if (!index)
-		*first = new;
-	else
-	{
-		while (index->next)
-			index = index->next;
-		index->next = new;
-	}
 }
 
 t_dir_content	*t_dir_place(t_dir_content **first, t_dir_content *new)
@@ -96,13 +81,6 @@ t_dir_content	*t_dir_rev_place(t_dir_content **first, t_dir_content *new)
 			index->next = t_dir_rev_place(&index->next, new);
 	}
 	return (index);
-}
-
-t_dir_content	*get_last_item(t_dir_content *first)
-{
-	while (first->next)
-		first = first->next;
-	return (first);
 }
 
 void			t_dir_free_all(t_dir_content **cur)

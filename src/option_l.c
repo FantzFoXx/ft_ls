@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:49:04 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/05 21:06:35 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/06 00:23:13 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,70 +21,6 @@
 #include <sys/acl.h>
 #include <option_g.h>
 
-static char		*add_mode_to_right(char *rights, char *add)
-{
-	char	*tmp;
-
-	tmp = ft_strdup(rights);
-	free(rights);
-	rights = ft_strjoin(tmp, add);
-	free(tmp);
-	return (rights);
-}
-
-static char		*get_right_file_type(mode_t mode)
-{
-	char *rights;
-
-	rights = NULL;
-	if (S_ISDIR(mode))
-		rights = ft_strdup("d");
-	else if (S_ISCHR(mode))
-		rights = ft_strdup("c");
-	else if (S_ISFIFO(mode))
-		rights = ft_strdup("p");
-	else if (S_ISLNK(mode))
-		rights = ft_strdup("l");
-	else if (S_ISSOCK(mode))
-		rights = ft_strdup("s");
-	else if (S_ISBLK(mode))
-		rights = ft_strdup("b");
-	else if (S_ISREG(mode))
-		rights = ft_strdup("-");
-	return (rights);
-}
-
-static t_litem	*get_rights(mode_t mode)
-{
-	char	*rights;
-
-	rights = get_right_file_type(mode);
-	rights = add_mode_to_right(rights, ((mode & S_IRUSR) ? "r" : "-"));
-	rights = add_mode_to_right(rights, ((mode & S_IWUSR) ? "w" : "-"));
-	rights = add_mode_to_right(rights, ((mode & S_IXUSR) ? "x" : "-"));
-	rights = add_mode_to_right(rights, ((mode & S_IRGRP) ? "r" : "-"));
-	rights = add_mode_to_right(rights, ((mode & S_IWGRP) ? "w" : "-"));
-	rights = add_mode_to_right(rights, ((mode & S_IXGRP) ? "x" : "-"));
-	rights = add_mode_to_right(rights, ((mode & S_IROTH) ? "r" : "-"));
-	rights = add_mode_to_right(rights, ((mode & S_IWOTH) ? "w" : "-"));
-	rights = add_mode_to_right(rights, ((mode & S_IXOTH) ? "x" : "-"));
-	return (t_litem_new(rights));
-}
-
-/*
-   static void		get_acl(t_dir_item *item)
-   {
-   char *path;
-   acl_t ret;
-   acl_type_t type;
-
-   path = ft_strjoin(item->path, item->item_name);
-   ret = acl_get_file(path, type);
-   printf("%d\n", ret);
-   free(path);
-   }
-   */
-
 static t_litem	*get_date(t_dir_item *item)
 {
 	char	**tmp;
@@ -98,7 +34,8 @@ static t_litem	*get_date(t_dir_item *item)
 	tmp = ft_strsplit(ctime(&item->prop.st_mtime), ' ');
 	t_litem_push(&date, t_litem_new(ft_strdup(tmp[1])));
 	t_litem_push(&date, t_litem_new(ft_strdup(tmp[2])));
-	if ((int)(today - item->prop.st_mtime) >= 15768000)
+	if ((today - item->prop.st_mtime) >= 15768000
+			|| (today - item->prop.st_mtime) < 0)
 		t_litem_push(&date, t_litem_new(ft_strsub(tmp[4], 0
 						, ft_strchr(tmp[4], '\n') - tmp[4])));
 	else
@@ -106,29 +43,6 @@ static t_litem	*get_date(t_dir_item *item)
 	ft_freetab(tmp);
 	ft_freetab(cur_time);
 	return (date);
-}
-
-static char		*get_maj_min(dev_t st_rdev)
-{
-	char	*maj;
-	char	*min;
-	char	*tmp;
-	char	*final;
-	size_t	i;
-
-	maj = ft_strdup(ft_itoa(major(st_rdev)));
-	tmp = ft_strjoin(maj, ", ");
-	min = ft_strdup(ft_itoa(minor(st_rdev)));
-	i = -1;
-	while (++i < (3 - ft_strlen(min)))
-	{
-		final = ft_strjoin(tmp, " ");
-		free(tmp);
-		tmp = final;
-	}
-	final = ft_strjoin(tmp, min);
-	free(tmp);
-	return (final);
 }
 
 static t_litem	*print_list_item(t_dir_item *item, int *total, char *params)
@@ -189,34 +103,6 @@ static int		*max_size_elem(t_list *container)
 	return (spaces);
 }
 
-static void		print_total(int total)
-{
-	ft_putstr("total ");
-	ft_putnbr((total));
-	ft_putchar('\n');
-}
-
-static void		free_ligtn(t_list **container)
-{
-	t_list	*bak;
-	t_litem	*index;
-	t_litem	*index_next;
-
-	index = NULL;
-	index_next = NULL;
-	bak = (*container)->next;
-	index = (*container)->content;
-	while (index)
-	{
-		index_next = index->next;
-		free(index->str);
-		free(index);
-		index = index_next;
-	}
-	free(*container);
-	*container = bak;
-}
-
 static void		print_padded_item(t_list *container, int *spaces)
 {
 	t_litem	*index;
@@ -261,7 +147,11 @@ void			print_ls_l(t_dir_item *items, char *params, int only_dirs)
 		items = items->next;
 	}
 	if (container && only_dirs)
-		print_total(total);
+	{
+		ft_putstr("total ");
+		ft_putnbr((total));
+		ft_putchar('\n');
+	}
 	spaces = max_size_elem(container);
 	print_padded_item(container, spaces);
 	free(spaces);

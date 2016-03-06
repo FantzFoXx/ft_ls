@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 11:18:25 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/05 17:19:26 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/06 01:14:16 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,14 @@
 # include "catch_errors.h"
 # include "toolkit.h"
 
-int		ft_ls(char *params, char **entity);
-void	get_args(int ac, char **av, char **ret_params, char ***ret_paths);
-void	check_params(char *params);
+t_dir_content	*open_dirs(char **paths, char *params);
+int				ft_ls(char *params, char **entity);
+int				open_file(t_dir_item **files, char *path, char *params);
+int				open_dir(t_dir_content *dirs, char *params);
+int				rec_open_dir(char *path, char *params, t_dir_item *item);
+void			get_args(int ac, char **av, char **ret_params
+		, char ***ret_paths);
+void			check_params(char *params);
+void			get_dir_items(t_dir_content *first, char *params);
 
 #endif

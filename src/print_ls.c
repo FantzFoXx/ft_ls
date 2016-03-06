@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 15:17:19 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/05 21:06:33 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/05 21:27:35 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "option_l.h"
 #include "option_g.h"
 
-static void		print_basic_item(t_dir_item *items, char *params)
+static void	print_basic_item(t_dir_item *items, char *params)
 {
 	char	*s;
 
@@ -23,7 +23,7 @@ static void		print_basic_item(t_dir_item *items, char *params)
 	free(s);
 }
 
-void			print_ls(t_dir_item *items, char *params, int only_dirs, int ret_c)
+void		print_ls(t_dir_item *items, char *params, int only_dirs, int ret_c)
 {
 	int a;
 
@@ -44,14 +44,14 @@ void			print_ls(t_dir_item *items, char *params, int only_dirs, int ret_c)
 		ft_putchar('\n');
 }
 
-void			print_dir_name(char *dir_name)
+void		print_dir_name(char *dir_name)
 {
 	ft_putstr(dir_name);
 	ft_putendl(":");
 	free(dir_name);
 }
 
-void			rec_print_dir_name(char *dir_name)
+void		rec_print_dir_name(char *dir_name)
 {
 	ft_putchar('\n');
 	ft_putstr(dir_name);
