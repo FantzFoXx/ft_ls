@@ -6,7 +6,7 @@
 /*   By: udelorme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/04 15:53:34 by udelorme          #+#    #+#             */
-/*   Updated: 2016/03/06 01:14:18 by udelorme         ###   ########.fr       */
+/*   Updated: 2016/03/07 08:04:23 by udelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int				rec_open_dir(char *path, char *params, t_dir_item *item)
 	return (1);
 }
 
-static void		j_ai_pas_de_nom(t_dir_item **files, char **paths
-		, t_dir_content *dirs, char *params)
+static void		print_files(t_dir_item **files, char **paths
+		, t_dir_content **dirs, char *params)
 {
 	static int r;
 
@@ -73,7 +73,7 @@ static void		j_ai_pas_de_nom(t_dir_item **files, char **paths
 		print_ls(*files, params, 0, (dirs) ? 0 : 1);
 	}
 	if (!paths[0])
-		t_dir_place(&dirs, t_dir_new(opendir("."), ".", 0));
+		t_dir_place(dirs, t_dir_new(opendir("."), ".", 0));
 }
 
 t_dir_content	*open_dirs(char **paths, char *params)
@@ -101,7 +101,7 @@ t_dir_content	*open_dirs(char **paths, char *params)
 			else
 				catch_error(0, ft_strdup(paths[i]));
 		}
-	j_ai_pas_de_nom(&files, paths, dirs, params);
+	print_files(&files, paths, &dirs, params);
 	return (dirs);
 }
 
